@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "hwjAdqychA54DNj0GPxyBxihQ4OElRuLsi3EFK4Jw1/uRA4eWro/oxZoKlwNtM/JJKhkbmgskxjgpXlnK+pDcA==",
+  "success": true,
+  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Application/Application.csproj",
+  "expectedPackageFiles": [
+    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}
