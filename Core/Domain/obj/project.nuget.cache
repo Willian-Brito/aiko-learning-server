@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xwzaae4VncX/INl2jssfgX+ZoYTAiotrdqpwoOfij1XkQweXB6bLswV/h7ZEJOk0j/qO3bXiO+gd/rf86EA3nw==",
+  "dgSpecHash": "CvRIrdc0zI9U5SiviYQnJOSlNVMbDZt5ZtvcAl9vn59tGag0Tf0q6kFWMGTp9KYOF93mdwH9TX5jcvkxKqqIuQ==",
   "success": true,
-  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Domain/Domain.csproj",
+  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Domain/Domain.csproj",
   "expectedPackageFiles": [
     "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512"
   ],

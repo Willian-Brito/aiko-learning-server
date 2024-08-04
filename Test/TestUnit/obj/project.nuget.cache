@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HKOjyM3JQcEJ/wvY2eZBK59LaXyw9i5F2yF8yn4SFPOlu/gLF93f4M7coItcuCBrx/WCW9mgs34+4ZiwVqiVqg==",
+  "dgSpecHash": "UQqUd/Nl8AjTyNw6nZwDtuJis9ZInF/eg8JIOmxYyCpNo5bX/rZPuGeql5+sAu5rKH5IEoA0dhawtfrVZ+Hbsg==",
   "success": true,
-  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Test/TestUnit/TestUnit.csproj",
+  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Test/TestUnit/TestUnit.csproj",
   "expectedPackageFiles": [
     "/home/h1s0k4/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.codecoverage/17.6.0/microsoft.codecoverage.17.6.0.nupkg.sha512",

@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "hwjAdqychA54DNj0GPxyBxihQ4OElRuLsi3EFK4Jw1/uRA4eWro/oxZoKlwNtM/JJKhkbmgskxjgpXlnK+pDcA==",
+  "dgSpecHash": "9WWBkA8R31+yFYZu39frqIgR8l6DFWJi2clG6EKg5jLe4Ng+H0rVhiZWbmCQTXZ+acnmFWM3xCg84QCHps/A4g==",
   "success": true,
-  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Application/Application.csproj",
+  "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Application/Application.csproj",
   "expectedPackageFiles": [
+    "/home/h1s0k4/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/mediatr/12.4.0/mediatr.12.4.0.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512"
   ],
   "logs": []

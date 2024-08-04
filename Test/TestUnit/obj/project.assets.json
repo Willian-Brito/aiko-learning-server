@@ -5539,11 +5539,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Test/TestUnit/TestUnit.csproj",
+      "projectUniqueName": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Test/TestUnit/TestUnit.csproj",
       "projectName": "TestUnit",
-      "projectPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Test/TestUnit/TestUnit.csproj",
+      "projectPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Test/TestUnit/TestUnit.csproj",
       "packagesPath": "/home/h1s0k4/.nuget/packages/",
-      "outputPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Test/TestUnit/obj/",
+      "outputPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Test/TestUnit/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/h1s0k4/.nuget/NuGet/NuGet.Config"
@@ -5558,8 +5558,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Domain/Domain.csproj": {
-              "projectPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Domain/Domain.csproj"
+            "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Domain/Domain.csproj": {
+              "projectPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Domain/Domain.csproj"
             }
           }
         }

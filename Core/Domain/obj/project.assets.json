@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Domain/Domain.csproj",
+      "projectUniqueName": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Domain/Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Domain/Domain.csproj",
+      "projectPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Domain/Domain.csproj",
       "packagesPath": "/home/h1s0k4/.nuget/packages/",
-      "outputPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Core/Domain/obj/",
+      "outputPath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Core/Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/h1s0k4/.nuget/NuGet/NuGet.Config"

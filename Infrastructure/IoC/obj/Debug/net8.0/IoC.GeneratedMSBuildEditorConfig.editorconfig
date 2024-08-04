@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = IoC
-build_property.ProjectDir = /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning/Infrastructure/IoC/
+build_property.ProjectDir = /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
