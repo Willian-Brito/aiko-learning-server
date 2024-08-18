@@ -52,7 +52,6 @@ public sealed class Category : BaseEntity
     {
         DomainValidationException.When(string.IsNullOrEmpty(name), "Informe o nome!");
         DomainValidationException.When(name.Length < 3, "Nome inválido, é necessário ter no minimo 3 caracteres!");
-
         DomainValidationException.When(name.Length > 100, "Nome deve ser menor que 100 caracteres!");
     }
     #endregion
