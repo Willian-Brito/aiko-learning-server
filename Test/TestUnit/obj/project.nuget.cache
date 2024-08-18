@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UQqUd/Nl8AjTyNw6nZwDtuJis9ZInF/eg8JIOmxYyCpNo5bX/rZPuGeql5+sAu5rKH5IEoA0dhawtfrVZ+Hbsg==",
+  "dgSpecHash": "/qIget4Lwnih7O2qRbF2YHu8irmPxlS0kR+DTsr5visZZEwNWR58WoqbyaBBXUuLeO0ZmZma6ab6KlVtDMIGRA==",
   "success": true,
   "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Test/TestUnit/TestUnit.csproj",
   "expectedPackageFiles": [
@@ -93,7 +93,7 @@
     "/home/h1s0k4/.nuget/packages/xunit.extensibility.core/2.4.2/xunit.extensibility.core.2.4.2.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/xunit.extensibility.execution/2.4.2/xunit.extensibility.execution.2.4.2.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/xunit.runner.visualstudio/2.4.5/xunit.runner.visualstudio.2.4.5.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512"
+    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.7/microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512"
   ],
   "logs": []
 }

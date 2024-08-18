@@ -17,7 +17,7 @@ public abstract class CustomController : ControllerBase
 
     protected ActionResult CustomResponseException(Exception exception)
     {
-        var response = BaseResponseAPI.Create<string>(
+        var response = BaseResponseAPI.Create(
             GetInnerExceptionMessages(exception), false
         );
         

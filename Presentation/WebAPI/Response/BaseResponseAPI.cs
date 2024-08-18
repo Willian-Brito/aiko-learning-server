@@ -1,5 +1,4 @@
 using System.Runtime.Serialization;
-using AikoLearning.Core.Application.Categories.Commands;
 
 namespace AikoLearning.Presentation.WebAPI.Response;
 
@@ -14,7 +13,7 @@ public class BaseResponseAPI
 
     private BaseResponseAPI() { }
 
-    public static BaseResponseAPI Create<T>(object obj, bool success = true)
+    public static BaseResponseAPI Create(object obj, bool success = true)
     {
         var response = new BaseResponseAPI
         { 

@@ -1,15 +1,32 @@
 using AikoLearning.Infrastructure.IoC;
+using AikoLearning.Presentation.WebAPI.Conventions;
+using Newtonsoft.Json;
 
 #region Services
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddInfrastructureJWT(builder.Configuration);
 builder.Services.AddInfrastructureSwagger();
 
-builder.Services.AddControllers();
+// builder.Services.AddControllers();
+builder.Services
+    .AddControllers(options =>
+    {
+        options.Conventions.Add(new LowercaseRouteConvention());
+    })
+    .AddNewtonsoftJson(options =>
+    {        
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        options.SerializerSettings.Formatting = Formatting.Indented;
+    });
+    // .AddJsonOptions(options =>
+    // {        
+    //     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    // });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 #endregion
@@ -29,7 +46,6 @@ app.UseHttpsRedirection();
 app.UseStatusCodePages();
 
 app.ApplyMigrations();
-app.AddInitialSeed();
 
 app.UseAuthentication();
 app.UseAuthorization();

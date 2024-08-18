@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "6NC6T/VhmiI4RiTCsy8ST+YQ43navdQlATufNmQ6MPCt+mBhjYhvzmVnVYhgX1puXwabZE1A8jsUaMmKBtxFvw==",
+  "dgSpecHash": "AxUHqm3rwaYyTtTbvFOrrvODKf51Xv2wugAw8flvSPKXA2bZExO+Y563pp+vuN9KvOhHm9bTATmCsGCnsCmtuw==",
   "success": true,
   "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/IoC.csproj",
   "expectedPackageFiles": [
     "/home/h1s0k4/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/dapper/2.1.35/dapper.2.1.35.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/mediatr/12.4.0/mediatr.12.4.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
@@ -47,12 +48,12 @@
     "/home/h1s0k4/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.extensions.webencoders/2.2.0/microsoft.extensions.webencoders.2.2.0.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.abstractions/7.1.2/microsoft.identitymodel.abstractions.7.1.2.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.jsonwebtokens/7.1.2/microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.logging/7.1.2/microsoft.identitymodel.logging.7.1.2.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.abstractions/8.0.1/microsoft.identitymodel.abstractions.8.0.1.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.0.1/microsoft.identitymodel.jsonwebtokens.8.0.1.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.logging/8.0.1/microsoft.identitymodel.logging.8.0.1.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.protocols/7.1.2/microsoft.identitymodel.protocols.7.1.2.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/7.1.2/microsoft.identitymodel.protocols.openidconnect.7.1.2.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.tokens/7.1.2/microsoft.identitymodel.tokens.7.1.2.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/microsoft.identitymodel.tokens/8.0.1/microsoft.identitymodel.tokens.8.0.1.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.net.http.headers/2.2.0/microsoft.net.http.headers.2.2.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.netcore.platforms/2.0.0/microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/microsoft.openapi/1.6.14/microsoft.openapi.1.6.14.nupkg.sha512",
@@ -63,7 +64,7 @@
     "/home/h1s0k4/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.6.2/swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.6.2/swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.buffers/4.5.0/system.buffers.4.5.0.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/system.identitymodel.tokens.jwt/7.1.2/system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
+    "/home/h1s0k4/.nuget/packages/system.identitymodel.tokens.jwt/8.0.1/system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.security.accesscontrol/4.5.0/system.security.accesscontrol.4.5.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.security.cryptography.cng/4.5.0/system.security.cryptography.cng.4.5.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.security.cryptography.pkcs/4.5.0/system.security.cryptography.pkcs.4.5.0.nupkg.sha512",
@@ -71,7 +72,7 @@
     "/home/h1s0k4/.nuget/packages/system.security.permissions/4.5.0/system.security.permissions.4.5.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.security.principal.windows/4.5.0/system.security.principal.windows.4.5.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.text.encodings.web/4.5.0/system.text.encodings.web.4.5.0.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512"
+    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.7/microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512"
   ],
   "logs": []
 }

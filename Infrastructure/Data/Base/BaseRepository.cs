@@ -1,60 +1,71 @@
 ﻿using AikoLearning.Core.Domain.Base;
 using AikoLearning.Infrastructure.Data.Context;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AikoLearning.Infrastructure.Data.Base;
 
-public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
+public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity, TModel>
+    where TEntity : class
+    where TModel : class
 {
     #region Properties
     protected readonly ApplicationDbContext context;
-    protected readonly DbSet<T> dbSet;
+    protected readonly DbSet<TModel> dbSet;
+    protected readonly IMapper mapper;
     #endregion
 
     #region Constructor
-    public BaseRepository(ApplicationDbContext context)
+    public BaseRepository(ApplicationDbContext context, IMapper mapper)
     {
         this.context = context;
-        this.dbSet = context.Set<T>();
+        this.dbSet = context.Set<TModel>();
+        this.mapper = mapper;
     }
     #endregion
 
     #region Methods
 
-    public async Task<IEnumerable<T>> GetAll()
+    public async Task<IEnumerable<TEntity>> GetAll()
     {
-        return await dbSet.ToListAsync();
+        var models = await dbSet.AsNoTracking().ToListAsync();
+        return mapper.Map<IEnumerable<TEntity>>(models);
     }
 
-    public async Task<T> Get(int id)
+    public async Task<TEntity> Get(object id)
     {
-        return await dbSet.FindAsync(id);
+        var model = await dbSet.AsNoTracking()
+            .FirstOrDefaultAsync(e => EF.Property<object>(e, "ID").Equals(id));            
+        return mapper.Map<TEntity>(model);
     }
 
-    public async Task<T> Insert(T entity)
+    public async Task<TModel> Insert(TEntity entity)
     {
-        await dbSet.AddAsync(entity);
+        var model = mapper.Map<TModel>(entity);
+        await dbSet.AddAsync(model);        
+        return model;
+    }
+
+    public async Task<TEntity> Update(TEntity entity)
+    {
+        var model = mapper.Map<TModel>(entity);
+        dbSet.Update(model);
         return entity;
     }
 
-    public async Task<T> Update(T entity)
+    public async Task<TEntity> Delete(object id)
     {
-        dbSet.Update(entity);
-        return entity;
-    }
+        var model = await dbSet.FindAsync(id);
+        var entity = mapper.Map<TEntity>(model);
+        dbSet.Remove(model); 
 
-    public async Task<T> Delete(int id)
-    {
-        var entity = await dbSet.FindAsync(id);
-        
-        dbSet.Remove(entity);
         return entity;
     }
     #endregion
 }
 
 
-// public abstract class Repository<T> : IRepository<T>
+// public abstract class Repository<TEntity> : IRepository<TEntity>
 //     where T : class, IIdentifiable
 // {
 //     protected IUnitOfWork unitOfWork;
@@ -72,15 +83,15 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 //         return BaseQuery($"t.{this.entityMapper.KeyColumn.ColumnName} = @ID", param: new { id }).FirstOrDefault();
 //     }
 
-//     public async Task<T> GetAsync(long id) =>
+//     public async Task<TEntity> GetAsync(long id) =>
 //         (await BaseQueryAsync($"t.{this.entityMapper.KeyColumn.ColumnName} = @ID", param: new {id}))
 //             .FirstOrDefault();
 
-//     public virtual List<T> GetAll() => BaseQuery();
+//     public virtual List<TEntity> GetAll() => BaseQuery();
 
-//     public virtual Task<List<T>> GetAllAsync() => BaseQueryAsync();
+//     public virtual Task<List<TEntity>> GetAllAsync() => BaseQueryAsync();
 
-//     public virtual List<T> GetAllByIDs(IEnumerable<long> ids)
+//     public virtual List<TEntity> GetAllByIDs(IEnumerable<long> ids)
 //     {
 //         if (ids.Any())
 //         {
@@ -88,11 +99,11 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 //         }
 //         else
 //         {
-//             return new List<T>();
+//             return new List<TEntity>();
 //         }
 //     }
 
-//     public virtual async Task<List<T>> GetAllByIDsAsync(IEnumerable<long> ids)
+//     public virtual async Task<List<TEntity>> GetAllByIDsAsync(IEnumerable<long> ids)
 //     {
 //         if (ids.Any())
 //         {
@@ -100,11 +111,11 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 //         }
 //         else
 //         {
-//             return new List<T>();
+//             return new List<TEntity>();
 //         }
 //     }
 
-//     public virtual List<T> GetAllByProperty(string propertyName, object value)
+//     public virtual List<TEntity> GetAllByProperty(string propertyName, object value)
 //     {
 //         var columnInfo = this.entityMapper.Columns[propertyName.ToLower()];
 
@@ -168,7 +179,7 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 //     public virtual long Insert(T entity, bool returnId = true) => InsertInternalAsync(entity, returnId, true).GetAwaiter().GetResult();
 //     public virtual Task<long> InsertAsync(T entity, bool returnId = true) => InsertInternalAsync(entity, returnId, false);
 
-//     public virtual List<T> BulkInsert(List<T> entities)
+//     public virtual List<TEntity> BulkInsert(List<TEntity> entities)
 //     {
 //         var valueColumns = this.entityMapper.Columns.Values.Where(p => p.Insertable);
 
@@ -254,30 +265,30 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 //     }
     
     
-//     protected async Task<List<T>> BaseQueryAsync(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
+//     protected async Task<List<TEntity>> BaseQueryAsync(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
 //     {
 //         var entities = await BaseQueryInternalAsync(where, orderBy, offset, limit, param);
 //         entities.ForEach(AfterSelect);
 //         return entities.ToList();
 //     }
 
-//     protected virtual List<T> BaseQuery(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
+//     protected virtual List<TEntity> BaseQuery(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
 //     {
 //         var entities = BaseQueryInternal(where, orderBy, offset, limit, param);
 //         entities.ForEach(AfterSelect);
 //         return entities.ToList();
 //     }
 
-//     protected virtual async Task<IEnumerable<T>> BaseQueryInternalAsync(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
+//     protected virtual async Task<IEnumerable<TEntity>> BaseQueryInternalAsync(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
 //     {
 //         string query = SelectQuery(where, orderBy, offset, limit);
-//         return await this.unitOfWork.Connection.QueryAsync<T>(query, param);
+//         return await this.unitOfWork.Connection.QueryAsync<TEntity>(query, param);
 //     }
 
-//     protected virtual IEnumerable<T> BaseQueryInternal(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
+//     protected virtual IEnumerable<TEntity> BaseQueryInternal(string where = null, string orderBy = null, int? offset = null, int? limit = null, object param = null)
 //     {
 //         string query = SelectQuery(where, orderBy, offset, limit);
-//         return this.unitOfWork.Connection.Query<T>(query, param);
+//         return this.unitOfWork.Connection.Query<TEntity>(query, param);
 //     }
 
 //     protected virtual string SelectQuery(string where = null, string orderBy = null, int? offset = null, int? limit = null, string groupBy = null)
@@ -319,9 +330,9 @@ public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
 //         return sql.ToString();
 //     }
 
-//     protected Dictionary<ColumnInfo, object> GetChanges(T entity, bool isNew)
+//     protected Dictionary<ColumnInfo, objecTEntity> GetChanges(T entity, bool isNew)
 //     {
-//         Dictionary<ColumnInfo, object> values = new Dictionary<ColumnInfo, object>();
+//         Dictionary<ColumnInfo, objecTEntity> values = new Dictionary<ColumnInfo, objecTEntity>();
         
 //         T originalEntity = isNew ? default(T) : this.Get(entity.ID.Value);
 

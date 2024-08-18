@@ -7,10 +7,16 @@
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/WebAPI.pdb
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/AutoMapper.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Dapper.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/MediatR.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/MediatR.Contracts.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -25,6 +31,8 @@
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Microsoft.OpenApi.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Npgsql.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
@@ -62,6 +70,5 @@
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/obj/Debug/net8.0/WebAPI.pdb
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/obj/Debug/net8.0/WebAPI.genruntimeconfig.cache
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/obj/Debug/net8.0/ref/WebAPI.dll
-/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/MediatR.dll
-/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/MediatR.Contracts.dll
-/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Dapper.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Security.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Presentation/WebAPI/bin/Debug/net8.0/Security.pdb

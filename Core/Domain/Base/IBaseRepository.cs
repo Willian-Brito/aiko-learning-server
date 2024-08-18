@@ -1,10 +1,12 @@
 ﻿namespace AikoLearning.Core.Domain.Base;
 
-public interface IBaseRepository<T> where T : class
+public interface IBaseRepository<TEntity, TModel>
+    where TEntity : class
+    where TModel : class
 {
-    Task<IEnumerable<T>> GetAll();
-    Task<T> Get(int id);
-    Task<T> Insert(T entity);
-    Task<T> Update(T entity);
-    Task<T> Delete(int id);
+    Task<IEnumerable<TEntity>> GetAll();
+    Task<TEntity> Get(object id);
+    Task<TModel> Insert(TEntity entity);
+    Task<TEntity> Update(TEntity entity);
+    Task<TEntity> Delete(object id);
 }

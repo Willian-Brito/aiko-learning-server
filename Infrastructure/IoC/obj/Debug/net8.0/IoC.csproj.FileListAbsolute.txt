@@ -18,3 +18,5 @@
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/obj/Debug/net8.0/refint/IoC.dll
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/obj/Debug/net8.0/IoC.pdb
 /home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/obj/Debug/net8.0/ref/IoC.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/bin/Debug/net8.0/Security.dll
+/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/IoC/bin/Debug/net8.0/Security.pdb

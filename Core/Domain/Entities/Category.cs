@@ -10,7 +10,7 @@ public sealed class Category : BaseEntity
     public int? ParentId { get; private set; }
     public Category? Parent { get; set; }
     public ICollection<Category>? Children { get; set; }
-    // public ICollection<Article>? Articles { get; set; }
+    public ICollection<Article>? Articles { get; set; }
     #endregion
 
     #region  Constructors
@@ -22,7 +22,7 @@ public sealed class Category : BaseEntity
     public Category(int id, string name, int? parentId)
     {
         DomainValidationException.When(id < 0, "id da categoria inválido!");
-        ID = id;
+        ID = id;        
         Update(name, parentId);
     }
     #endregion
@@ -33,8 +33,7 @@ public sealed class Category : BaseEntity
     {
         Validate(name);
         Name = name;
-        ParentId = GetParentId(parentId);
-        CreatedAt = DateTime.Now;
+        ParentId = GetParentId(parentId);        
     }
 
     public void Update(string name, int? parentId)
@@ -42,7 +41,6 @@ public sealed class Category : BaseEntity
         Validate(name);
         Name = name;
         ParentId = GetParentId(parentId);
-        UpdatedAt = DateTime.Now;
     }
 
     private int? GetParentId(int? parentId)
@@ -54,6 +52,8 @@ public sealed class Category : BaseEntity
     {
         DomainValidationException.When(string.IsNullOrEmpty(name), "Informe o nome!");
         DomainValidationException.When(name.Length < 3, "Nome inválido, é necessário ter no minimo 3 caracteres!");
+
+        DomainValidationException.When(name.Length > 100, "Nome deve ser menor que 100 caracteres!");
     }
     #endregion
 }

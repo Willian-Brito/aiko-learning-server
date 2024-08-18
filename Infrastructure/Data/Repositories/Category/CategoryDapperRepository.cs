@@ -1,6 +1,6 @@
 using System.Data;
-using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Interfaces;
+using AikoLearning.Core.Domain.Model;
 using Dapper;
 
 namespace AikoLearning.Infrastructure.Data.Repositories;
@@ -19,41 +19,38 @@ public class CategoryDapperRepository : ICategoryDapperRepository
     #endregion
 
     #region Methods
-    public async Task<IEnumerable<Category>> GetAll()
+    public async Task<IEnumerable<Categories>> GetAll()
     {
-        var query = @"SELECT c.""ID"", 
-                             c.""Name"", 
-                             c.""ParentId""  
-                        FROM category AS c 
-                       WHERE c.""DeletedAt"" IS NULL
+        var query = @"SELECT c.""id"", 
+                             c.""name"", 
+                             c.""parent_id""  
+                        FROM categories AS c                    
                     ";
-        return await dbConnection.QueryAsync<Category>(query);
+        return await dbConnection.QueryAsync<Categories>(query);
     }
 
-    public async Task<Category> GetById(int id)
+    public async Task<Categories> GetById(int id)
     {
-        var query = @"SELECT c.""ID"", 
-                             c.""Name"", 
-                             c.""ParentId""  
-                        FROM category AS c 
-                       WHERE c.""ID"" = @id 
-                         AND c.""DeletedAt"" IS NULL
+        var query = @"SELECT c.""id"", 
+                             c.""name"", 
+                             c.""parent_id""  
+                        FROM categories AS c 
+                       WHERE c.""id"" = @id                         
                     ";
 
-        return await dbConnection.QueryFirstOrDefaultAsync<Category>(query, param: new {id = id});
+        return await dbConnection.QueryFirstOrDefaultAsync<Categories>(query, param: new {id = id});
     }
 
-    public async Task<Category> GetByName(string name)
+    public async Task<Categories> GetByName(string name)
     {
-        var query = @"SELECT c.""ID"", 
-                             c.""Name"", 
-                             c.""ParentId""  
-                        FROM category AS c 
-                       WHERE c.""Name"" = @name 
-                         AND c.""DeletedAt"" IS NULL
+        var query = @"SELECT c.""id"", 
+                             c.""name"", 
+                             c.""parent_id""  
+                        FROM categories AS c 
+                       WHERE c.""name"" = @name                          
                     ";
 
-        return await dbConnection.QueryFirstOrDefaultAsync<Category>(query, param: new {name = name});
+        return await dbConnection.QueryFirstOrDefaultAsync<Categories>(query, param: new {name = name});
     }
     #endregion
 }

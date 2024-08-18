@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "yjFnTuNozdGHQ7AGxBtk8QOgpYPCUUBN8PJ2LxXLRP+TDeAKUTBY0n2P+/WC21BPGbYqgQWxXf9KnVAaH8Aj+Q==",
+  "dgSpecHash": "BEPSog+L1Y4sbjKsEpzQh4TZPhb1DRzswHMDRq4yWJEOROMK90N8z1YGTAs7c/Wul4QQZqZ4wUV68eTuLriGxg==",
   "success": true,
   "projectFilePath": "/home/h1s0k4/Área de trabalho/Projetos/Aiko-Learning/aiko-learning-server/Infrastructure/Data/Data.csproj",
   "expectedPackageFiles": [
@@ -83,7 +83,7 @@
     "/home/h1s0k4/.nuget/packages/system.text.encodings.web/8.0.0/system.text.encodings.web.8.0.0.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.text.json/8.0.4/system.text.json.8.0.4.nupkg.sha512",
     "/home/h1s0k4/.nuget/packages/system.threading.channels/6.0.0/system.threading.channels.6.0.0.nupkg.sha512",
-    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.6/microsoft.aspnetcore.app.ref.8.0.6.nupkg.sha512"
+    "/home/h1s0k4/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.7/microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512"
   ],
   "logs": []
 }

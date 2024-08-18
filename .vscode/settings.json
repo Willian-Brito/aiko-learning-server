@@ -1,0 +1,44 @@
+{    
+    // DEBUGAR: CTRL + P: > Developer: Inspect Editor Tokens and Scopes
+    "editor.tokenColorCustomizations": {
+        "variables": "#FFB86C",
+        "strings": "#f0ee8f" //F1FA8C
+        // "types": "#FF0000"
+        // "keywords": "#f97583"
+    },
+
+    "editor.semanticTokenColorCustomizations": {
+      "rules": {
+          "class": {
+              "foreground": "#b392f0" //8BE9FD
+          },
+          // "variable": "#bebebe",
+          "variable": "#e1e4e8",
+          "property": "#e1e4e8",
+          "keyword": "#f97583", // FF79C6
+          "macro": "#b5f1a3bd", //50FA7B
+          "interface": "#8BE9FD"
+          // "method": "#98C379" // 50FA7B
+      }
+    }
+
+    //  "editor.tokenColorCustomizations": {
+    //     "variables": "#FFB86C",
+    //     "strings": "#F1FA8C" //F1FA8C
+    //     // "types": "#FF0000"
+    //     // "keywords": "#f97583"
+    // },
+
+    // "editor.semanticTokenColorCustomizations": {
+    //   "rules": {
+    //       "class": {
+    //           "foreground": "#8BE9FD" 
+    //       },
+    //       "variable": "#e1e4e8",
+    //       "property": "#e1e4e8",
+    //       "keyword": "#FF79C6", 
+    //       "macro": { "foreground":"#50FA7B", "bold": false},
+    //       "method": { "foreground": "#50FA7B", "bold": false} 
+    //   }
+    // }
+}

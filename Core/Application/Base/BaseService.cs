@@ -8,13 +8,13 @@ public abstract class BaseService<TEntity, TDto> : IBaseService<TEntity, TDto>
     where TDto : class
 {
     #region Properties
-    private readonly IBaseRepository<TEntity> repository;
+    private readonly IBaseRepository<TEntity, TDto> repository;
     private readonly IMapper mapper;
     #endregion
 
     #region Construtor
     public BaseService(
-        IBaseRepository<TEntity> repository,
+        IBaseRepository<TEntity, TDto> repository,
         IMapper mapper
     )
     {

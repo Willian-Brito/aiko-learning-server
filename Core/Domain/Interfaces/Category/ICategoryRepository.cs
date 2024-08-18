@@ -1,9 +1,10 @@
 ﻿using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Model;
 
 namespace AikoLearning.Core.Domain.Interfaces;
 
-public interface ICategoryRepository : IBaseRepository<Category>
+public interface ICategoryRepository : IBaseRepository<Category, Categories>
 {
     Task<Category> GetByName(string name);
 }

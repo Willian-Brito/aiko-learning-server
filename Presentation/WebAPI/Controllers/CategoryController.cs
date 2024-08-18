@@ -1,6 +1,4 @@
 using AikoLearning.Core.Application.Categories.Commands;
-using AikoLearning.Core.Application.DTOs;
-using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,15 +28,16 @@ public class CategoryController : CustomController
 
     #region Create
 
+    // [Authorize(Roles = "Admin" )]
     [HttpPost]
     public async Task<ActionResult> Create(CreateCategoryCommand command)
     {
         try
         {
-            var newCategoryDTO = await mediator.Send(command);
-            var result = BaseResponseAPI.Create<Category>(newCategoryDTO);
+            var dto = await mediator.Send(command);
+            var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(result);
+            return CustomResponse(response);
         }
         catch (Exception ex)
         {
@@ -57,9 +56,9 @@ public class CategoryController : CustomController
                 throw new Exception("O ID do parâmetro da URL não corresponde ao ID da categoria do corpo da requisição");
 
             var dto = await mediator.Send(command);
-            var result = BaseResponseAPI.Create<CategoryDTO>(dto);
+            var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(result);
+            return CustomResponse(response);
         }
         catch(Exception ex)
         {
@@ -77,8 +76,8 @@ public class CategoryController : CustomController
             var command = new DeleteCategoryCommand{ ID = id };
             await mediator.Send(command);
 
-            var result = BaseResponseAPI.Create<Category>("Categoria removida com sucesso!");
-            return CustomResponse(result);    
+            var response = BaseResponseAPI.Create("Categoria removida com sucesso!");
+            return CustomResponse(response);    
         }
         catch(Exception ex)
         {
@@ -103,8 +102,8 @@ public class CategoryController : CustomController
             if (dtos == null)
                 throw new Exception("Não foi possível encontrar as categorias"); 
 
-            var result = BaseResponseAPI.Create<CategoryDTO>(dtos);
-            return CustomResponse(result);
+            var response = BaseResponseAPI.Create(dtos);
+            return CustomResponse(response);
         }
         catch(Exception ex)
         {
@@ -125,8 +124,8 @@ public class CategoryController : CustomController
             if(dto == null)
                 throw new Exception("Categoria não existe!");
 
-            var result = BaseResponseAPI.Create<CategoryDTO>(dto);
-            return CustomResponse(result);
+            var response = BaseResponseAPI.Create(dto);
+            return CustomResponse(response);
         }
         catch(Exception ex)
         {
@@ -148,8 +147,8 @@ public class CategoryController : CustomController
             if(dto == null)
                 throw new Exception("Categoria não existe!");
 
-            var result = BaseResponseAPI.Create<CategoryDTO>(dto);
-            return CustomResponse(result);
+            var response = BaseResponseAPI.Create(dto);
+            return CustomResponse(response);
         }
         catch(Exception ex)
         {

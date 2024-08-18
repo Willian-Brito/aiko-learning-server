@@ -1,14 +1,15 @@
 using System.Data;
 using AikoLearning.Core.Application.Interfaces;
 using AikoLearning.Core.Application.Mappings;
-using AikoLearning.Core.Application.Services;
+// using AikoLearning.Core.Application.Services;
 using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Interfaces;
 using AikoLearning.Infrastructure.Data.Base;
 using AikoLearning.Infrastructure.Data.Context;
 using AikoLearning.Infrastructure.Data.Repositories;
-using AikoLearning.Infrastructure.Data.Security;
+using AikoLearning.Infrastructure.Security.Hashs;
+using AikoLearning.Infrastructure.Security.Tokens;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -37,12 +38,14 @@ public static class DependencyInjectionAPI
             connection.Open();
             return connection;
         });
+
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         #endregion
 
         #region Identity
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+        // services.AddIdentity<ApplicationUser, IdentityRole>()
+        //         .AddEntityFrameworkStores<ApplicationDbContext>()
+        //         .AddDefaultTokenProviders();
         #endregion
 
         #region Unity Of Work
@@ -50,7 +53,7 @@ public static class DependencyInjectionAPI
         #endregion
 
         #region Services
-        services.AddScoped<ICategoryService, CategoryService>();
+        // services.AddScoped<ICategoryService, CategoryService>();
         // services.AddScoped<IArticleService, ArticleService>();
         #endregion
 
@@ -58,19 +61,23 @@ public static class DependencyInjectionAPI
         
         #region Dapper
         services.AddScoped<ICategoryDapperRepository, CategoryDapperRepository>();
-        // services.AddScoped<IArticleDapperRepository, ArticleDapperRepository>();
+        services.AddScoped<IArticleDapperRepository, ArticleDapperRepository>();
+        services.AddScoped<IUserDapperRepository, UserDapperRepository>();
         #endregion
 
         #region Entity Framework
         services.AddScoped<ICategoryRepository, CategoryRepository>();
-        // services.AddScoped<IArticleRepository, ArticleRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IArticleRepository, ArticleRepository>();
         #endregion
 
         #endregion
 
         #region Auth
-        services.AddScoped<IAuthenticate, AuthenticateService>();
-        services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+        // services.AddScoped<IAuthenticate, AuthenticateService>();
+        // services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+        services.AddScoped<IUserToken, UserTokenJWT>();
+        services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
         #endregion
 
         #region Auto Mapper
@@ -93,19 +100,6 @@ public static class DependencyInjectionAPI
         {            
             var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();   
             context.Database.Migrate();
-        }
-    }
-    #endregion
-
-    #region AddInitialSeed
-    public static async Task AddInitialSeed(this IApplicationBuilder app)
-    {
-        using (var serviceScope = app. ApplicationServices.CreateScope())
-        {
-            var seed = serviceScope.ServiceProvider.GetService<ISeedUserRoleInitial>();
-
-            seed.SeedRoles();
-            seed.SeedUsers();
         }
     }
     #endregion

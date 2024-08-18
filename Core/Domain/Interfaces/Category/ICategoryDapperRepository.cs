@@ -1,10 +1,10 @@
-using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Model;
 
 namespace AikoLearning.Core.Domain.Interfaces;
 
 public interface ICategoryDapperRepository 
 {
-    Task<IEnumerable<Category>> GetAll();
-    Task<Category> GetById(int id);
-    Task<Category> GetByName(string name);
+    Task<IEnumerable<Categories>> GetAll();
+    Task<Categories> GetById(int id);
+    Task<Categories> GetByName(string name);
 }
