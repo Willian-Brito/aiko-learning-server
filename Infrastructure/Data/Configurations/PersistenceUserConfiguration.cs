@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using AikoLearning.Core.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,12 +21,13 @@ public class UserConfiguration : IEntityTypeConfiguration<Users>
         // builder.Property(c => c.DeletedAt).HasColumnType("timestamp without time zone");
 
         builder.HasData(
-            new Users(
-                1,
-                "Willian Brito",
-                "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
-                "wbrito@aiko.digital",
-                true
+            new Users
+            (
+                id: 1,
+                name: "Willian Brito",
+                password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
+                email: "wbrito@aiko.digital",
+                isAdmin: true
             )
         );
     }

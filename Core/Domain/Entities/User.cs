@@ -66,7 +66,6 @@ public sealed class User : BaseEntity
     {
         Name = name;
         Password = hash;
-        // Email = email;
         Email = new Email(email);
         IsAdmin = isAdmin;
     }
