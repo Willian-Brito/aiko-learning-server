@@ -3,56 +3,45 @@ using AutoMapper;
 
 namespace AikoLearning.Core.Application.Base;
 
-public abstract class BaseService<TEntity, TDto> : IBaseService<TEntity, TDto> 
+public abstract class BaseService<TEntity, TModel> : IBaseService<TEntity, TModel> 
     where TEntity : class 
-    where TDto : class
+    where TModel : class
 {
     #region Properties
-    private readonly IBaseRepository<TEntity, TDto> repository;
-    private readonly IMapper mapper;
+    private readonly IBaseRepository<TEntity, TModel> repository;    
     #endregion
 
     #region Construtor
-    public BaseService(
-        IBaseRepository<TEntity, TDto> repository,
-        IMapper mapper
-    )
+    public BaseService(IBaseRepository<TEntity, TModel> repository)
     {
-        this.repository = repository;
-        this.mapper = mapper;
+        this.repository = repository;        
     }
     #endregion
 
     #region Methods
-    public async Task<TDto> Get(int id)
-    {
-        var entity = await repository.Get(id);
-        return mapper.Map<TDto>(entity);
+    public async Task<TEntity> Get(int id)
+    {        
+        return await repository.Get(id);
     }
 
-    public async Task<IEnumerable<TDto>> GetAll()
-    {
-        var entities = await repository.GetAll();
-        return mapper.Map<IEnumerable<TDto>>(entities);
+    public async Task<IEnumerable<TEntity>> GetAll()
+    {        
+        return await repository.GetAll();
     }
 
-    public async Task<TDto> Insert(TDto dto)
+    public async Task<TModel> Insert(TEntity entity)
     {
-        var entity = mapper.Map<TEntity>(dto);        
-        await repository.Insert(entity);
-        return dto;
+        return await repository.Insert(entity);
     }
 
-    public async Task<TDto> Update(TDto dto)
+    public async Task<TEntity> Update(TEntity entity)
     {
-        var entity = mapper.Map<TEntity>(dto);
-        await repository.Update(entity);
-        return dto;
+        return await repository.Update(entity);
     }
 
-    public async Task Delete(int id)
+    public async Task<TEntity> Delete(int id)
     {
-        await repository.Delete(id);
+        return await repository.Delete(id);
     }
     #endregion
 

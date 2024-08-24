@@ -10,7 +10,6 @@ builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddInfrastructureJWT(builder.Configuration);
 builder.Services.AddInfrastructureSwagger();
 
-// builder.Services.AddControllers();
 builder.Services
     .AddControllers(options =>
     {
@@ -22,10 +21,6 @@ builder.Services
         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         options.SerializerSettings.Formatting = Formatting.Indented;
     });
-    // .AddJsonOptions(options =>
-    // {        
-    //     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    // });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

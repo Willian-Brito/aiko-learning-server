@@ -7,4 +7,5 @@ namespace AikoLearning.Core.Domain.Interfaces;
 public interface IArticleRepository : IBaseRepository<Article, Articles>
 {
     Task<Article> GetByName(string name);
+    Task<IEnumerable<Article>> GetByCategory(int categoryId);
 }

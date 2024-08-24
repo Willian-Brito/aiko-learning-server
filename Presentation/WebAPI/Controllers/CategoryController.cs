@@ -157,6 +157,26 @@ public class CategoryController : CustomController
     }
     #endregion
 
+    #region GetCategoriesWithPath
+
+    [HttpGet("path/{id}")]
+    public async Task<ActionResult> GetCategoriesWithPath(int id)
+    {
+        try
+        {
+            var query = new GetCategoriesWithPathQuery();
+            var dto  = await mediator.Send(query);
+            var response = BaseResponseAPI.Create(dto);
+            
+            return CustomResponse(response);
+        }
+        catch(Exception ex)
+        {
+            return CustomResponseException(ex);
+        }
+    }
+    #endregion
+
     #endregion
 
     #endregion

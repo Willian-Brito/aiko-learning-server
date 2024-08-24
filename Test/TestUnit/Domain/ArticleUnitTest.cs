@@ -1,8 +1,8 @@
 using AikoLearning.Core.Domain.Entities;
-using AikoLearning.Core.Validations;
+using AikoLearning.Core.Exceptions;
 using FluentAssertions;
 
-namespace TestUnit.Unit;
+namespace TestUnit.Domain;
 
 public class ArticleUnitTest
 {

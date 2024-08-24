@@ -14,8 +14,23 @@ public class CategoryRepository : BaseRepository<Category, Categories>, ICategor
 
     public async Task<Category> GetByName(string name)
     {
-        var model = dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Name == name);
+        var model = await dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Name == name);
         var category = mapper.Map<Category>(model);
         return category;
+    }
+
+    public async Task<IEnumerable<Category>> GetSubcategories(int id)
+    {
+        var models = await dbSet.AsNoTracking().ToListAsync();
+        var subCategories = models.Where(c => c.ParentId == id);
+        var categories = mapper.Map<IEnumerable<Category>>(subCategories);
+        return categories;
+    }
+
+    public async Task<Category> GetParent(int? parentId)
+    {
+        var model = parentId != null ? await Get((int)parentId) : null;
+        var parent = mapper.Map<Category>(model);
+        return parent;
     }
 }

@@ -1,7 +1,7 @@
 using System.Data;
 using AikoLearning.Core.Application.Interfaces;
 using AikoLearning.Core.Application.Mappings;
-// using AikoLearning.Core.Application.Services;
+using AikoLearning.Core.Application.Services;
 using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Interfaces;
@@ -53,7 +53,7 @@ public static class DependencyInjectionAPI
         #endregion
 
         #region Services
-        // services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICategoryService, CategoryService>();
         // services.AddScoped<IArticleService, ArticleService>();
         #endregion
 

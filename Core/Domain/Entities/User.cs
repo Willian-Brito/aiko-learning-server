@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.ValuesObjects;
-using AikoLearning.Core.Validations;
+using AikoLearning.Core.Exceptions;
 
 namespace AikoLearning.Core.Domain.Entities;
 
@@ -44,9 +44,11 @@ public sealed class User : BaseEntity
 
     #region Method
 
-    public static User Create(string name, string password, string email, bool isAdmin, IPasswordHasher passwordHasher)
+    public static User Create(string name, string password, string confirmPassword, string email, bool isAdmin, IPasswordHasher passwordHasher)
     {
-        var hash = passwordHasher.HashPassword(password);
+        DomainValidationException.When(password != confirmPassword, "Senhas não conferem!");
+
+        var hash = passwordHasher.EncryptPassword(password);
         return new User(name, hash, email, isAdmin);
     }
 

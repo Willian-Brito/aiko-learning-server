@@ -5,8 +5,8 @@ public interface IBaseRepository<TEntity, TModel>
     where TModel : class
 {
     Task<IEnumerable<TEntity>> GetAll();
-    Task<TEntity> Get(object id);
+    Task<TEntity> Get(int id);
     Task<TModel> Insert(TEntity entity);
     Task<TEntity> Update(TEntity entity);
-    Task<TEntity> Delete(object id);
+    Task<TEntity> Delete(int id);
 }

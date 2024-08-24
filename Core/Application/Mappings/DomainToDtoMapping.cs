@@ -9,6 +9,7 @@ public class DomainToDtoMapping : Profile
     public DomainToDtoMapping()
     {
         CreateMap<Category, CategoryDTO>().ReverseMap();
+        CreateMap<Category, CategoryWithPathDTO>().ReverseMap();
         CreateMap<Article, ArticleDTO>().ReverseMap();
         CreateMap<User, UserDTO>().ReverseMap();
     }

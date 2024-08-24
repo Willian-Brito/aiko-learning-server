@@ -14,8 +14,16 @@ public class ArticleRepository : BaseRepository<Article, Articles>, IArticleRepo
 
     public async Task<Article> GetByName(string name)
     {
-        var model = dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Name == name);
+        var model = await dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Name == name);
         var article = mapper.Map<Article>(model);
         return article;
+    }
+
+    public async Task<IEnumerable<Article>> GetByCategory(int categoryId)
+    {
+        var models = await dbSet.AsNoTracking().ToListAsync();
+        var articlesModel = models.Where(c => c.CategoryId == categoryId);
+        var articles = mapper.Map<IEnumerable<Article>>(articlesModel).ToList();
+        return articles;
     }
 }

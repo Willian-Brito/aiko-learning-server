@@ -32,7 +32,7 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
         return mapper.Map<IEnumerable<TEntity>>(models);
     }
 
-    public async Task<TEntity> Get(object id)
+    public async Task<TEntity> Get(int id)
     {
         var model = await dbSet.AsNoTracking()
             .FirstOrDefaultAsync(e => EF.Property<object>(e, "ID").Equals(id));            
@@ -53,7 +53,7 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
         return entity;
     }
 
-    public async Task<TEntity> Delete(object id)
+    public async Task<TEntity> Delete(int id)
     {
         var model = await dbSet.FindAsync(id);
         var entity = mapper.Map<TEntity>(model);

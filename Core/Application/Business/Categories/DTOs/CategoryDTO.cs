@@ -10,7 +10,7 @@ public class CategoryDTO
     
     public string? Name { get; set; }
 
-    public long ParentId { get; set; }
+    public int? ParentId { get; set; }
     
     [JsonIgnore]
     public Category? Parent { get; set; }

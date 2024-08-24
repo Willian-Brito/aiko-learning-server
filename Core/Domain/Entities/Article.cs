@@ -1,5 +1,5 @@
 ﻿using AikoLearning.Core.Domain.Base;
-using AikoLearning.Core.Validations;
+using AikoLearning.Core.Exceptions;
 
 namespace AikoLearning.Core.Domain.Entities;
 

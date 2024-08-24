@@ -9,10 +9,11 @@ namespace AikoLearning.Core.Application.Users.Commands;
 
 public sealed class RegisterUserCommand : IRequest<UserDTO>
 {
-    #region Command Properties    
+    #region Command Properties
     public string Name { get; set; }
     public string Password { get; set; }
-    public string Email { get; set; }    
+    public string ConfirmPassword { get; set; }
+    public string Email { get; set; }
     #endregion
 
     #region Handler
@@ -46,7 +47,15 @@ public sealed class RegisterUserCommand : IRequest<UserDTO>
             if (hasEmail)
                 throw new Exception("O e-mail de usuário já existe");
             
-            var user = User.Create(request.Name, request.Password, request.Email, false, passwordHasher);
+            var user = User.Create
+            (
+                request.Name, 
+                request.Password, 
+                request.ConfirmPassword, 
+                request.Email, 
+                false, 
+                passwordHasher
+            );
 
             var model = await userRepository.Insert(user);
             var dto = mapper.Map<UserDTO>(user);

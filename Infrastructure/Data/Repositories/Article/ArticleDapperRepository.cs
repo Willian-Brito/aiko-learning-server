@@ -58,9 +58,27 @@ public class ArticleDapperRepository : IArticleDapperRepository
                              a.""image_url"",
                              a.""content""
                         FROM articles AS a 
-                       where a.""name"" = @name
+                       WHERE a.""name"" = @name
                     ";
         return await dbConnection.QueryFirstOrDefaultAsync<Articles>(query, param: new {name = name});
+    }
+
+    public async Task<IEnumerable<Articles>> GetByCategory(int categoryId)
+    {
+        var query = @"SELECT a.""id"", 
+                             a.""name"", 
+                             a.""category_id"",
+                             a.""user_id"",
+                             a.""description"",
+                             a.""image_url"",
+                             a.""content""
+                        FROM articles AS a
+                       WHERE a.""category_id"" = @categoryId
+                    ";
+        var articles = 
+            await dbConnection.QueryAsync<Articles>(query, param: new {categoryId = categoryId});
+                
+        return articles;
     }
     #endregion
 

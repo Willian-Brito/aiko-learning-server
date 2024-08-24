@@ -2,7 +2,7 @@ namespace AikoLearning.Infrastructure.Security.Hashs;
 
 public class BcryptPasswordHasher : IPasswordHasher
 {
-    public string HashPassword(string password)
+    public string EncryptPassword(string password)
     {
         return BCrypt.Net.BCrypt.HashPassword(password);
     }
