@@ -1,3 +1,4 @@
+using System.Text;
 using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Exceptions;
 using FluentAssertions;
@@ -18,8 +19,8 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
@@ -40,8 +41,8 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should().NotThrow<DomainValidationException>();
@@ -61,8 +62,8 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
@@ -81,8 +82,8 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
@@ -101,8 +102,8 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
@@ -123,8 +124,8 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
@@ -145,13 +146,13 @@ public class ArticleUnitTest
                 categoryId: -1, 
                 userId: 1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
               .Throw<DomainValidationException>()
-              .WithMessage("id da categoria inválido!");
+              .WithMessage("Inofrme a categoria!");
     }
     #endregion
 
@@ -167,13 +168,13 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: -1, 
                 description: "Article Description", 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
               .Throw<DomainValidationException>()
-              .WithMessage("id do usuário inválido!");
+              .WithMessage("Informe o autor!");
     }
     #endregion
 
@@ -207,13 +208,35 @@ public class ArticleUnitTest
                 categoryId: 1, 
                 userId: 1, 
                 description: description, 
-                imageUrl: "Article ImageUrl",
-                content:  null
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
             );
 
         action.Should()
               .Throw<DomainValidationException>()
               .WithMessage("Descrição deve ser menor que 1000 caracteres!");
+    }
+    #endregion
+
+    #region Content
+    [Fact(DisplayName = "Não deve criar artigo quando o conteúdo for vazio")]
+    public void CreateArticle_MissingContentValue_DomainExceptionRequiredContent()
+    {
+        var action = () => 
+            new Article
+            (
+                id: 1,
+                name: "Article Name", 
+                categoryId: 1, 
+                userId: 1, 
+                description: "Article Description", 
+                content: Encoding.UTF8.GetBytes(""),
+                imageUrl: "Article ImageUrl"
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Conteúdo não informado!");
     }
     #endregion
 }

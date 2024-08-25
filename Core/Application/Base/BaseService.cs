@@ -19,6 +19,12 @@ public abstract class BaseService<TEntity, TModel> : IBaseService<TEntity, TMode
     #endregion
 
     #region Methods
+
+    public async Task<IEnumerable<TEntity>> GetPaged(int pageIndex, int pageSize)
+    {
+        return await repository.GetPaged(pageIndex, pageSize);
+    }
+    
     public async Task<TEntity> Get(int id)
     {        
         return await repository.Get(id);
@@ -42,6 +48,11 @@ public abstract class BaseService<TEntity, TModel> : IBaseService<TEntity, TMode
     public async Task<TEntity> Delete(int id)
     {
         return await repository.Delete(id);
+    }
+
+    public async Task<int> Count()
+    {
+        return await repository.Count();
     }
     #endregion
 

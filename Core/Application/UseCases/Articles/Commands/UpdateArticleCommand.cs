@@ -1,16 +1,19 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Base;
-using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
 
 namespace AikoLearning.Core.Application.Categories.Commands;
 
-public sealed class CreateArticleCommand : ArticleCommand
+public sealed class UpdateArticleCommand : ArticleCommand
 {
+    #region Command Properties
+    public int ID { get; set; }
+    #endregion
+
     #region Handler
-    public class CreateArticleCommandHandler : IRequestHandler<CreateArticleCommand, ArticleDTO>
+    public class UpdateArticleCommandHandler : IRequestHandler<UpdateArticleCommand, ArticleDTO>
     {
         #region Properties
         private readonly IMapper mapper;
@@ -19,7 +22,7 @@ public sealed class CreateArticleCommand : ArticleCommand
         #endregion
 
         #region Constructor
-        public CreateArticleCommandHandler(
+        public UpdateArticleCommandHandler(
             IMapper mapper,
             IUnitOfWork unityOfWork, 
             IArticleRepository articleRepository
@@ -33,27 +36,26 @@ public sealed class CreateArticleCommand : ArticleCommand
 
         #region Handle
 
-        public async Task<ArticleDTO> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
+        public async Task<ArticleDTO> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
         {
-            var newArticle = new Article
-            (
+            var article = await articleRepository.Get(request.ID);
+
+            if (article == null)
+                throw new InvalidOperationException("Artigo não existe!");
+                            
+            article.Update(
                 request.Name, 
                 request.CategoryId, 
                 request.UserId, 
                 request.Description, 
-                request.ImageUrl,
-                request.Content                 
+                request.Content,
+                request.ImageUrl
             );
+            
+            await articleRepository.Update(article);
+            var dto = mapper.Map<ArticleDTO>(article);
 
-            if (newArticle == null)
-                throw new ApplicationException("Erro ao criar artigo!");
-                            
-            var model = await articleRepository.Insert(newArticle);
-            var dto = mapper.Map<ArticleDTO>(model);
             await unityOfWork.Commit();
-
-            dto.ID = model.ID;
-
             return dto;
         }
         #endregion

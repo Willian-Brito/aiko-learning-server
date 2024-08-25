@@ -26,6 +26,13 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
 
     #region Methods
 
+    public async Task<IEnumerable<TEntity>> GetPaged(int pageIndex, int pageSize)
+    {
+        var models = await dbSet.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        var entities = mapper.Map<IEnumerable<TEntity>>(models);
+        return entities;
+    }
+
     public async Task<IEnumerable<TEntity>> GetAll()
     {
         var models = await dbSet.AsNoTracking().ToListAsync();
@@ -60,6 +67,11 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
         dbSet.Remove(model); 
 
         return entity;
+    }
+
+    public async Task<int> Count()
+    {
+        return await dbSet.CountAsync();
     }
     #endregion
 }

@@ -91,6 +91,28 @@ public class CategoryController : CustomController
 
     #region Queries
 
+    #region GetPaged
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var query = new GetPagedCategoriesQuery(pageIndex, pageSize);
+            var paged = await mediator.Send(query);
+
+            if (paged == null)
+                throw new Exception("Não foi possível encontrar as categorias");         
+
+            var response = BaseResponseAPI.Create(paged);
+            return CustomResponse(response);
+        }
+        catch(Exception ex)
+        {
+            return CustomResponseException(ex);
+        }
+    }
+    #endregion'
+
     #region GetAll
     [HttpGet]
     public async Task<ActionResult> GetAll()
