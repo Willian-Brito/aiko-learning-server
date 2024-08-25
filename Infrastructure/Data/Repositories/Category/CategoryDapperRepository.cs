@@ -54,18 +54,18 @@ public class CategoryDapperRepository : ICategoryDapperRepository
         return await dbConnection.QueryFirstOrDefaultAsync<Categories>(query, param: new {name = name});
     }
 
-    public async Task<IEnumerable<Categories>> GetSubcategories(int parentId)
+    public async Task<IEnumerable<Categories>> GetSubcategories(int id)
     {
         var query = @"SELECT c.""id"", 
                              c.""name"", 
                              c.""parent_id""  
                         FROM categories AS c 
-                       WHERE c.""parent_id"" = @parentId
+                       WHERE c.""parent_id"" = @id
                     ";
         var subCategories = 
-            await dbConnection.QueryFirstOrDefaultAsync<IEnumerable<Categories>>(query, param: new {parentId = parentId});
+            await dbConnection.QueryAsync<Categories>(query, param: new {id = id});
         
-        return subCategories.ToList();
+        return subCategories.ToList() ?? null ;
     }
     #endregion
 }

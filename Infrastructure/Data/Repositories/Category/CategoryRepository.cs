@@ -32,5 +32,5 @@ public class CategoryRepository : BaseRepository<Category, Categories>, ICategor
         var model = parentId != null ? await Get((int)parentId) : null;
         var parent = mapper.Map<Category>(model);
         return parent;
-    }
+    }   
 }

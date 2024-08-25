@@ -9,8 +9,8 @@ public sealed class Category : BaseEntity
     public string Name { get; private set; }
     public int? ParentId { get; private set; }
     public Category? Parent { get; set; }
-    public ICollection<Category>? Children { get; set; }
-    public ICollection<Article>? Articles { get; set; }
+    public List<Category>? Children { get; set; }
+    public List<Article>? Articles { get; set; }
     #endregion
 
     #region  Constructors

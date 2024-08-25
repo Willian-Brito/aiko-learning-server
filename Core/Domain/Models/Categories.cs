@@ -15,8 +15,8 @@ public class Categories : BaseModel
 
     [ForeignKey(nameof(ParentId))]
     public Categories? Parent { get; set; }    
-    public ICollection<Categories>? Children { get; set; }
-    public ICollection<Articles>? Articles { get; set; }
+    public IEnumerable<Categories>? Children { get; set; }
+    public IEnumerable<Articles>? Articles { get; set; }
 
     public Categories() { }
     public Categories(int id, string name, int? parentId) 

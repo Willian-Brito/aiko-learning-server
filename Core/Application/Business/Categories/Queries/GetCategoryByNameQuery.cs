@@ -3,7 +3,7 @@ using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
 
-namespace AikoLearning.Core.Application.Categories.Commands;
+namespace AikoLearning.Core.Application.Categories.Queries;
 
 public class GetCategoryByNameQuery : IRequest<CategoryDTO>
 {

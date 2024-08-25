@@ -51,5 +51,28 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
 
         return path;
     }
+
+    public async Task<CategoryDTO> GetTree(int id)
+    {
+        var categories = await categoryRepository.GetAll();
+        var rootCategory = await categoryRepository.Get(id);
+        
+        if (rootCategory != null)
+            await PopulateChildren(categories.ToList(), rootCategory);
+        
+        var dto = mapper.Map<CategoryDTO>(rootCategory);
+        return dto;
+    }
+
+    private async Task PopulateChildren(List<Category> categories, Category parentCategory)
+    {
+        var children = categories.Where(c => c.ParentId == parentCategory.ID).ToList();
+
+        foreach (var child in children)
+        {
+            parentCategory.Children.Add(child);
+            PopulateChildren(categories, child);
+        }
+    }
     #endregion
 }

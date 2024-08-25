@@ -1,4 +1,5 @@
 using AikoLearning.Core.Application.Categories.Commands;
+using AikoLearning.Core.Application.Categories.Queries;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -159,12 +160,32 @@ public class CategoryController : CustomController
 
     #region GetCategoriesWithPath
 
-    [HttpGet("path/{id}")]
-    public async Task<ActionResult> GetCategoriesWithPath(int id)
+    [HttpGet("path")]
+    public async Task<ActionResult> GetCategoriesWithPath()
     {
         try
         {
             var query = new GetCategoriesWithPathQuery();
+            var dto  = await mediator.Send(query);
+            var response = BaseResponseAPI.Create(dto);
+            
+            return CustomResponse(response);
+        }
+        catch(Exception ex)
+        {
+            return CustomResponseException(ex);
+        }
+    }
+    #endregion
+
+    #region GetCategoriesWithTree
+
+    [HttpGet("tree")]
+    public async Task<ActionResult> GetCategoriesWithTree()
+    {
+        try
+        {
+            var query = new GetCategoriesWithTreeQuery();
             var dto  = await mediator.Send(query);
             var response = BaseResponseAPI.Create(dto);
             

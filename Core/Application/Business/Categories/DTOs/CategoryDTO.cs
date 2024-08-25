@@ -13,10 +13,9 @@ public class CategoryDTO
     public int? ParentId { get; set; }
     
     [JsonIgnore]
-    public Category? Parent { get; set; }
+    public CategoryDTO? Parent { get; set; }
 
-    [JsonIgnore]
-    public ICollection<Category>? Children { get; set; }
+    public List<CategoryDTO>? Children { get; set; }
 
     public CategoryDTO() { }
 }

@@ -1,15 +1,16 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Application.Interfaces;
+using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
 
 namespace AikoLearning.Core.Application.Categories.Queries;
 
-public class GetCategoriesWithPathQuery : IRequest<IEnumerable<CategoryWithPathDTO>>
+public class GetCategoriesWithTreeQuery : IRequest<IEnumerable<CategoryDTO>>
 {
     #region Handler
-    public class GetCategoriesWithPathQueryHandler : IRequestHandler<GetCategoriesWithPathQuery, IEnumerable<CategoryWithPathDTO>>
+    public class GetCategoriesWithTreeHandler : IRequestHandler<GetCategoriesWithTreeQuery, IEnumerable<CategoryDTO>>
     {
         #region Properties
         private readonly IMapper mapper;
@@ -18,7 +19,7 @@ public class GetCategoriesWithPathQuery : IRequest<IEnumerable<CategoryWithPathD
         #endregion
 
         #region Constructor
-        public GetCategoriesWithPathQueryHandler(
+        public GetCategoriesWithTreeHandler(
             IMapper mapper, 
             ICategoryService categoryService, 
             ICategoryDapperRepository categoryDapperRepository            
@@ -31,17 +32,22 @@ public class GetCategoriesWithPathQuery : IRequest<IEnumerable<CategoryWithPathD
         #endregion
 
         #region Handle
-        public async Task<IEnumerable<CategoryWithPathDTO>> Handle(GetCategoriesWithPathQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CategoryDTO>> Handle(
+            GetCategoriesWithTreeQuery request, 
+            CancellationToken cancellationToken
+        )
         {
-            var categories = await categoryDapperRepository.GetAll();
-            var categoriesWithPath = mapper.Map<IEnumerable<CategoryWithPathDTO>>(categories);
+            var models = await categoryDapperRepository.GetAll();
+            var parents = models.Where(m => m.ParentId == null);
+            var categories = mapper.Map<IEnumerable<CategoryDTO>>(parents);
 
-            foreach (var item in categoriesWithPath)
+            foreach (var category in categories)
             {
-                item.Path = await categoryService.GetPath(item.ID);
+                var children = await categoryService.GetTree((int)category.ID);
+                category.Children.Add(children);
             }
 
-            return categoriesWithPath.OrderBy(c => c.Name);
+            return categories;
         }
         #endregion
     }
