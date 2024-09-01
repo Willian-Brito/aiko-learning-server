@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.ValuesObjects;
 using AikoLearning.Core.Exceptions;
 
@@ -10,21 +11,21 @@ public sealed class User : BaseEntity
     #region Properties
     public string Name { get; private set; }
     public string Password { get; private set; }
-    public Email Email { get; private set; }
-    public bool IsAdmin { get; private set; }
-    public Collection<Article> Articles { get; set; }
+    public Email Email { get; private set; }    
+    public List<Role> Roles { get; private set; }
+    public List<Article> Articles { get; set; }
     #endregion
 
     #region Constructors
     public User(
         string name, 
         string password, 
-        string email, 
-        bool isAdmin        
+        string email,
+        List<Role> roles    
     )
     {
-        Validade(name);
-        SetAtributes(name, password, email, isAdmin);
+        Validade(name, roles);
+        SetAtributes(name, password, email, roles);
     }
 
     public User(
@@ -32,44 +33,66 @@ public sealed class User : BaseEntity
         string name, 
         string password, 
         string email, 
-        bool isAdmin        
+        List<Role> roles
     )
     {
         DomainValidationException.When(id < 0, "id do usuário inválido!");
         ID = id;
-        Validade(name);
-        SetAtributes(name, password, email, isAdmin);
+        Validade(name, roles);
+        SetAtributes(name, password, email, roles);
     }
     #endregion
 
     #region Method
 
-    public static User Create(string name, string password, string confirmPassword, string email, bool isAdmin, IPasswordHasher passwordHasher)
+    public static User Create(string name, string password, string confirmPassword, string email, List<Role> roles, IPasswordHasher passwordHasher)
     {
         DomainValidationException.When(password != confirmPassword, "Senhas não conferem!");
 
         var hash = passwordHasher.EncryptPassword(password);
-        return new User(name, hash, email, isAdmin);
+        return new User(name, hash, email, roles);
     }
 
-    private void Validade(string name)
+    public void Update(
+        string name, 
+        string password, 
+        string email, 
+        List<Role> roles
+    )
+    {
+        Validade(name, roles);
+        SetAtributes(name, password, email, roles);
+    }
+
+    public bool IsAdmin(int id)
+    {
+        var isAdmin = Roles.Any(r => r is Role.Administrator);
+        return isAdmin;
+    }
+
+    private void Validade(string name, List<Role> roles)
     {
         DomainValidationException.When(string.IsNullOrEmpty(name), "Informe o nome!");
         DomainValidationException.When(name.Length < 3, "Nome inválido, é necessário ter no minimo 3 caracteres!");
         DomainValidationException.When(name.Length > 200, "Nome deve ser menor que 200 caracteres!");
+        
+        var allRoles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+        var isValid = roles.Any(role => !allRoles.Contains(role));
+
+        DomainValidationException.When(isValid, "Regra de perfil inválida!");
     }
 
     private void SetAtributes(
         string name, 
         string hash, 
         string email, 
-        bool isAdmin
+        List<Role> roles
     )
     {
         Name = name;
         Password = hash;
         Email = new Email(email);
-        IsAdmin = isAdmin;
+        Roles = roles;
     }
     #endregion
 }

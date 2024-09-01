@@ -1,11 +1,10 @@
 using AikoLearning.Core.Application.DTOs;
+using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
-using AikoLearning.Core.Domain.Entities;
-using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
 
-namespace AikoLearning.Core.Application.Users.Commands;
+namespace AikoLearning.Core.Application.Auth.Commands;
 
 public sealed class RegisterUserCommand : IRequest<UserDTO>
 {
@@ -22,45 +21,38 @@ public sealed class RegisterUserCommand : IRequest<UserDTO>
         #region Properties
         private readonly IMapper mapper;
         private readonly IUnitOfWork unityOfWork;
-        private readonly IUserRepository userRepository;
-        private readonly IPasswordHasher passwordHasher;
+        private readonly IAuthenticateService authenticateService;
         #endregion
 
         #region Constructor
         public RegisterUserCommandHandler(
             IMapper mapper,
             IUnitOfWork unityOfWork,
-            IUserRepository userRepository,
-            IPasswordHasher passwordHasher)
+            IAuthenticateService authenticateService
+        )
         {
             this.mapper = mapper;
             this.unityOfWork = unityOfWork;
-            this.userRepository = userRepository;
-            this.passwordHasher = passwordHasher;
+            this.authenticateService = authenticateService;
         }
         #endregion
 
         #region Handle
         public async Task<UserDTO> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var hasEmail = await userRepository.GetByEmail(request.Email) != null;
-            if (hasEmail)
-                throw new Exception("O e-mail de usuário já existe");
-            
-            var user = User.Create
+            var user = await authenticateService.Register
             (
-                request.Name, 
-                request.Password, 
-                request.ConfirmPassword, 
-                request.Email, 
-                false, 
-                passwordHasher
+                request.Name,
+                request.Password,
+                request.ConfirmPassword,
+                request.Email
             );
 
-            var model = await userRepository.Insert(user);
             var dto = mapper.Map<UserDTO>(user);
-            await unityOfWork.Commit();            
-            dto.ID = model.ID;
+            dto.Roles = user.Roles.Select(r => r.ToString()).ToArray();
+            
+            await unityOfWork.Commit();
+            dto.ID = user.ID;
 
             return dto;
         }

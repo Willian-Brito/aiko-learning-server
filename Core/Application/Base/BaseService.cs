@@ -20,9 +20,9 @@ public abstract class BaseService<TEntity, TModel> : IBaseService<TEntity, TMode
 
     #region Methods
 
-    public async Task<IEnumerable<TEntity>> GetPaged(int pageIndex, int pageSize)
+    public async Task<IEnumerable<TEntity>> GetPaged(int pageNumber, int pageLimit)
     {
-        return await repository.GetPaged(pageIndex, pageSize);
+        return await repository.GetPaged(pageNumber, pageLimit);
     }
     
     public async Task<TEntity> Get(int id)

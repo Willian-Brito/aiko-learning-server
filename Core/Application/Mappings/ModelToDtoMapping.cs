@@ -10,6 +10,7 @@ public class ModelToDtoMapping : Profile
     {
         CreateMap<Categories, CategoryDTO>().ReverseMap();
         CreateMap<Categories, CategoryWithPathDTO>().ReverseMap();
+        CreateMap<Articles, ArticleByCategoryDTO>().ReverseMap();
         CreateMap<Articles, ArticleDTO>().ReverseMap();
         CreateMap<Users, UserDTO>().ReverseMap();
     }

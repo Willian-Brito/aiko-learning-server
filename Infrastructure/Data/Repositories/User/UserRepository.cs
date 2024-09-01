@@ -1,4 +1,5 @@
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.Interfaces;
 using AikoLearning.Core.Domain.Model;
 using AikoLearning.Infrastructure.Data.Base;
@@ -18,4 +19,17 @@ public class UserRepository : BaseRepository<User, Users>, IUserRepository
         var user = mapper.Map<User>(model);
         return user;
     }
+        
+    public async Task<List<Role>> GetRoles(long userID)
+    {
+        var user = await dbSet.AsNoTracking().FirstOrDefaultAsync(u => u.ID == userID);        
+        return user.Roles;
+    }  
+
+    public bool IsAdmin(long userID)
+    {
+        var user = dbSet.AsNoTracking().FirstOrDefault(u => u.ID == userID); 
+        var isAdmin = user.Roles.Any(r => r is Role.Administrator);       
+        return isAdmin;
+    }  
 }

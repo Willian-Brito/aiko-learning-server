@@ -9,7 +9,13 @@ public static class DependencyInjectionSwagger
     {
         services.AddSwaggerGen(config =>
         {
-            config.SwaggerDoc("v1", new OpenApiInfo { Title = "AikoLearning - API", Version = "v1" });
+            config.SwaggerDoc("v1", new OpenApiInfo 
+            { 
+                Title = "AikoLearning - API", 
+                Description = "Developed by h1s0k4",
+                Version = "v1",
+                License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+            });
 
             config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
@@ -25,16 +31,16 @@ public static class DependencyInjectionSwagger
 
             config.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                  {
-                      new OpenApiSecurityScheme
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
                 }
             });
         });

@@ -1,5 +1,6 @@
 using AikoLearning.Infrastructure.IoC;
 using AikoLearning.Presentation.WebAPI.Conventions;
+using AikoLearning.Presentation.WebAPI.Extencions.Converters;
 using Newtonsoft.Json;
 
 #region Services
@@ -7,7 +8,7 @@ using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructureAPI(builder.Configuration);
-builder.Services.AddInfrastructureJWT(builder.Configuration);
+builder.Services.AddInfrastructureJWT();
 builder.Services.AddInfrastructureSwagger();
 
 builder.Services
@@ -17,10 +18,11 @@ builder.Services
     })
     .AddNewtonsoftJson(options =>
     {        
+        options.SerializerSettings.Converters.Add(new ByteArrayJsonConverter());
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         options.SerializerSettings.Formatting = Formatting.Indented;
-    });
+    });    
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -10,7 +10,6 @@ public class Categories : BaseModel
     public string Name { get; set; }
 
     [Column("parent_id")]
-    // [ForeignKey(nameof(Parent))]
     public int? ParentId { get; set; }
 
     [ForeignKey(nameof(ParentId))]

@@ -6,6 +6,7 @@ using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Interfaces;
 using Model = AikoLearning.Core.Domain.Model;
 using AutoMapper;
+using System.Runtime.CompilerServices;
 
 namespace AikoLearning.Core.Application.Services;
 
@@ -26,6 +27,8 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
     #endregion
 
     #region Methods
+
+    #region GetByName
     public async Task<CategoryDTO> GetByName(string name)
     {
         var category = await categoryRepository.GetByName(name);
@@ -33,7 +36,9 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
 
         return categoryDTO;
     }
+    #endregion
 
+    #region GetPath
     public async Task<string> GetPath(int id)
     {            
         var category = await categoryRepository.Get(id);
@@ -51,7 +56,9 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
 
         return path;
     }
+    #endregion
 
+    #region GetTree
     public async Task<CategoryDTO> GetTree(int id)
     {
         var categories = await categoryRepository.GetAll();
@@ -63,7 +70,7 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
         var dto = mapper.Map<CategoryDTO>(rootCategory);
         return dto;
     }
-
+    
     private async Task PopulateChildren(List<Category> categories, Category parentCategory)
     {
         var children = categories.Where(c => c.ParentId == parentCategory.ID).ToList();
@@ -74,5 +81,7 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
             PopulateChildren(categories, child);
         }
     }
+    #endregion
+
     #endregion
 }

@@ -1,11 +1,12 @@
 using System.Runtime.Serialization;
+using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AikoLearning.Infrastructure.Data.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<Users>
+public class PersistenceUserConfiguration : IEntityTypeConfiguration<Users>
 {    
     public void Configure(EntityTypeBuilder<Users> builder)
     {
@@ -15,11 +16,11 @@ public class UserConfiguration : IEntityTypeConfiguration<Users>
         builder.Property(c => c.Name).HasMaxLength(200).IsRequired();
         builder.Property(c => c.Password).IsRequired();
         builder.Property(c => c.Email).IsRequired();
-        builder.Property(c => c.IsAdmin).HasDefaultValue(false).IsRequired();
+        builder.Property(u => u.Roles).HasColumnType("integer[]").IsRequired(false);
         // builder.Property(c => c.CreatedAt).HasColumnType("timestamp without time zone");
         // builder.Property(c => c.UpdatedAt).HasColumnType("timestamp without time zone");
-        // builder.Property(c => c.DeletedAt).HasColumnType("timestamp without time zone");
-
+        // builder.Property(c => c.DeletedAt).HasColumnType("timestamp without time zone");        
+        
         builder.HasData(
             new Users
             (
@@ -27,7 +28,7 @@ public class UserConfiguration : IEntityTypeConfiguration<Users>
                 name: "Willian Brito",
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> {Role.Administrator}
             )
         );
     }

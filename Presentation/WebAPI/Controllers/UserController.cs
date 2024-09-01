@@ -1,5 +1,6 @@
 using AikoLearning.Core.Application.Users.Commands;
 using AikoLearning.Core.Application.Users.Queries;
+using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AikoLearning.Presentation.WebAPI.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = nameof(Role.Administrator))]
 [ApiController]
 public class UserController : CustomController
 {
@@ -27,9 +28,9 @@ public class UserController : CustomController
 
     #region Commands
 
-    [AllowAnonymous]
-    [HttpPost("login")]
-    public async Task<ActionResult> Login(AuthenticateUserCommand command) 
+    #region Create
+    [HttpPost]
+    public async Task<ActionResult> Create(CreateUserCommand command)
     {
         try
         {
@@ -43,15 +44,19 @@ public class UserController : CustomController
             return CustomResponseException(ex);
         }
     }
+    #endregion
 
-    [HttpPost("register")]
-    [AllowAnonymous]
-    public async Task<IActionResult> Register(RegisterUserCommand command)
+    #region Update
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> Update(int id, UpdateUserCommand command)
     {
         try
         {
-            var newUser = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(newUser);
+            if(id != command.ID)
+                throw new Exception("O ID do parâmetro da URL não corresponde ao ID do usuário do corpo da requisição");
+
+            var dto = await mediator.Send(command);
+            var response = BaseResponseAPI.Create(dto);
 
             return CustomResponse(response);
         }
@@ -60,6 +65,27 @@ public class UserController : CustomController
             return CustomResponseException(ex);
         }
     }
+    #endregion
+
+    #region  Delete
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        try
+        {
+            var command = new DeleteUserCommand{ ID = id };
+            await mediator.Send(command);
+
+            var response = BaseResponseAPI.Create("Usuário removido com sucesso!");
+            return CustomResponse(response);    
+        }
+        catch(Exception ex)
+        {
+            return CustomResponseException(ex);
+        }
+    }
+    #endregion
+
     #endregion
 
     #region Queries

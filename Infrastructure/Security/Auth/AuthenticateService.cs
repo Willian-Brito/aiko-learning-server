@@ -1,50 +1,70 @@
-// using AikoLearning.Core.Domain.Account;
-// using AikoLearning.Core.Domain.Entities;
-// using Microsoft.AspNetCore.Identity;
+using AikoLearning.Core.Domain.Account;
+using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Enums;
+using AikoLearning.Core.Domain.Interfaces;
+using AikoLearning.Core.Domain.Model;
 
-// namespace AikoLearning.Infrastructure.Data.Security;
+namespace AikoLearning.Infrastructure.Security.Auth;
 
-// public class AuthenticateService : IAuthenticate
-// {
-//     #region Properties
-//     private readonly UserManager<ApplicationUser> userManager;
-//     private readonly SignInManager<ApplicationUser> signInManager;
-//     #endregion
+public class AuthenticateService : IAuthenticateService
+{
+    #region Properties
+    private readonly IUserRepository userRepository;
+    private readonly IPasswordHasher passwordHasher;
+    #endregion
 
-//     #region Constructors
-//     public AuthenticateService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
-//     {
-//         this.signInManager = signInManager;        
-//         this.userManager = userManager;
-//     }
-//     #endregion
+    #region Constructors
+    public AuthenticateService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    {
+        this.userRepository = userRepository;
+        this.passwordHasher = passwordHasher;            
+    }
+    #endregion
 
-//     #region Methods
-//     public async Task<bool> Authenticate(string email, string password)
-//     {
-//         var result = await signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: false);
-//         return result.Succeeded;
-//     }
+    #region Methods
 
-//     public async Task Logout()
-//     {
-//         await signInManager.SignOutAsync();
-//     }
+    #region Authenticate
+    public async Task<User> Authenticate(string email, string password)
+    {
+        var user = await userRepository.GetByEmail(email);
 
-//     public async Task<User> Register(string email, string password)
-//     {
-//         var applicationUser = new ApplicationUser
-//         {
-//             UserName = email,
-//             Email = email,
-//         };
-
-//         var result = await userManager.CreateAsync(applicationUser, password);
-
-//         if (result.Succeeded)
-//             await signInManager.SignInAsync(applicationUser, isPersistent: false);
+        if (user == null || !passwordHasher.VerifyPassword(password, user.Password))
+            throw new ApplicationException("Usuário ou senha inválido");
         
-//         return result.Succeeded;
-//     }
-//     #endregion
-// }
+        return user;
+    }
+    #endregion
+
+    #region Logout
+    public async Task Logout()
+    {
+        // await signInManager.SignOutAsync();
+    }
+    #endregion
+
+    #region Register
+    public async Task<Users> Register(string name, string password, string confirmPassword, string email)
+    {
+        var roles = new List<Role> { Role.Commom };
+        var hasEmail = await userRepository.GetByEmail(email) != null;
+
+        if (hasEmail)
+            throw new ApplicationException("O e-mail de usuário já existe");
+        
+        var user = User.Create
+        (
+            name, 
+            password, 
+            confirmPassword, 
+            email, 
+            roles,
+            passwordHasher
+        );
+
+        var model = await userRepository.Insert(user);
+        return model;
+    }
+    #endregion
+    
+    #endregion
+}

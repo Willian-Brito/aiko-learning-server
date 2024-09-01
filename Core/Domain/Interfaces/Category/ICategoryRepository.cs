@@ -8,5 +8,5 @@ public interface ICategoryRepository : IBaseRepository<Category, Categories>
 {
     Task<Category> GetByName(string name);
     Task<IEnumerable<Category>> GetSubcategories(int id);
-    Task<Category> GetParent(int? parentId);    
+    Task<Category> GetParent(int? parentId);
 }

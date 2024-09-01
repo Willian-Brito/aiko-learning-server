@@ -25,6 +25,9 @@ public class Articles : BaseModel
     [Column("content")]    
     public byte[]? Content { get; set; }
 
+    [NotMapped]    
+    public string? Author { get; set; }
+
     [ForeignKey(nameof(CategoryId))]
     public Categories? Category { get; set; }
 

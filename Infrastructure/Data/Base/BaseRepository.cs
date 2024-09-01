@@ -26,9 +26,11 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
 
     #region Methods
 
-    public async Task<IEnumerable<TEntity>> GetPaged(int pageIndex, int pageSize)
+    public async Task<IEnumerable<TEntity>> GetPaged(int pageNumber, int pageLimit)
     {
-        var models = await dbSet.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        pageNumber = pageNumber == 0 ? 0 : pageNumber - 1;
+
+        var models = await dbSet.Skip(pageNumber * pageLimit).Take(pageLimit).ToListAsync();
         var entities = mapper.Map<IEnumerable<TEntity>>(models);
         return entities;
     }

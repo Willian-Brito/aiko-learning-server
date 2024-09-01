@@ -10,7 +10,8 @@ namespace AikoLearning.Infrastructure.Data.Repositories;
 
 public class CategoryRepository : BaseRepository<Category, Categories>, ICategoryRepository
 {
-    public CategoryRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper) { }
+    public CategoryRepository(ApplicationDbContext context, IMapper mapper) 
+        : base(context, mapper) { }
 
     public async Task<Category> GetByName(string name)
     {

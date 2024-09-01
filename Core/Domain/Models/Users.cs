@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Enums;
 
 namespace AikoLearning.Core.Domain.Model;
 
@@ -16,19 +17,20 @@ public class Users : BaseModel
     [Column("email")]
     public string Email { get; set; }
 
-    [Column("is_admin")]
-    public bool IsAdmin { get; set; } = false;
+    [Column("roles")]
+    public List<Role> Roles { get; private set; }
     
+    public ICollection<UserTokens> UserTokens { get; set; }
     public ICollection<Articles> Articles { get; set; }
     
     public Users() { }
 
-    public Users(int id, string name, string password, string email, bool isAdmin) 
+    public Users(int id, string name, string password, string email, List<Role> roles) 
     { 
         ID = id;        
         Name = name;
         Password = password;
         Email = email;
-        IsAdmin = isAdmin;        
+        Roles = roles;
     }
 }

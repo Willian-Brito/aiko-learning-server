@@ -36,7 +36,7 @@ namespace Data.Migrations
                         .HasColumnName("category_id");
 
                     b.Property<byte[]>("Content")
-                        .HasColumnType("bytea")
+                        .HasColumnType("BYTEA")
                         .HasColumnName("content");
 
                     b.Property<string>("Description")
@@ -111,6 +111,42 @@ namespace Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AikoLearning.Core.Domain.Model.UserTokens", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("expiry_date");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("refresh_token");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("token");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("user_tokens", (string)null);
+                });
+
             modelBuilder.Entity("AikoLearning.Core.Domain.Model.Users", b =>
                 {
                     b.Property<int>("ID")
@@ -125,12 +161,6 @@ namespace Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("email");
 
-                    b.Property<bool>("IsAdmin")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_admin");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -142,6 +172,10 @@ namespace Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
+                    b.Property<int[]>("Roles")
+                        .HasColumnType("integer[]")
+                        .HasColumnName("roles");
+
                     b.HasKey("ID");
 
                     b.ToTable("users", (string)null);
@@ -151,9 +185,9 @@ namespace Data.Migrations
                         {
                             ID = 1,
                             Email = "wbrito@aiko.digital",
-                            IsAdmin = true,
                             Name = "Willian Brito",
-                            Password = "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK"
+                            Password = "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK",
+                            Roles = new[] { 0 }
                         });
                 });
 
@@ -186,6 +220,17 @@ namespace Data.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("AikoLearning.Core.Domain.Model.UserTokens", b =>
+                {
+                    b.HasOne("AikoLearning.Core.Domain.Model.Users", "User")
+                        .WithMany("UserTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AikoLearning.Core.Domain.Model.Categories", b =>
                 {
                     b.Navigation("Articles");
@@ -196,6 +241,8 @@ namespace Data.Migrations
             modelBuilder.Entity("AikoLearning.Core.Domain.Model.Users", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("UserTokens");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 using System.Text;
+using AikoLearning.Infrastructure.Security.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,7 @@ namespace AikoLearning.Infrastructure.IoC;
 
 public static class DependencyInjectionJWT
 {
-    public static IServiceCollection AddInfrastructureJWT(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureJWT(this IServiceCollection services)
     {
         // informar o tipo de autenticação JWT-Bearer
         // definir o modelo de desafio de autenticação
@@ -32,9 +33,9 @@ public static class DependencyInjectionJWT
                 ValidateIssuerSigningKey = true,
                 
                 // Informando valores para serem validados
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
+                ValidIssuer = Settings.ISSUER,
+                ValidAudience = Settings.AUDIENCE,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.SECRET_KEY)),
                 
                 // zerando a expiração para o serviço utilizar o que definimos no controller que será enviado no cabeçalho da requisição
                 ClockSkew = TimeSpan.Zero 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AikoLearning.Infrastructure.Data.Configurations;
 
-public class ArticleConfiguration : IEntityTypeConfiguration<Articles>
+public class PersistenceArticleConfiguration : IEntityTypeConfiguration<Articles>
 {
     public void Configure(EntityTypeBuilder<Articles> builder)
     {
@@ -16,7 +16,7 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Articles>
         builder.Property(a => a.UserId).IsRequired();
         builder.Property(a => a.Description).HasMaxLength(1000).IsRequired(false);
         builder.Property(a => a.ImageUrl).HasMaxLength(200).IsRequired(false);
-        // builder.Property(a => a.Content).HasColumnType("BYTEA").IsRequired(false);
+        builder.Property(a => a.Content).HasColumnType("BYTEA").IsRequired(false);
         // builder.Property(a => a.CreatedAt).HasColumnType("timestamp without time zone");
         // builder.Property(a => a.UpdatedAt).HasColumnType("timestamp without time zone");
         // builder.Property(a => a.DeletedAt).HasColumnType("timestamp without time zone");

@@ -1,4 +1,5 @@
 using System.Data;
+using AikoLearning.Core.Application.Auth.Interfaces;
 using AikoLearning.Core.Application.Interfaces;
 using AikoLearning.Core.Application.Mappings;
 using AikoLearning.Core.Application.Services;
@@ -8,6 +9,7 @@ using AikoLearning.Core.Domain.Interfaces;
 using AikoLearning.Infrastructure.Data.Base;
 using AikoLearning.Infrastructure.Data.Context;
 using AikoLearning.Infrastructure.Data.Repositories;
+using AikoLearning.Infrastructure.Security.Auth;
 using AikoLearning.Infrastructure.Security.Hashs;
 using AikoLearning.Infrastructure.Security.Tokens;
 using Microsoft.AspNetCore.Builder;
@@ -42,12 +44,6 @@ public static class DependencyInjectionAPI
         Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         #endregion
 
-        #region Identity
-        // services.AddIdentity<ApplicationUser, IdentityRole>()
-        //         .AddEntityFrameworkStores<ApplicationDbContext>()
-        //         .AddDefaultTokenProviders();
-        #endregion
-
         #region Unity Of Work
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         #endregion
@@ -74,10 +70,11 @@ public static class DependencyInjectionAPI
         #endregion
 
         #region Auth
-        // services.AddScoped<IAuthenticate, AuthenticateService>();
-        // services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
-        services.AddScoped<IUserToken, UserTokenJWT>();
+        services.AddScoped<IAuthenticateService, AuthenticateService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+        services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         #endregion
 
         #region Auto Mapper

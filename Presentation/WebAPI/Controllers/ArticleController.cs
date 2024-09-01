@@ -1,12 +1,17 @@
 ﻿using AikoLearning.Core.Application.Articles.Queries;
 using AikoLearning.Core.Application.Categories.Commands;
+using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AikoLearning.Presentation.WebAPI.Controllers;
 
-public class ArticleController :  CustomController
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class ArticleController : CustomController
 {
     #region Properties
     private readonly IMediator mediator;
@@ -25,6 +30,7 @@ public class ArticleController :  CustomController
 
     #region Create
     [HttpPost]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Create(CreateArticleCommand command)
     {
         try
@@ -43,6 +49,7 @@ public class ArticleController :  CustomController
 
     #region Update
     [HttpPut("{id:int}")]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Update(int id, UpdateArticleCommand command)
     {
         try
@@ -64,6 +71,7 @@ public class ArticleController :  CustomController
 
     #region Delete
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Delete(int id)
     {
         try
@@ -85,8 +93,58 @@ public class ArticleController :  CustomController
 
     #region Queries
 
-     #region GetAll
+    #region GetPaged
+    [HttpGet("paged")]
+    [Authorize(Roles = nameof(Role.Administrator))]
+    public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
+    {
+        try
+        {
+            var query = new GetPagedArticlesQuery(pageNumber, pageLimit);
+            var paged = await mediator.Send(query);
+
+            if (paged == null)
+                throw new Exception("Não foi possível encontrar os artigos");         
+
+            var response = BaseResponseAPI.Create(paged);
+            return CustomResponse(response);
+        }
+        catch(Exception ex)
+        {
+            return CustomResponseException(ex);
+        }
+    }
+    #endregion
+
+    #region GetPagedByCategory
+    [HttpGet("category/{id:int}")]
+    public async Task<ActionResult> GetPagedByCategory(
+        [FromRoute] int id,
+        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageLimit = 10
+    )
+    {
+        try
+        {
+            var query = new GetPagedArticlesByCategoryQuery(id, pageNumber, pageLimit);
+            var dto = await mediator.Send(query);
+
+            if(dto == null)
+                throw new Exception("Não foi possível encontrar os artigos"); 
+
+            var response = BaseResponseAPI.Create(dto);
+            return CustomResponse(response);
+        }
+        catch(Exception ex)
+        {
+            return CustomResponseException(ex);
+        }
+    }
+    #endregion
+
+    #region GetAll
     [HttpGet]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> GetAll()
     {
         try
@@ -109,6 +167,7 @@ public class ArticleController :  CustomController
 
     #region GetById
     [HttpGet("{id:int}")]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> GetById(int id)
     {
         try
@@ -155,5 +214,4 @@ public class ArticleController :  CustomController
     #endregion
 
     #endregion
-
 }

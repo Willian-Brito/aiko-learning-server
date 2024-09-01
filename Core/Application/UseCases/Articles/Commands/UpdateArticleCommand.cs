@@ -43,7 +43,8 @@ public sealed class UpdateArticleCommand : ArticleCommand
             if (article == null)
                 throw new InvalidOperationException("Artigo não existe!");
                             
-            article.Update(
+            article.Update
+            (
                 request.Name, 
                 request.CategoryId, 
                 request.UserId, 

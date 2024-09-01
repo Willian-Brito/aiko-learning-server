@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -42,7 +43,7 @@ namespace Data.Migrations
                     name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     password = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
-                    is_admin = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                    roles = table.Column<int[]>(type: "integer[]", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -60,7 +61,7 @@ namespace Data.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     image_url = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    content = table.Column<byte[]>(type: "bytea", nullable: true)
+                    content = table.Column<byte[]>(type: "BYTEA", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,6 +80,28 @@ namespace Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "user_tokens",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    refresh_token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    expiry_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_tokens", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_user_tokens_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "categories",
                 columns: new[] { "id", "name", "parent_id" },
@@ -91,8 +114,8 @@ namespace Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "id", "email", "is_admin", "name", "password" },
-                values: new object[] { 1, "wbrito@aiko.digital", true, "Willian Brito", "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK" });
+                columns: new[] { "id", "email", "name", "password", "roles" },
+                values: new object[] { 1, "wbrito@aiko.digital", "Willian Brito", "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", new[] { 0 } });
 
             migrationBuilder.CreateIndex(
                 name: "IX_articles_category_id",
@@ -108,6 +131,11 @@ namespace Data.Migrations
                 name: "IX_categories_parent_id",
                 table: "categories",
                 column: "parent_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tokens_user_id",
+                table: "user_tokens",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -115,6 +143,9 @@ namespace Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "articles");
+
+            migrationBuilder.DropTable(
+                name: "user_tokens");
 
             migrationBuilder.DropTable(
                 name: "categories");

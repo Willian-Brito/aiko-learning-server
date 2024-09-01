@@ -4,7 +4,7 @@ public interface IBaseRepository<TEntity, TModel>
     where TEntity : class
     where TModel : class
 {
-    Task<IEnumerable<TEntity>> GetPaged(int pageIndex, int pageSize);
+    Task<IEnumerable<TEntity>> GetPaged(int pageNumber, int pageLimit);
     Task<IEnumerable<TEntity>> GetAll();
     Task<TEntity> Get(int id);
     Task<TModel> Insert(TEntity entity);

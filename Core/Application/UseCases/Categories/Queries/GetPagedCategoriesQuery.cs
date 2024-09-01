@@ -9,15 +9,15 @@ namespace AikoLearning.Core.Application.Categories.Queries;
 public class GetPagedCategoriesQuery : IRequest<PagedResult<CategoryDTO>>
 {
     #region Query Properties
-    public int PageIndex { get; set; }
-    public int PageSize { get; set; }
+    public int PageNumber { get; set; }
+    public int PageLimit { get; set; }
     #endregion
 
     #region Constructor
-    public GetPagedCategoriesQuery(int pageIndex, int pageSize)
+    public GetPagedCategoriesQuery(int pageNumber, int pageLimit)
     {
-        PageIndex = pageIndex;
-        PageSize = pageSize;
+        PageNumber = pageNumber;
+        PageLimit = pageLimit;
     }
     #endregion
 
@@ -51,14 +51,14 @@ public class GetPagedCategoriesQuery : IRequest<PagedResult<CategoryDTO>>
         )
         {
             var totalCount = await categoryRepository.Count();
-            var items = await categoryRepository.GetPaged(request.PageIndex, request.PageSize);
+            var items = await categoryRepository.GetPaged(request.PageNumber, request.PageLimit);
             var categories = mapper.Map<IEnumerable<CategoryDTO>>(items);
 
             return new PagedResult<CategoryDTO>
             (
                 items: categories,
-                pageIndex: request.PageIndex,
-                pageSize: request.PageSize,
+                pageNumber: request.PageNumber,
+                pageLimit: request.PageLimit,
                 totalCount: totalCount
             );
         }

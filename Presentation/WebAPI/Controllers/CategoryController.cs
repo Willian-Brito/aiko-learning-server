@@ -1,5 +1,6 @@
 using AikoLearning.Core.Application.Categories.Commands;
 using AikoLearning.Core.Application.Categories.Queries;
+using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,8 +30,8 @@ public class CategoryController : CustomController
 
     #region Create
 
-    // [Authorize(Roles = "Admin" )]
     [HttpPost]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Create(CreateCategoryCommand command)
     {
         try
@@ -49,6 +50,7 @@ public class CategoryController : CustomController
 
     #region Update
     [HttpPut("{id:int}")]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Update(int id, UpdateCategoryCommand command)
     {
         try
@@ -70,6 +72,7 @@ public class CategoryController : CustomController
 
     #region Delete
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Delete(int id)
     {
         try
@@ -93,15 +96,16 @@ public class CategoryController : CustomController
 
     #region GetPaged
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPaged([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
+    [Authorize(Roles = nameof(Role.Commom))]
+    public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
     {
         try
         {
-            var query = new GetPagedCategoriesQuery(pageIndex, pageSize);
+            var query = new GetPagedCategoriesQuery(pageNumber, pageLimit);
             var paged = await mediator.Send(query);
 
             if (paged == null)
-                throw new Exception("Não foi possível encontrar as categorias");         
+                throw new Exception("Não foi possível encontrar as categorias");
 
             var response = BaseResponseAPI.Create(paged);
             return CustomResponse(response);
@@ -111,10 +115,11 @@ public class CategoryController : CustomController
             return CustomResponseException(ex);
         }
     }
-    #endregion'
+    #endregion
 
     #region GetAll
     [HttpGet]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> GetAll()
     {
         try

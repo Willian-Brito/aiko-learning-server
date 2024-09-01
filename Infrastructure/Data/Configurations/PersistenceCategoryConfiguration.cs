@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AikoLearning.Infrastructure.Data.Configurations;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<Categories>
+public class PersistenceCategoryConfiguration : IEntityTypeConfiguration<Categories>
 {
     public void Configure(EntityTypeBuilder<Categories> builder)
     {
