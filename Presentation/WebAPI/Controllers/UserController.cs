@@ -1,6 +1,8 @@
 using AikoLearning.Core.Application.Users.Commands;
 using AikoLearning.Core.Application.Users.Queries;
 using AikoLearning.Core.Domain.Enums;
+using AikoLearning.Core.Domain.Exceptions;
+using AikoLearning.Infrastructure.Security.Sessions;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -53,7 +55,7 @@ public class UserController : CustomController
         try
         {
             if(id != command.ID)
-                throw new Exception("O ID do parâmetro da URL não corresponde ao ID do usuário do corpo da requisição");
+                throw new BadRequestException("O ID do parâmetro da URL não corresponde ao ID do usuário do corpo da requisição");
 
             var dto = await mediator.Send(command);
             var response = BaseResponseAPI.Create(dto);

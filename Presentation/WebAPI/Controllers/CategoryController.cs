@@ -34,17 +34,22 @@ public class CategoryController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Create(CreateCategoryCommand command)
     {
-        try
-        {
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch (Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
+
+        // try
+        // {
+        //     var dto = await mediator.Send(command);
+        //     var response = BaseResponseAPI.Create(dto);
+
+        //     return CustomResponse(response);
+        // }
+        // catch (Exception ex)
+        // {
+        //     return CustomResponseException(ex);
+        // }
     }
     #endregion
 

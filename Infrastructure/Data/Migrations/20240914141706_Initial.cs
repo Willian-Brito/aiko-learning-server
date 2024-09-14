@@ -87,9 +87,10 @@ namespace Data.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    acces_token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     refresh_token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    expiry_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    access_token_expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    refresh_token_expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {

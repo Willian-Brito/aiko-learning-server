@@ -1,5 +1,6 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -40,8 +41,7 @@ public sealed class UpdateArticleCommand : ArticleCommand
         {
             var article = await articleRepository.Get(request.ID);
 
-            if (article == null)
-                throw new InvalidOperationException("Artigo não existe!");
+            if (article is null) throw new NotFoundException("Artigo não existe!");
                             
             article.Update
             (

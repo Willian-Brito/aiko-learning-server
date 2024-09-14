@@ -6,7 +6,6 @@ using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Interfaces;
 using Model = AikoLearning.Core.Domain.Model;
 using AutoMapper;
-using System.Runtime.CompilerServices;
 
 namespace AikoLearning.Core.Application.Services;
 

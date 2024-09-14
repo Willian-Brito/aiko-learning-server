@@ -10,7 +10,7 @@ public class AuthenticateService : IAuthenticateService
 {
     #region Properties
     private readonly IUserRepository userRepository;
-    private readonly IPasswordHasher passwordHasher;
+    private readonly IPasswordHasher passwordHasher;    
     #endregion
 
     #region Constructors

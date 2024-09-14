@@ -1,6 +1,7 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -19,7 +20,9 @@ public sealed class UpdateUserCommand : UserCommand
         #region Properties
         private readonly IMapper mapper;
         private readonly IRoleService roleService;
+        private readonly ISessionService sessionService;
         private readonly IUnitOfWork unityOfWork;
+        private readonly IPasswordHasher passwordHasher;
         private readonly IUserRepository userRepository;
         #endregion
 
@@ -28,13 +31,17 @@ public sealed class UpdateUserCommand : UserCommand
             IMapper mapper,
             IUnitOfWork unityOfWork, 
             IRoleService roleService,
-            IUserRepository userRepository
+            IUserRepository userRepository,
+            ISessionService sessionService,
+            IPasswordHasher passwordHasher
         )
         {
             this.mapper = mapper;
             this.unityOfWork = unityOfWork;        
             this.roleService = roleService;        
             this.userRepository = userRepository;
+            this.sessionService = sessionService;
+            this.passwordHasher = passwordHasher;
         }
         #endregion
 
@@ -42,10 +49,14 @@ public sealed class UpdateUserCommand : UserCommand
 
         public async Task<UserDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
+            var currentUser = await sessionService.GetCurrentUser();
             var user = await userRepository.Get(request.ID);
 
-            if (user == null)
-                throw new InvalidOperationException("Usuário não existe!");
+            if(!currentUser.IsAdmin())
+                throw new ForbiddenException("Sem permissão para acessar este recurso!");
+
+            if (user is null)
+                throw new NotFoundException("Usuário não existe!");
             
             var roles = roleService.Convert(request.Roles);
 
@@ -54,7 +65,8 @@ public sealed class UpdateUserCommand : UserCommand
                 request.Name, 
                 request.Password,
                 request.Email,
-                roles
+                roles,
+                passwordHasher
             );
 
             await userRepository.Update(user);

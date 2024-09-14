@@ -9,25 +9,29 @@ public class UserTokens : BaseModel
     [Column("user_id")]
     public int UserId { get; set; }
 
-    [Column("token")]
-    public string Token { get; set; }
+    [Column("acces_token")]
+    public string AccessToken { get; set; }
 
     [Column("refresh_token")]
     public string RefreshToken { get; set; }
 
-    [Column("expiry_date")]
-    public DateTime ExpiryDate { get; set; }
+    [Column("access_token_expiration")]
+    public DateTime AccessTokenExpiration { get; set; }
+
+    [Column("refresh_token_expiration")]
+    public DateTime RefreshTokenExpiration { get; set; }
 
     [ForeignKey(nameof(UserId))]
     public Users User { get; set; }
 
     public UserTokens() { }
 
-    public UserTokens(int userId, string token, string refreshToken, DateTime expireDate) 
+    public UserTokens(int userId, string accessToken, string refreshToken, DateTime accessTokenExpiration, DateTime refreshTokenExpiration)
     { 
         UserId = userId;
-        Token = token;
+        AccessToken = accessToken;
         RefreshToken = refreshToken;
-        ExpiryDate = expireDate;
+        AccessTokenExpiration = accessTokenExpiration;
+        RefreshTokenExpiration = refreshTokenExpiration;
     }
 }

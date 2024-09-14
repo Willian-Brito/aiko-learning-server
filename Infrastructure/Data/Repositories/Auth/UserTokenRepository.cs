@@ -14,7 +14,7 @@ public class UserTokenRepository : BaseRepository<UserToken, UserTokens>, IUserT
 
     public async Task<UserToken> GetByToken(string token)
     {
-        var model = await dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.Token == token);
+        var model = await dbSet.AsNoTracking().FirstOrDefaultAsync(c => c.AccessToken == token);
         var userToken = mapper.Map<UserToken>(model);
         
         return userToken;
@@ -23,7 +23,7 @@ public class UserTokenRepository : BaseRepository<UserToken, UserTokens>, IUserT
     public async Task<UserToken> GetByUser(int userId)
     {
         var model = await dbSet.AsNoTracking()
-            .OrderByDescending(t => t.ExpiryDate)
+            .OrderByDescending(t => t.AccessTokenExpiration)
             .FirstOrDefaultAsync(c => c.UserId == userId);
 
         var userToken = mapper.Map<UserToken>(model);

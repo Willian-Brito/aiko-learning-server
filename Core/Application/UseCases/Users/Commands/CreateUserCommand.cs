@@ -3,6 +3,7 @@ using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Enums;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -44,18 +45,9 @@ public sealed class CreateUserCommand : UserCommand
         {
             var hasEmail = await userRepository.GetByEmail(request.Email) != null;
             if (hasEmail)
-                throw new ApplicationException("O e-mail de usuário já existe");
+                throw new BadRequestException("O e-mail de usuário já existe");
             
             var roles = roleService.Convert(request.Roles);
-            // var allRoles = roleService.GetAllRoles();
-
-            // allRoles.ForEach(role => 
-            // {
-            //     var hasRole = request.Roles.Any(r => r == (int)role);
-
-            //     if(hasRole)
-            //         roles.Add(role);
-            // });
             
             var user = User.Create
             (

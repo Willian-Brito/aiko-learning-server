@@ -120,9 +120,15 @@ namespace Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime>("ExpiryDate")
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("acces_token");
+
+                    b.Property<DateTime>("AccessTokenExpiration")
                         .HasColumnType("timestamp without time zone")
-                        .HasColumnName("expiry_date");
+                        .HasColumnName("access_token_expiration");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
@@ -130,11 +136,9 @@ namespace Data.Migrations
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("refresh_token");
 
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
-                        .HasColumnName("token");
+                    b.Property<DateTime>("RefreshTokenExpiration")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("refresh_token_expiration");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")

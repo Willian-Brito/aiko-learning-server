@@ -1,66 +1,76 @@
-// using Newtonsoft.Json;
+using System.Net;
+using AikoLearning.Core.Domain.Exceptions;
+using AikoLearning.Presentation.WebAPI.Response;
+using Newtonsoft.Json;
 
-// namespace AikoLearning.Presentation.Middlewares;
+namespace AikoLearning.Presentation.Middlewares;
 
-// public class GlobalErrorHandlerMiddleware
-// {
-//     private readonly RequestDelegate _next;
+public class GlobalErrorHandlerMiddleware
+{
+    private readonly RequestDelegate _next;
 
-//     public GlobalErrorHandlerMiddleware(RequestDelegate next)
-//     {
-//         _next = next;
-//     }
+    public GlobalErrorHandlerMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
 
-//     public async Task Invoke(HttpContext context)
-//     {
-//         try
-//         {
-//             await _next(context);
-//         }
-//         catch (Exception ex)
-//         {
-//             await HandleExceptionAsync(context, ex);
-//         }
-//     }
+    public async Task Invoke(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            await HandleExceptionAsync(context, ex);
+        }
+    }
 
-//     private Task HandleExceptionAsync(HttpContext context, Exception exception)
-//     {
-//         var code = HttpStatusCode.InternalServerError;
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        var code = HttpStatusCode.InternalServerError;        
 
-//         var result = string.Empty;
+        switch (exception)
+        {
+            case DomainValidationException:
+                code = HttpStatusCode.UnprocessableEntity;                
+                break;
+            case NotFoundException:
+                code = HttpStatusCode.NotFound;
+                break;
+            case BadRequestException:
+                code = HttpStatusCode.BadRequest;                
+                break;
+        }
 
-//         switch (exception)
-//         {
-//             case ValidationException validationException:
-//                 code = HttpStatusCode.UnprocessableEntity;
-//                 result = JsonConvert.SerializeObject(new { error = validationException.Message });
-//                 break;
-//             case NotFoundException validationException:
-//                 code = HttpStatusCode.NotFound;
-//                 result = JsonConvert.SerializeObject(new { error = validationException.Message });
-//                 break;
-//             case BadRequestException validationException:
-//                 code = HttpStatusCode.BadRequest;
-//                 result = JsonConvert.SerializeObject(new { error = validationException.Message });
-//                 break;
-//         }
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)code;
 
-//         context.Response.ContentType = "application/json";
-//         context.Response.StatusCode = (int)code;
+        var response = BaseResponseAPI.Create(GetInnerExceptionMessages(exception), false);
+        var json = JsonConvert.SerializeObject(response);
 
-//         if (result == string.Empty)
-//         {
-//             result = JsonConvert.SerializeObject(new { error = exception.Message });
-//         }
+        return context.Response.WriteAsync(json);
+    }
 
-//         return context.Response.WriteAsync(result);
-//     }
-// }
+    private string GetInnerExceptionMessages(Exception ex)
+    {
+        var messages = ex.Message;
+        var innerException = ex.InnerException;
+        
+        while (innerException != null)
+        {
+            messages += " --> " + innerException.Message;
+            innerException = innerException.InnerException;
+        }
 
-// public static class GlobalErrorHandlerMiddlewareExtensions
-// {
-//     public static IApplicationBuilder UseGlobalErrorHandler(this IApplicationBuilder builder)
-//     {
-//         return builder.UseMiddleware<GlobalErrorHandlerMiddleware>();
-//     }
-// }
+        return messages;
+    }
+}
+
+public static class GlobalErrorHandlerMiddlewareExtensions
+{
+    public static IApplicationBuilder UseGlobalErrorHandler(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<GlobalErrorHandlerMiddleware>();
+    }
+}

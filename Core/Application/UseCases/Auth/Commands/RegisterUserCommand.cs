@@ -1,6 +1,7 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Exceptions;
 using AutoMapper;
 using MediatR;
 
@@ -47,6 +48,8 @@ public sealed class RegisterUserCommand : IRequest<UserDTO>
                 request.ConfirmPassword,
                 request.Email
             );
+
+            if (user is null) throw new BadRequestException("Erro ao criar Usuário!");
 
             var dto = mapper.Map<UserDTO>(user);
             dto.Roles = user.Roles.Select(r => r.ToString()).ToArray();

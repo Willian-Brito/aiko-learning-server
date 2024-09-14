@@ -1,6 +1,7 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -45,8 +46,7 @@ public sealed class CreateArticleCommand : ArticleCommand
                 request.ImageUrl
             );
 
-            if (newArticle == null)
-                throw new ApplicationException("Erro ao criar artigo!");
+            if (newArticle is null) throw new BadRequestException("Erro ao criar Artigo!");
                             
             var model = await articleRepository.Insert(newArticle);
             var dto = mapper.Map<ArticleDTO>(model);

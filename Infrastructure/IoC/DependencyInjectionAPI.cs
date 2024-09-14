@@ -11,6 +11,7 @@ using AikoLearning.Infrastructure.Data.Context;
 using AikoLearning.Infrastructure.Data.Repositories;
 using AikoLearning.Infrastructure.Security.Auth;
 using AikoLearning.Infrastructure.Security.Hashs;
+using AikoLearning.Infrastructure.Security.Sessions;
 using AikoLearning.Infrastructure.Security.Tokens;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -67,10 +68,14 @@ public static class DependencyInjectionAPI
         services.AddScoped<IArticleRepository, ArticleRepository>();
         #endregion
 
+        // Bootstrapper.AddDependencies(services);  
+        // services.AddDependencies();
+
         #endregion
 
-        #region Auth
+        #region Auth        
         services.AddScoped<IAuthenticateService, AuthenticateService>();
+        services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();

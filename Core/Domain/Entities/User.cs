@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.ValuesObjects;
-using AikoLearning.Core.Exceptions;
+using AikoLearning.Core.Domain.Exceptions;
 
 namespace AikoLearning.Core.Domain.Entities;
 
@@ -57,14 +57,16 @@ public sealed class User : BaseEntity
         string name, 
         string password, 
         string email, 
-        List<Role> roles
+        List<Role> roles,
+        IPasswordHasher passwordHasher
     )
     {
+        var hash = passwordHasher.EncryptPassword(password);
         Validade(name, roles);
-        SetAtributes(name, password, email, roles);
+        SetAtributes(name, hash, email, roles);
     }
 
-    public bool IsAdmin(int id)
+    public bool IsAdmin()
     {
         var isAdmin = Roles.Any(r => r is Role.Administrator);
         return isAdmin;

@@ -1,4 +1,4 @@
-namespace AikoLearning.Core.Exceptions;
+namespace AikoLearning.Core.Domain.Exceptions;
 
 public class DomainValidationException : Exception
 {

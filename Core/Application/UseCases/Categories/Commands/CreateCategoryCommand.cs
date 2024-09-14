@@ -1,6 +1,7 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -37,8 +38,7 @@ public sealed class CreateCategoryCommand : CategoryCommand
         {
             var newCategory = new Category(request.Name, request.ParentId);
 
-            if (newCategory == null)
-                throw new ApplicationException("Erro ao criar categoria!");
+            if (newCategory is null) throw new BadRequestException("Erro ao criar categoria!");                
                             
             var model = await categoryRepository.Insert(newCategory);
             var dto = mapper.Map<CategoryDTO>(model);

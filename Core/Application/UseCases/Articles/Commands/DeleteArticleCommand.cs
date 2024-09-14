@@ -1,5 +1,6 @@
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using MediatR;
 
@@ -33,8 +34,7 @@ public sealed class DeleteArticleCommand : IRequest<Article>
         {
             var article = await articleRepository.Delete(request.ID);
 
-            if (article == null)
-                throw new InvalidOperationException("Artigo não existe!");
+            if (article is null) throw new NotFoundException("Artigo não existe!");                
                             
             await unityOfWork.Commit();
             return article;

@@ -1,5 +1,7 @@
+using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using MediatR;
 
@@ -17,6 +19,7 @@ public sealed class DeleteUserCommand : IRequest<User>
         #region Properties
         private readonly IUnitOfWork unityOfWork;
         private readonly IUserRepository userRepository;
+        private readonly IUserTokenRepository userTokenRepository;
         private readonly IArticleRepository articleRepository;
         #endregion
 
@@ -24,12 +27,14 @@ public sealed class DeleteUserCommand : IRequest<User>
         public DeleteUserCommandHandler(
             IUnitOfWork unityOfWork, 
             IUserRepository userRepository,
-            IArticleRepository articleRepository
+            IArticleRepository articleRepository,
+            IUserTokenRepository userTokenRepository
         )
         {
             this.unityOfWork = unityOfWork;        
             this.userRepository = userRepository;
             this.articleRepository = articleRepository;
+            this.userTokenRepository = userTokenRepository;
         }
         #endregion
 
@@ -37,12 +42,13 @@ public sealed class DeleteUserCommand : IRequest<User>
 
         public async Task<User> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await userRepository.Delete(request.ID);     
+            var user = await userRepository.Delete(request.ID);
 
-            if (user == null)
-                throw new InvalidOperationException("Artigo não existe!");
-                            
+            if (user is null) throw new NotFoundException("Usuário não existe!");
+            
+            await userTokenRepository.DeleteAllTokensByUser(user.ID);
             await unityOfWork.Commit();
+            
             return user;
         }
         #endregion

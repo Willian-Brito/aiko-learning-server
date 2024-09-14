@@ -39,12 +39,15 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         var privateKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.SECRET_KEY));
         var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.HmacSha256);
-        var expiration = DateTime.Now.AddDays(1);
+        var notBefore = DateTime.Now;
+        var accessTokenExpiration = DateTime.Now.AddSeconds(Settings.ACCESS_TOKEN_EXPIRATION);
+        var refreshTokenExpiration = DateTime.Now.AddSeconds(Settings.REFRESH_TOKEN_EXPIRATION);
         
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = claimsIdentity,
-            Expires = expiration,
+            NotBefore = notBefore,
+            Expires = accessTokenExpiration,
             SigningCredentials = credentials,
             Audience = Settings.AUDIENCE,
             Issuer = Settings.ISSUER
@@ -58,14 +61,22 @@ public class TokenService : ITokenService
 
         var dto = new UserTokenDTO()
         {
-            Token = tokenHandler.WriteToken(token),
+            AccessToken = tokenHandler.WriteToken(token),
             RefreshToken = refreshToken,
-            Expiration = expiration
+            AccessTokenExpiration = accessTokenExpiration,
+            RefreshTokenExpiration = refreshTokenExpiration
         };
         #endregion
 
         #region Save
-        var userToken = UserToken.Create(user.ID, dto.Token, refreshToken, expiration);
+        var userToken = UserToken.Create
+        (
+            user.ID, 
+            dto.AccessToken, 
+            refreshToken, 
+            accessTokenExpiration, 
+            refreshTokenExpiration
+        );
         
         await userTokenRepository.DeleteAllTokensByUser(user.ID);
         await userTokenRepository.Insert(userToken);
@@ -108,7 +119,7 @@ public class TokenService : ITokenService
     public async Task<bool> IsTokenExpired(string token)
     {
         var userToken = await userTokenRepository.GetByToken(token);
-        return userToken.ExpiryDate > DateTime.Now;
+        return userToken.AccessTokenExpiration > DateTime.Now;
     }
     #endregion
     

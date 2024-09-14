@@ -1,5 +1,6 @@
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using MediatR;
 
@@ -47,18 +48,17 @@ public sealed class DeleteCategoryCommand : IRequest<Category>
 
         private async Task Validate(Category category)
         {
-            if (category == null)
-                throw new InvalidOperationException("Categoria não existe!");
+            if (category is null) throw new NotFoundException("Categoria não existe!");
 
             var subCategories = await categoryRepository.GetSubcategories(category.ID);
 
             if(subCategories.Count() != 0)
-                throw new InvalidOperationException("Categoria possui subcategorias!");
+                throw new BadRequestException("Categoria possui subcategorias!");
 
             var articles = await articleRepository.GetByCategory(category.ID);
 
             if (articles.Count() != 0)
-                throw new InvalidOperationException("Categoria possui artigos vinculados!");
+                throw new BadRequestException("Categoria possui artigos vinculados!");
         }
         #endregion
     }

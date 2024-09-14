@@ -1,6 +1,7 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -41,8 +42,7 @@ public sealed class UpdateCategoryCommand : CategoryCommand
         {
             var category = await categoryRepository.Get(request.ID);
 
-            if (category == null)
-                throw new InvalidOperationException("Categoria não existe!");
+            if (category is null) throw new NotFoundException("Categoria não existe!");
                             
             category.Update(request.Name, request.ParentId);
             await categoryRepository.Update(category);
