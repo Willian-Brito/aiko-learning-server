@@ -21,6 +21,7 @@ public sealed class CreateUserCommand : UserCommand
         private readonly IUnitOfWork unityOfWork;
         private readonly IUserRepository userRepository;
         private readonly IPasswordHasher passwordHasher;
+        private readonly ISessionService sessionService;
         #endregion
 
         #region Constructor
@@ -29,7 +30,8 @@ public sealed class CreateUserCommand : UserCommand
             IUnitOfWork unityOfWork,
             IRoleService roleService,
             IUserRepository userRepository,
-            IPasswordHasher passwordHasher
+            IPasswordHasher passwordHasher,
+            ISessionService sessionService            
         )
         {
             this.mapper = mapper;
@@ -37,15 +39,14 @@ public sealed class CreateUserCommand : UserCommand
             this.roleService = roleService;
             this.userRepository = userRepository;
             this.passwordHasher = passwordHasher;
+            this.sessionService = sessionService;
         }
         #endregion
 
         #region Handle
         public async Task<UserDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var hasEmail = await userRepository.GetByEmail(request.Email) != null;
-            if (hasEmail)
-                throw new BadRequestException("O e-mail de usuário já existe");
+            await Validate(request.Email);
             
             var roles = roleService.Convert(request.Roles);
             
@@ -65,6 +66,18 @@ public sealed class CreateUserCommand : UserCommand
             dto.ID = model.ID;
 
             return dto;
+        }
+
+        private async Task Validate(string email)
+        {
+            var currentUser = await sessionService.GetCurrentUser();
+
+            if(!currentUser.IsAdmin())
+                throw new ForbiddenException("Sem permissão para acessar este recurso!");
+
+            var hasEmail = await userRepository.GetByEmail(email) != null;
+            if (hasEmail)
+                throw new BadRequestException("O e-mail de usuário já existe");
         }
         #endregion
     }

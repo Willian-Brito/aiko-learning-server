@@ -1,6 +1,7 @@
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
@@ -49,14 +50,9 @@ public sealed class UpdateUserCommand : UserCommand
 
         public async Task<UserDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await sessionService.GetCurrentUser();
             var user = await userRepository.Get(request.ID);
-
-            if(!currentUser.IsAdmin())
-                throw new ForbiddenException("Sem permissão para acessar este recurso!");
-
-            if (user is null)
-                throw new NotFoundException("Usuário não existe!");
+            
+            await Validate(user);
             
             var roles = roleService.Convert(request.Roles);
 
@@ -74,6 +70,17 @@ public sealed class UpdateUserCommand : UserCommand
 
             await unityOfWork.Commit();
             return dto;
+        }
+
+        private async Task Validate(User user)
+        {
+            var currentUser = await sessionService.GetCurrentUser();
+
+            if(!currentUser.IsAdmin())
+                throw new ForbiddenException("Sem permissão para acessar este recurso!");
+
+            if (user is null)
+                throw new NotFoundException("Usuário não existe!");
         }
         #endregion
     }

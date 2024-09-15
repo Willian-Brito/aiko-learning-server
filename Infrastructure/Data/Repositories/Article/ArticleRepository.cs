@@ -26,4 +26,12 @@ public class ArticleRepository : BaseRepository<Article, Articles>, IArticleRepo
         var articles = mapper.Map<IEnumerable<Article>>(articlesModel).ToList();
         return articles;
     }
+
+    public async Task<IEnumerable<Article>> GetByUser(int userId)
+    {
+        var models = await dbSet.AsNoTracking().ToListAsync();
+        var articlesModel = models.Where(c => c.UserId == userId);
+        var articles = mapper.Map<IEnumerable<Article>>(articlesModel).ToList();
+        return articles;
+    }
 }
