@@ -1,6 +1,7 @@
 ﻿using AikoLearning.Core.Application.Articles.Queries;
 using AikoLearning.Core.Application.Categories.Commands;
 using AikoLearning.Core.Domain.Enums;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,17 +34,10 @@ public class ArticleController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Create(CreateArticleCommand command)
     {
-        try
-        {
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 
@@ -52,20 +46,13 @@ public class ArticleController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Update(int id, UpdateArticleCommand command)
     {
-        try
-        {
-            if(id != command.ID)
-                throw new Exception("O ID do parâmetro da URL não corresponde ao ID da categoria do corpo da requisição");
+        if(id != command.ID)
+            throw new BadRequestException("O ID do parâmetro da URL não corresponde ao ID da categoria do corpo da requisição");
 
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 
@@ -74,18 +61,11 @@ public class ArticleController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> Delete(int id)
     {
-        try
-        {
-            var command = new DeleteArticleCommand{ ID = id };
-            await mediator.Send(command);
-            
-            var response = BaseResponseAPI.Create("Artigo removido com sucesso!");
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var command = new DeleteArticleCommand{ ID = id };
+        await mediator.Send(command);
+        
+        var response = BaseResponseAPI.Create("Artigo removido com sucesso!");
+        return CustomResponse(response);
     }
     #endregion
 
@@ -98,21 +78,14 @@ public class ArticleController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
     {
-        try
-        {
-            var query = new GetPagedArticlesQuery(pageNumber, pageLimit);
-            var paged = await mediator.Send(query);
+        var query = new GetPagedArticlesQuery(pageNumber, pageLimit);
+        var paged = await mediator.Send(query);
 
-            if (paged == null)
-                throw new Exception("Não foi possível encontrar os artigos");         
+        if (paged == null)
+            throw new NotFoundException("Não foi possível encontrar os artigos");         
 
-            var response = BaseResponseAPI.Create(paged);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(paged);
+        return CustomResponse(response);
     }
     #endregion
 
@@ -124,21 +97,14 @@ public class ArticleController : CustomController
         [FromQuery] int pageLimit = 10
     )
     {
-        try
-        {
-            var query = new GetPagedArticlesByCategoryQuery(id, pageNumber, pageLimit);
-            var dto = await mediator.Send(query);
+        var query = new GetPagedArticlesByCategoryQuery(id, pageNumber, pageLimit);
+        var dto = await mediator.Send(query);
 
-            if(dto == null)
-                throw new Exception("Não foi possível encontrar os artigos"); 
+        if(dto is null)
+            throw new NotFoundException("Não foi possível encontrar os artigos"); 
 
-            var response = BaseResponseAPI.Create(dto);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(dto);
+        return CustomResponse(response);
     }
     #endregion
 
@@ -147,21 +113,14 @@ public class ArticleController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> GetAll()
     {
-        try
-        {
-            var query = new GetAllArticlesQuery();
-            var dtos  = await mediator.Send(query);
+        var query = new GetAllArticlesQuery();
+        var dtos  = await mediator.Send(query);
 
-            if (dtos == null)
-                throw new Exception("Não foi possível encontrar os artigos"); 
+        if (dtos == null)
+            throw new NotFoundException("Não foi possível encontrar os artigos"); 
 
-            var response = BaseResponseAPI.Create(dtos);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(dtos);
+        return CustomResponse(response);
     }
     #endregion
 
@@ -170,21 +129,14 @@ public class ArticleController : CustomController
     [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> GetById(int id)
     {
-        try
-        {
-            var query = new GetArticleByIdQuery { ID = id };
-            var dto = await mediator.Send(query);
+        var query = new GetArticleByIdQuery { ID = id };
+        var dto = await mediator.Send(query);
 
-            if(dto == null)
-                throw new Exception("Artigo não existe!");
+        if(dto is null)
+            throw new NotFoundException("Artigo não existe!");
 
-            var response = BaseResponseAPI.Create(dto);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(dto);
+        return CustomResponse(response);
     }
     #endregion
 
@@ -193,21 +145,14 @@ public class ArticleController : CustomController
     [HttpGet("name/{name}")]
     public async Task<ActionResult> GetByName(string name)
     {
-        try
-        {
-            var query = new GetArticleByNameQuery { Name = name };
-            var dto  = await mediator.Send(query);
+        var query = new GetArticleByNameQuery { Name = name };
+        var dto  = await mediator.Send(query);
 
-            if(dto == null)
-                throw new Exception("Artigo não existe!");
+        if(dto is null)
+            throw new NotFoundException("Artigo não existe!");
 
-            var response = BaseResponseAPI.Create(dto);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(dto);
+        return CustomResponse(response);
     }
     #endregion
 

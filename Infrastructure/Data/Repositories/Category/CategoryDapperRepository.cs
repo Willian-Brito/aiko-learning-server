@@ -103,6 +103,14 @@ public class CategoryDapperRepository : ICategoryDapperRepository
         return chidrens.Select(c => c.ID).ToArray();
     }
     #endregion
+
+    #region GetCount
+    public async Task<int> GetCount()
+    {
+        var categories = await GetAll();
+        return categories.Count();
+    }
+    #endregion
     
     #endregion
 }

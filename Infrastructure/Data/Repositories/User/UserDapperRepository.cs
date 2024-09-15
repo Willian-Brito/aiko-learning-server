@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Data.Common;
+using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.Interfaces;
 using AikoLearning.Core.Domain.Model;
@@ -9,13 +11,15 @@ namespace AikoLearning.Infrastructure.Data.Repositories;
 public class UserDapperRepository : IUserDapperRepository
 {
     #region Properties
+    private readonly IRoleService roleService;
     private readonly IDbConnection dbConnection;
     #endregion
 
     #region Constructor
-    public UserDapperRepository(IDbConnection dbConnection)
+    public UserDapperRepository(IDbConnection dbConnection, IRoleService roleService)
     {
-        this.dbConnection = dbConnection;    
+        this.dbConnection = dbConnection;
+        this.roleService = roleService;
     }
     #endregion
 
@@ -27,8 +31,8 @@ public class UserDapperRepository : IUserDapperRepository
         var query = @"SELECT u.""id"", 
                              u.""name"", 
                              u.""email"",
-                             u.""is_admin""  
-                        FROM users AS u                    
+                             u.""roles""  
+                        FROM users AS u
                     ";
         return await dbConnection.QueryAsync<Users>(query);
     }
@@ -40,7 +44,7 @@ public class UserDapperRepository : IUserDapperRepository
         var query = @"SELECT u.""id"", 
                              u.""name"", 
                              u.""email"",
-                             u.""is_admin""
+                             u.""roles""
                         FROM users AS u  
                        WHERE u.""id"" = @id                  
                     ";
@@ -56,7 +60,7 @@ public class UserDapperRepository : IUserDapperRepository
         var query = @"SELECT u.""id"", 
                              u.""name"", 
                              u.""email"",
-                             u.""is_admin""
+                             u.""roles""
                         FROM users AS u  
                        WHERE u.""email"" = @email                  
                     ";
@@ -77,6 +81,14 @@ public class UserDapperRepository : IUserDapperRepository
 
         var roles = await dbConnection.QueryAsync<Role>(query, new {userID = userID});
         return roles.ToArray();
+    }
+    #endregion
+
+    #region GetCount
+    public async Task<int> GetCount()
+    {
+        var users = await GetAll();
+        return users.Count();
     }
     #endregion
     

@@ -9,4 +9,5 @@ public interface IArticleDapperRepository
     Task<Articles> GetByName(string name);
     Task<IEnumerable<Articles>> GetByCategory(int categoryId);
     Task<IEnumerable<Articles>> GetPagedByCategories(int[] categoryIDs, int pageNumber, int pageLimit);
+    Task<int> GetCount();
 }

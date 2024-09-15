@@ -15,14 +15,14 @@ public class GetUserByIdQuery : IRequest<UserDTO>
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDTO>
     {
         #region Properties
-        private readonly IUserDapperRepository userDapperRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Constructor
-        public GetUserByIdQueryHandler(IUserDapperRepository userDapperRepository, IMapper mapper)
+        public GetUserByIdQueryHandler(IUserRepository userRepository, IMapper mapper)
         {
-            this.userDapperRepository = userDapperRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
         }
         #endregion
@@ -30,7 +30,7 @@ public class GetUserByIdQuery : IRequest<UserDTO>
         #region Handle
         public async Task<UserDTO> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await userDapperRepository.GetById(request.ID);
+            var user = await userRepository.Get(request.ID);
             var dto = mapper.Map<UserDTO>(user);
             return dto;
         }

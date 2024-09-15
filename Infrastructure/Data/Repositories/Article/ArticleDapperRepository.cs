@@ -112,6 +112,14 @@ public class ArticleDapperRepository : IArticleDapperRepository
         return query.Skip(skip).Take(pageLimit).ToList();
     }
     #endregion
-    
+
+    #region GetCount
+    public async Task<int> GetCount()
+    {
+        var articles = await GetAll();
+        return articles.Count();
+    }
+    #endregion
+
     #endregion
 }

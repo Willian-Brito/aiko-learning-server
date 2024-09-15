@@ -8,6 +8,8 @@ using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Interfaces;
 using AikoLearning.Infrastructure.Data.Base;
 using AikoLearning.Infrastructure.Data.Context;
+using AikoLearning.Infrastructure.Data.Jobs;
+using AikoLearning.Infrastructure.Data.MongoDB.Settings;
 using AikoLearning.Infrastructure.Data.Repositories;
 using AikoLearning.Infrastructure.Security.Auth;
 using AikoLearning.Infrastructure.Security.Hashs;
@@ -29,6 +31,7 @@ public static class DependencyInjectionAPI
     {
         #region Database
 
+        #region Postgres
         var postgresConnection = configuration.GetConnectionString("Postgres");
 
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -43,6 +46,13 @@ public static class DependencyInjectionAPI
         });
 
         Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+        #endregion
+
+        #region MongoDB
+        
+        services.Configure<MongoDBSettings>(configuration.GetSection("MongoDBSettings"));
+        #endregion
+
         #endregion
 
         #region Unity Of Work
@@ -68,12 +78,21 @@ public static class DependencyInjectionAPI
         services.AddScoped<IArticleRepository, ArticleRepository>();
         #endregion
 
+        #region MongoDB Driver
+        services.AddScoped<IStatRepository, StatRepository>();
+        #endregion
+
         // Bootstrapper.AddDependencies(services);  
         // services.AddDependencies();
 
         #endregion
 
-        #region Auth        
+        #region Jobs
+        services.AddSingleton<JobScheduler>();
+        services.AddSingleton<StatsJobScheduler>();
+        #endregion
+
+        #region Auth
         services.AddScoped<IAuthenticateService, AuthenticateService>();
         services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<ITokenService, TokenService>();
@@ -96,13 +115,24 @@ public static class DependencyInjectionAPI
     #endregion
 
     #region ApplyMigrations
-    public static async Task ApplyMigrations(this IApplicationBuilder app)
+    public static void ApplyMigrations(this IApplicationBuilder app)
     {
-        using (var serviceScope = app. ApplicationServices.CreateScope())
+        using (var serviceScope = app.ApplicationServices.CreateScope())
         {            
             var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();   
             context.Database.Migrate();
         }
+    }
+    #endregion
+
+    #region UseJobSchedule
+    public static void UseJobSchedule(this IApplicationBuilder app)
+    {
+        using (var serviceScope = app.ApplicationServices.CreateScope())
+        {            
+            var jobScheduler = serviceScope.ServiceProvider.GetRequiredService<JobScheduler>();  
+            jobScheduler.ScheduleJobs();
+        } 
     }
     #endregion
 }

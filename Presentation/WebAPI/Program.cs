@@ -44,6 +44,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
 app.UseGlobalErrorHandler();
+app.UseJobSchedule();
 
 app.ApplyMigrations();
 

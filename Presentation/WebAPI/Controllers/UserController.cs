@@ -2,6 +2,7 @@ using AikoLearning.Core.Application.Users.Commands;
 using AikoLearning.Core.Application.Users.Queries;
 using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.Exceptions;
+using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Infrastructure.Security.Sessions;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
@@ -34,17 +35,10 @@ public class UserController : CustomController
     [HttpPost]
     public async Task<ActionResult> Create(CreateUserCommand command)
     {
-        try
-        {
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch (Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 
@@ -52,20 +46,13 @@ public class UserController : CustomController
     [HttpPut("{id:int}")]
     public async Task<ActionResult> Update(int id, UpdateUserCommand command)
     {
-        try
-        {
-            if(id != command.ID)
-                throw new BadRequestException("O ID do parâmetro da URL não corresponde ao ID do usuário do corpo da requisição");
+        if(id != command.ID)
+            throw new BadRequestException("O ID do parâmetro da URL não corresponde ao ID do usuário do corpo da requisição");
 
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch (Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 
@@ -73,18 +60,11 @@ public class UserController : CustomController
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {
-        try
-        {
-            var command = new DeleteUserCommand{ ID = id };
-            await mediator.Send(command);
+        var command = new DeleteUserCommand{ ID = id };
+        await mediator.Send(command);
 
-            var response = BaseResponseAPI.Create("Usuário removido com sucesso!");
-            return CustomResponse(response);    
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create("Usuário removido com sucesso!");
+        return CustomResponse(response); 
     }
     #endregion
 
@@ -96,21 +76,14 @@ public class UserController : CustomController
     [HttpGet]
     public async Task<ActionResult> GetAll()
     {
-        try
-        {
-            var query = new GetAllUsersQuery();
-            var dtos  = await mediator.Send(query);
+        var query = new GetAllUsersQuery();
+        var dtos  = await mediator.Send(query);
 
-            if (dtos == null)
-                throw new Exception("Não foi possível encontrar os usuários"); 
+        if (dtos is null)
+            throw new NotFoundException("Não foi possível encontrar os usuários"); 
 
-            var response = BaseResponseAPI.Create(dtos);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(dtos);
+        return CustomResponse(response);
     }
     #endregion
 
@@ -118,21 +91,14 @@ public class UserController : CustomController
     [HttpGet("{id:int}")]
     public async Task<ActionResult> GetById(int id)
     {
-        try
-        {
-            var query = new GetUserByIdQuery { ID = id };
-            var dto = await mediator.Send(query);
+        var query = new GetUserByIdQuery { ID = id };
+        var dto = await mediator.Send(query);
 
-            if(dto == null)
-                throw new Exception("Usuário não existe!");
+        if(dto is null)
+            throw new NotFoundException("Usuário não existe!");
 
-            var response = BaseResponseAPI.Create(dto);
-            return CustomResponse(response);
-        }
-        catch(Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        var response = BaseResponseAPI.Create(dto);
+        return CustomResponse(response);
     }
     #endregion
 

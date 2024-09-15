@@ -10,4 +10,5 @@ public interface IUserRepository : IBaseRepository<User, Users>
     Task<User> GetByEmail(string email);
     Task<List<Role>> GetRoles(long userID);
     bool IsAdmin(long userID);
+    Task<int> GetCount();
 }

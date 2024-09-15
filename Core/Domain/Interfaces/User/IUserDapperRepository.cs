@@ -9,4 +9,5 @@ public interface IUserDapperRepository
     Task<Users> GetById(int id);
     Task<Users> GetByEmail(string email);
     Task<Role[]> GetRoles(long userID);
+    Task<int> GetCount();
 }

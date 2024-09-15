@@ -11,14 +11,14 @@ public class GetAllUsersQuery : IRequest<IEnumerable<UserDTO>>
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserDTO>>
     {
         #region Properties
-        private readonly IUserDapperRepository userDapperRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Cosntructor
-        public GetAllUsersQueryHandler(IUserDapperRepository userDapperRepository, IMapper mapper)
+        public GetAllUsersQueryHandler(IUserRepository userRepository, IMapper mapper)
         {
-            this.userDapperRepository = userDapperRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
         }
         #endregion
@@ -26,7 +26,7 @@ public class GetAllUsersQuery : IRequest<IEnumerable<UserDTO>>
         #region Handle
         public async Task<IEnumerable<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await userDapperRepository.GetAll();
+            var users = await userRepository.GetAll();
             var dto = mapper.Map<IEnumerable<UserDTO>>(users);
             return dto;
         }

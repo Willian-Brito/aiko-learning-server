@@ -28,17 +28,10 @@ public class AuthController : CustomController
     [HttpPost("login")]
     public async Task<ActionResult> Login(AuthenticateUserCommand command) 
     {
-        try
-        {
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch (Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 
@@ -47,17 +40,10 @@ public class AuthController : CustomController
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterUserCommand command)
     {
-        try
-        {
-            var newUser = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(newUser);
+        var newUser = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(newUser);
 
-            return CustomResponse(response);
-        }
-        catch (Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 
@@ -85,17 +71,10 @@ public class AuthController : CustomController
     [HttpPost("refresh")]
     public async Task<ActionResult> RefreshToken(RefreshUserTokenCommand command) 
     {
-        try
-        {
-            var dto = await mediator.Send(command);
-            var response = BaseResponseAPI.Create(dto);
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
 
-            return CustomResponse(response);
-        }
-        catch (Exception ex)
-        {
-            return CustomResponseException(ex);
-        }
+        return CustomResponse(response);
     }
     #endregion
 

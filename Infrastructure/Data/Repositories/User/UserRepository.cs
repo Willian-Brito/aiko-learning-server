@@ -32,4 +32,10 @@ public class UserRepository : BaseRepository<User, Users>, IUserRepository
         var isAdmin = user.Roles.Any(r => r is Role.Administrator);       
         return isAdmin;
     }  
+
+    public async Task<int> GetCount()
+    {
+        var users = await GetAll();
+        return users.Count();
+    }
 }

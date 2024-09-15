@@ -9,4 +9,5 @@ public interface ICategoryDapperRepository
     Task<Categories> GetByName(string name);
     Task<IEnumerable<Categories>> GetSubcategories(int id);
     Task<int[]> GetCategoryIDsWithChildren(int id);
+    Task<int> GetCount();
 }
