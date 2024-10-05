@@ -102,6 +102,21 @@ public class UserController : CustomController
     }
     #endregion
 
+    #region GetAllRoles
+    [HttpGet("roles")]    
+    public async Task<ActionResult> GetAllRoles()
+    {
+        var query = new GetAllRolesQuery();
+        var dtos  = await mediator.Send(query);
+
+        if (dtos is null)
+            throw new NotFoundException("Não foi possível encontrar os perfis"); 
+
+        var response = BaseResponseAPI.Create(dtos);
+        return CustomResponse(response);
+    }
+    #endregion
+
     #endregion
 
     #endregion
