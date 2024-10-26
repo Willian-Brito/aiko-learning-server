@@ -14,26 +14,20 @@ public class GetCategoriesWithPathQuery : IRequest<IEnumerable<CategoryWithPathD
         #region Properties
         private readonly IMapper mapper;
         private readonly ICategoryService categoryService;
-        private readonly ICategoryDapperRepository categoryDapperRepository;
         #endregion
 
         #region Constructor
-        public GetCategoriesWithPathQueryHandler(
-            IMapper mapper, 
-            ICategoryService categoryService, 
-            ICategoryDapperRepository categoryDapperRepository            
-        )
+        public GetCategoriesWithPathQueryHandler(IMapper mapper, ICategoryService categoryService)
         {
             this.mapper = mapper;
-            this.categoryService = categoryService;
-            this.categoryDapperRepository = categoryDapperRepository;            
+            this.categoryService = categoryService;     
         }
         #endregion
 
         #region Handle
         public async Task<IEnumerable<CategoryWithPathDTO>> Handle(GetCategoriesWithPathQuery request, CancellationToken cancellationToken)
         {
-            var categories = await categoryDapperRepository.GetAll();
+            var categories = await categoryService.GetAll();
             var categoriesWithPath = mapper.Map<IEnumerable<CategoryWithPathDTO>>(categories);
 
             foreach (var item in categoriesWithPath)
@@ -41,7 +35,7 @@ public class GetCategoriesWithPathQuery : IRequest<IEnumerable<CategoryWithPathD
                 item.Path = await categoryService.GetPath(item.ID);
             }
 
-            return categoriesWithPath.OrderBy(c => c.Name);
+            return categoriesWithPath.OrderBy(c => c.ID);
         }
         #endregion
     }

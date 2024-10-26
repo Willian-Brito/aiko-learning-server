@@ -28,13 +28,13 @@ public class StatsJobScheduler : IJob
             {
                 var statsRepository = scope.ServiceProvider.GetRequiredService<IStatRepository>();
                 var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-                var categoryDapperRepository = scope.ServiceProvider.GetRequiredService<ICategoryDapperRepository>();
-                var articleDapperRepository = scope.ServiceProvider.GetRequiredService<IArticleDapperRepository>();
+                var categoryRepository = scope.ServiceProvider.GetRequiredService<ICategoryRepository>();
+                var articleRepository = scope.ServiceProvider.GetRequiredService<IArticleRepository>();
 
                 var lastStat = await statsRepository.GetLast();
-                var usersCount = await userRepository.GetCount();
-                var categoriesCount = await categoryDapperRepository.GetCount();
-                var articlesCount = await articleDapperRepository.GetCount();
+                var usersCount = await userRepository.Count();
+                var categoriesCount = await categoryRepository.Count();
+                var articlesCount = await articleRepository.Count();
 
                 var newStat = new Stats(usersCount, categoriesCount, articlesCount, DateTime.Now);
                 var changeUsers = lastStat is null || lastStat.UsersCount != newStat.UsersCount;

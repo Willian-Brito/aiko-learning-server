@@ -26,20 +26,20 @@ public class GetPagedArticlesQuery : IRequest<PagedResult<ArticleDTO>>
         : IRequestHandler<GetPagedArticlesQuery, PagedResult<ArticleDTO>>
     {
         #region Properties
-        private readonly IArticleDapperRepository articleDapperRepository;
         private readonly IArticleRepository articleRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Constructor
         public GetPagedArticlesQueryHandler(
-            IArticleDapperRepository articleDapperRepository,
             IArticleRepository articleRepository,
+            IUserRepository userRepository,
             IMapper mapper
         )
         {
-            this.articleDapperRepository = articleDapperRepository;
             this.articleRepository = articleRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
         }
         #endregion
@@ -53,6 +53,12 @@ public class GetPagedArticlesQuery : IRequest<PagedResult<ArticleDTO>>
             var totalCount = await articleRepository.Count();
             var items = await articleRepository.GetPaged(request.PageNumber, request.PageLimit);
             var articles = mapper.Map<IEnumerable<ArticleDTO>>(items);
+            
+            foreach(var article in articles) 
+            {
+                var user = await userRepository.Get(article.UserId);
+                article.Author = user.Name;
+            }
 
             return new PagedResult<ArticleDTO>
             (

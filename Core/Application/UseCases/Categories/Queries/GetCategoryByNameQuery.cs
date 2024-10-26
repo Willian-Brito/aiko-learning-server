@@ -15,14 +15,14 @@ public class GetCategoryByNameQuery : IRequest<CategoryDTO>
     public class GetCategoryByNameQueryHandler : IRequestHandler<GetCategoryByNameQuery, CategoryDTO>
     {
         #region Properties
-        private readonly ICategoryDapperRepository categoryDapperRepository;
+        private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Constructor
-        public GetCategoryByNameQueryHandler(ICategoryDapperRepository categoryDapperRepository, IMapper mapper)
+        public GetCategoryByNameQueryHandler(ICategoryRepository categoryRepository, IMapper mapper)
         {
-            this.categoryDapperRepository = categoryDapperRepository;
+            this.categoryRepository = categoryRepository;
             this.mapper = mapper;
         }
         #endregion
@@ -30,7 +30,7 @@ public class GetCategoryByNameQuery : IRequest<CategoryDTO>
         #region Handle
         public async Task<CategoryDTO> Handle(GetCategoryByNameQuery request, CancellationToken cancellationToken)
         {
-            var category = await categoryDapperRepository.GetByName(request.Name);
+            var category = await categoryRepository.GetByName(request.Name);
             var dto = mapper.Map<CategoryDTO>(category);
             return dto;
         }

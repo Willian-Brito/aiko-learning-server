@@ -74,8 +74,7 @@ public class ArticleController : CustomController
     #region Queries
 
     #region GetPaged
-    [HttpGet("paged")]
-    [Authorize(Roles = nameof(Role.Administrator))]
+    [HttpGet("paged")]    
     public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
     {
         var query = new GetPagedArticlesQuery(pageNumber, pageLimit);
@@ -109,8 +108,7 @@ public class ArticleController : CustomController
     #endregion
 
     #region GetAll
-    [HttpGet]
-    [Authorize(Roles = nameof(Role.Administrator))]
+    [HttpGet]    
     public async Task<ActionResult> GetAll()
     {
         var query = new GetAllArticlesQuery();
@@ -126,7 +124,6 @@ public class ArticleController : CustomController
 
     #region GetById
     [HttpGet("{id:int}")]
-    [Authorize(Roles = nameof(Role.Administrator))]
     public async Task<ActionResult> GetById(int id)
     {
         var query = new GetArticleByIdQuery { ID = id };

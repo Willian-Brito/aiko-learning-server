@@ -10,10 +10,10 @@ namespace AikoLearning.Core.Application.Auth.Commands;
 public sealed class RegisterUserCommand : IRequest<UserDTO>
 {
     #region Command Properties
-    public string Name { get; set; }
-    public string Password { get; set; }
-    public string ConfirmPassword { get; set; }
-    public string Email { get; set; }
+    public string? Name { get; set; }
+    public string? Password { get; set; }
+    public string? ConfirmPassword { get; set; }
+    public string? Email { get; set; }
     #endregion
 
     #region Handler

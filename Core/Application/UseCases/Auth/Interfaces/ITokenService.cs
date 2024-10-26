@@ -9,4 +9,5 @@ public interface ITokenService
     Task<UserTokenDTO> Generate(User user, IEnumerable<Claim>? claims = null);
     ClaimsPrincipal GetClaimsFromExpiredToken(string token);
     Task<bool> IsTokenExpired(string token);
+    bool IsValidToken(string token);    
 }

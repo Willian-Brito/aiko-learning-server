@@ -11,14 +11,14 @@ public class GetAllArticlesQuery : IRequest<IEnumerable<ArticleDTO>>
     public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, IEnumerable<ArticleDTO>>
     {
         #region Properties
-        private readonly IArticleDapperRepository articleDapperRepository;
+        private readonly IArticleRepository articleRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Constructor
-        public GetAllArticlesQueryHandler(IArticleDapperRepository articleDapperRepository, IMapper mapper)
+        public GetAllArticlesQueryHandler(IArticleRepository articleRepository, IMapper mapper)
         {
-            this.articleDapperRepository = articleDapperRepository;
+            this.articleRepository = articleRepository;
             this.mapper = mapper;
         }
         #endregion
@@ -26,7 +26,7 @@ public class GetAllArticlesQuery : IRequest<IEnumerable<ArticleDTO>>
         #region Handle
         public async Task<IEnumerable<ArticleDTO>> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
-            var articles = await articleDapperRepository.GetAll();
+            var articles = await articleRepository.GetAll();
             var dto = mapper.Map<IEnumerable<ArticleDTO>>(articles);
             return dto;
         }

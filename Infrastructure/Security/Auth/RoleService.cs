@@ -17,6 +17,11 @@ public class RoleService : IRoleService
         return allRoleNames;
     }
 
+    public List<string> GetNamesByRoles(List<Role> roles)
+    {
+        return roles.Select(role => role.ToString()).ToList();
+    }
+
     public List<Role> Convert(List<int> roles)
     {
         var allRoles = GetAllRoles();

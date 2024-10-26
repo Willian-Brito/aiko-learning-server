@@ -1,5 +1,5 @@
 using AikoLearning.Core.Domain.Entities;
-using AikoLearning.Core.Exceptions;
+using AikoLearning.Core.Domain.Exceptions;
 using FluentAssertions;
 
 namespace TestUnit.Domain;

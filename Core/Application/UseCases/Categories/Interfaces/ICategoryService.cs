@@ -9,5 +9,5 @@ public interface ICategoryService : IBaseService<Category, Model.Categories>
 {
     Task<CategoryDTO> GetByName(string name);
     Task<string> GetPath(int id);
-    Task<CategoryDTO> GetTree(int id);
+    Task<List<CategoryDTO>> GetTree(int id);
 }

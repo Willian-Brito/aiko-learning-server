@@ -60,6 +60,7 @@ public sealed class UpdateUserCommand : UserCommand
             (
                 request.Name, 
                 request.Password,
+                request.ConfirmPassword,
                 request.Email,
                 roles,
                 passwordHasher

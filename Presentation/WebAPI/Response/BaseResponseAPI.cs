@@ -8,8 +8,8 @@ public class BaseResponseAPI
     [DataMember(Name = "success")]
     public bool Success { get; set; }
 
-    [DataMember(Name = "data")]
-    public object Data { get; set; }
+    [DataMember(Name = "payload")]
+    public object Payload { get; set; }
 
     private BaseResponseAPI() { }
 
@@ -18,7 +18,7 @@ public class BaseResponseAPI
         var response = new BaseResponseAPI
         { 
             Success = success,
-            Data = obj
+            Payload = obj
         };
 
         return response;

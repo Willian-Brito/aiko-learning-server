@@ -16,7 +16,6 @@ using AikoLearning.Infrastructure.Security.Hashs;
 using AikoLearning.Infrastructure.Security.Sessions;
 using AikoLearning.Infrastructure.Security.Tokens;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,16 +60,9 @@ public static class DependencyInjectionAPI
 
         #region Services
         services.AddScoped<ICategoryService, CategoryService>();
-        // services.AddScoped<IArticleService, ArticleService>();
         #endregion
 
         #region Repository
-        
-        #region Dapper
-        services.AddScoped<ICategoryDapperRepository, CategoryDapperRepository>();
-        services.AddScoped<IArticleDapperRepository, ArticleDapperRepository>();
-        services.AddScoped<IUserDapperRepository, UserDapperRepository>();
-        #endregion
 
         #region Entity Framework
         services.AddScoped<ICategoryRepository, CategoryRepository>();

@@ -25,20 +25,17 @@ public class GetPagedCategoriesQuery : IRequest<PagedResult<CategoryDTO>>
     public class GetPagedCategoriesQueryHandler  
         : IRequestHandler<GetPagedCategoriesQuery, PagedResult<CategoryDTO>>
     {
-        #region Properties
-        private readonly ICategoryDapperRepository categoryDapperRepository;
+        #region Properties        
         private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Constructor
-        public GetPagedCategoriesQueryHandler(
-            ICategoryDapperRepository categoryDapperRepository,
+        public GetPagedCategoriesQueryHandler(            
             ICategoryRepository categoryRepository,
             IMapper mapper
         )
-        {
-            this.categoryDapperRepository = categoryDapperRepository;
+        {            
             this.categoryRepository = categoryRepository;
             this.mapper = mapper;
         }

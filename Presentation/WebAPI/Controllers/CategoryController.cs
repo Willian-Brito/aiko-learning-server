@@ -76,7 +76,7 @@ public class CategoryController : CustomController
 
     #region GetPaged
     [HttpGet("paged")]
-    [Authorize(Roles = nameof(Role.Commom))]
+    // [Authorize(Roles = nameof(Role.Commom))]
     public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
     {
         var query = new GetPagedCategoriesQuery(pageNumber, pageLimit);

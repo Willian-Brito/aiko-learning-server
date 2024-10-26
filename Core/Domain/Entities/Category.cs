@@ -9,7 +9,7 @@ public sealed class Category : BaseEntity
     public string Name { get; private set; }
     public int? ParentId { get; private set; }
     public Category? Parent { get; set; }
-    public List<Category>? Children { get; set; }
+    public List<Category>? Children { get; set; } = new List<Category>();
     public List<Article>? Articles { get; set; }
     #endregion
 

@@ -9,7 +9,7 @@ public class UserTokens : BaseModel
     [Column("user_id")]
     public int UserId { get; set; }
 
-    [Column("acces_token")]
+    [Column("access_token")]
     public string AccessToken { get; set; }
 
     [Column("refresh_token")]

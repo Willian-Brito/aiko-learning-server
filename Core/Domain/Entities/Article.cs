@@ -17,6 +17,7 @@ public sealed class Article : BaseEntity
     #endregion
 
     #region Constructor
+
     public Article(
         string name, 
         int categoryId, 
@@ -26,7 +27,8 @@ public sealed class Article : BaseEntity
         string? imageUrl
     )
     {
-        Update(name, categoryId, userId, description, content, imageUrl);        
+        Validade(name, categoryId, userId, description, content);
+        SetAtributes(name, categoryId, userId, description, content, imageUrl);    
     }
 
     public Article(
@@ -35,8 +37,8 @@ public sealed class Article : BaseEntity
         int categoryId, 
         int userId,
         string description, 
-        byte[] content,
-        string? imageUrl
+        string? imageUrl,
+        byte[] content
     )
     {
         DomainValidationException.When(id < 0, "id do artigo inválido!");
@@ -57,7 +59,18 @@ public sealed class Article : BaseEntity
     )
     {
         Validade(name, categoryId, userId, description, content);
-        
+        SetAtributes(name, categoryId, userId, description, content, imageUrl);
+    }
+
+    private void SetAtributes(
+        string name, 
+        int categoryId, 
+        int userId,
+        string description, 
+        byte[] content,
+        string? imageUrl
+    )
+    {
         Name = name;
         CategoryId = categoryId;
         UserId = userId;
@@ -78,10 +91,10 @@ public sealed class Article : BaseEntity
         DomainValidationException.When(name.Length < 3, "Nome inválido, é necessário ter no minimo 3 caracteres!");
         DomainValidationException.When(name.Length > 100, "Nome deve ser menor que 100 caracteres!");
         
-        DomainValidationException.When(categoryId < 0, "Inofrme a categoria!");
-        DomainValidationException.When(userId < 0, "Informe o autor!");
+        DomainValidationException.When(categoryId <= 0, "Inofrme a categoria!");
+        DomainValidationException.When(userId <= 0, "Informe o autor!");
 
-        DomainValidationException.When(description.Length > 1000, "Descrição deve ser menor que 1000 caracteres!");
+        DomainValidationException.When(!string.IsNullOrEmpty(description) && description.Length > 1000, "Descrição deve ser menor que 1000 caracteres!");
         DomainValidationException.When(content == null || content.Length == 0, "Conteúdo não informado!");
     }
     #endregion

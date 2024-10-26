@@ -11,5 +11,5 @@ public static class Settings
     // public static readonly int ACCESS_TOKEN_EXPIRATION = 3600; // 1 hora
     // public static readonly int REFRESH_TOKEN_EXPIRATION = 7200; // 2 horas
     public static readonly int ACCESS_TOKEN_EXPIRATION = 86400; // 1 dia
-    public static readonly int REFRESH_TOKEN_EXPIRATION = 86400;
+    public static readonly int REFRESH_TOKEN_EXPIRATION = 86400; // 1 dia
 }

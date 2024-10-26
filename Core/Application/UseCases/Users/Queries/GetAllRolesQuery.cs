@@ -10,15 +10,13 @@ public class GetAllRolesQuery : IRequest<List<string>>
     public class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, List<string>>
     {
         #region Properties                
-        private readonly IRoleService roleService;
-        private readonly IMapper mapper;
+        private readonly IRoleService roleService;        
         #endregion
 
         #region Constructor
-        public GetAllRolesQueryHandler(IMapper mapper, IRoleService roleService)
+        public GetAllRolesQueryHandler(IRoleService roleService)
         {            
-            this.roleService = roleService;
-            this.mapper = mapper;
+            this.roleService = roleService;            
         }
         #endregion
 

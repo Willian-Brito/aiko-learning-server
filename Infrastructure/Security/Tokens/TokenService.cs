@@ -14,12 +14,14 @@ namespace AikoLearning.Infrastructure.Security.Tokens;
 public class TokenService : ITokenService
 {
     #region Properties
+    private readonly IRoleService roleService;
     private readonly IUserTokenRepository userTokenRepository;
     #endregion
 
     #region Constructors
-    public TokenService(IUserTokenRepository userTokenRepository) 
+    public TokenService(IUserTokenRepository userTokenRepository, IRoleService roleService) 
     { 
+        this.roleService = roleService;
         this.userTokenRepository = userTokenRepository;
     }
     #endregion
@@ -58,14 +60,19 @@ public class TokenService : ITokenService
         #endregion
 
         #region UserTokenDTO
+        var roles = roleService.GetNamesByRoles(user.Roles);
 
         var dto = new UserTokenDTO()
         {
+            ID = user.ID,
+            Name = user.Name,
+            Email = user.Email.Address,
+            Roles = roles.ToArray(),
             AccessToken = tokenHandler.WriteToken(token),
             RefreshToken = refreshToken,
             AccessTokenExpiration = accessTokenExpiration,
             RefreshTokenExpiration = refreshTokenExpiration
-        };
+        };            
         #endregion
 
         #region Save
@@ -89,29 +96,46 @@ public class TokenService : ITokenService
     #region GetClaimsFromExpiredToken
     public ClaimsPrincipal GetClaimsFromExpiredToken(string token)
     {
-        var tokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = Settings.ISSUER,
-            ValidAudience = Settings.AUDIENCE,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.SECRET_KEY))
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var claims =  tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-
-        if(securityToken is not JwtSecurityToken jwtSecurityToken ||
-          !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, 
-            StringComparison.InvariantCultureIgnoreCase)
-        )
-        {
-            throw new SecurityTokenException("Token inválido!");
-        }
+        if(!IsValidToken(token, out var claims))
+            throw new SecurityTokenException("Token inválido!");        
 
         return claims;
+    }
+    #endregion
+
+    #region IsValidToken
+    public bool IsValidToken(string token)
+    {
+        return ValidateTokenInternal(token, out _);
+    }
+
+    private bool IsValidToken(string token, out ClaimsPrincipal claims)
+    {
+        return ValidateTokenInternal(token, out claims);
+    }
+
+    private bool ValidateTokenInternal(string token, out ClaimsPrincipal claims)
+    {
+        var tokenValidationParameters = GetTokenValidationParameters();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        claims = null;
+
+        try
+        {
+            claims = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            
+            if (securityToken is JwtSecurityToken jwtSecurityToken &&
+                jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return jwtSecurityToken.ValidTo > DateTime.UtcNow;
+            }
+        }
+        catch
+        {            
+            return false;
+        }
+
+        return false;
     }
     #endregion
 
@@ -123,6 +147,24 @@ public class TokenService : ITokenService
     }
     #endregion
     
+    #region GetTokenValidationParameters
+    private TokenValidationParameters GetTokenValidationParameters()
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = Settings.ISSUER,
+            ValidAudience = Settings.AUDIENCE,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.SECRET_KEY))
+        };
+
+        return tokenValidationParameters;
+    }
+    #endregion
+
     #region GetClaims
     private ClaimsIdentity GetClaims(User user, IEnumerable<Claim> claims)
     {

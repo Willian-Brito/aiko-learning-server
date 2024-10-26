@@ -39,8 +39,8 @@ public sealed class CreateArticleCommand : ArticleCommand
             var newArticle = new Article
             (
                 request.Name, 
-                request.CategoryId, 
-                request.UserId, 
+                request.CategoryId ?? 0, 
+                request.UserId ?? 0, 
                 request.Description, 
                 request.Content,                 
                 request.ImageUrl

@@ -1,6 +1,6 @@
 using System.Text;
 using AikoLearning.Core.Domain.Entities;
-using AikoLearning.Core.Exceptions;
+using AikoLearning.Core.Domain.Exceptions;
 using FluentAssertions;
 
 namespace TestUnit.Domain;
@@ -154,6 +154,26 @@ public class ArticleUnitTest
               .Throw<DomainValidationException>()
               .WithMessage("Inofrme a categoria!");
     }
+
+    [Fact(DisplayName = "Não deve criar artigo quando o categoryId for zero")]
+    public void CreateArticle_ZeroCategoryIdValue_DomainExceptionInvalidId()
+    {
+        var action = () => 
+            new Article
+            (
+                id: 1,
+                name: "Article Name", 
+                categoryId: 0, 
+                userId: 1, 
+                description: "Article Description", 
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Inofrme a categoria!");
+    }
     #endregion
 
     #region UserId
@@ -167,6 +187,26 @@ public class ArticleUnitTest
                 name: "Article Name", 
                 categoryId: 1, 
                 userId: -1, 
+                description: "Article Description", 
+                content:  Encoding.UTF8.GetBytes("teste"),
+                imageUrl: "Article ImageUrl"
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Informe o autor!");
+    }
+
+    [Fact(DisplayName = "Não deve criar artigo quando o userId for zero")]
+    public void CreateArticle_ZeroUserIdValue_DomainExceptionInvalidId()
+    {
+        var action = () => 
+            new Article
+            (
+                id: 1,
+                name: "Article Name", 
+                categoryId: 1, 
+                userId: 0, 
                 description: "Article Description", 
                 content:  Encoding.UTF8.GetBytes("teste"),
                 imageUrl: "Article ImageUrl"

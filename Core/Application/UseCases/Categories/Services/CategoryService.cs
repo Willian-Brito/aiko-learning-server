@@ -58,7 +58,7 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
     #endregion
 
     #region GetTree
-    public async Task<CategoryDTO> GetTree(int id)
+    public async Task<List<CategoryDTO>> GetTree(int id)
     {
         var categories = await categoryRepository.GetAll();
         var rootCategory = await categoryRepository.Get(id);
@@ -66,8 +66,8 @@ public class CategoryService : BaseService<Category, Model.Categories>, ICategor
         if (rootCategory != null)
             await PopulateChildren(categories.ToList(), rootCategory);
         
-        var dto = mapper.Map<CategoryDTO>(rootCategory);
-        return dto;
+        var dtos = mapper.Map<List<CategoryDTO>>(rootCategory.Children);
+        return dtos;
     }
     
     private async Task PopulateChildren(List<Category> categories, Category parentCategory)

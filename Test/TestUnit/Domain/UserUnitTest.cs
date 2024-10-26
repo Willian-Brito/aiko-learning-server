@@ -1,5 +1,6 @@
 using AikoLearning.Core.Domain.Entities;
-using AikoLearning.Core.Exceptions;
+using AikoLearning.Core.Domain.Enums;
+using AikoLearning.Core.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 
@@ -18,7 +19,7 @@ public class UserUnitTest
                 name: "Willian Brito",
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> { Role.Administrator }
             );
 
         action.Should()
@@ -38,7 +39,7 @@ public class UserUnitTest
                 name: "Willian Brito",
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> { Role.Administrator }
             );
 
         action.Should().NotThrow<DomainValidationException>();
@@ -48,7 +49,7 @@ public class UserUnitTest
     #region Name
 
     [Fact(DisplayName = "Não deve criar usuário quando o nome for menor que 3 caracteres")]
-    public void CreateArticle_ShortNameValue_DomainExceptionRequiredName()
+    public void CreateUser_ShortNameValue_DomainExceptionRequiredName()
     {
         var action = () =>
              new User
@@ -57,7 +58,7 @@ public class UserUnitTest
                 name: "Wi",
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> { Role.Administrator }
             );
 
         action.Should()
@@ -66,7 +67,7 @@ public class UserUnitTest
     }
 
     [Fact(DisplayName = "Não deve criar usuário quando o nome for vazio")]
-    public void CreateArticle_MissingNameValue_DomainExceptionRequiredName()
+    public void CreateUser_MissingNameValue_DomainExceptionRequiredName()
     {
         var action = () => 
              new User
@@ -75,7 +76,7 @@ public class UserUnitTest
                 name: "",
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> { Role.Administrator }
             );
 
         action.Should()
@@ -84,7 +85,7 @@ public class UserUnitTest
     }
 
     [Fact(DisplayName = "Não deve criar usuário quando o nome for nulo")]
-    public void CreateArticle_WithNameValue_DomainExceptionInvalidName()
+    public void CreateUser_WithNameValue_DomainExceptionInvalidName()
     {
         var action = () => 
              new User
@@ -93,7 +94,7 @@ public class UserUnitTest
                 name: null,
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> { Role.Administrator }
             );
 
         action.Should()
@@ -102,7 +103,7 @@ public class UserUnitTest
     }
 
     [Fact(DisplayName = "Não deve criar usuário quando o nome for maior que 200 caracteres")]
-    public void CreateArticle_WithNameInvalid_DomainExceptionInvalidName()
+    public void CreateUser_WithNameInvalid_DomainExceptionInvalidName()
     {
         var name = @"testeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeetesteeeeeeeeeeeeeeee
@@ -115,12 +116,138 @@ public class UserUnitTest
                 name: name,
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                isAdmin: true
+                roles: new List<Role> { Role.Administrator }
             );
 
         action.Should()
               .Throw<DomainValidationException>()
               .WithMessage("Nome deve ser menor que 200 caracteres!");
+    }
+    #endregion
+
+    #region Password
+    [Fact(DisplayName = "Não deve criar usuário quando a senha for vazia")]
+    public void CreateUser_WithPasswordIsEmpty_DomainExceptionInvalidPassword()
+    {
+        var mockUserService = new Mock<IPasswordHasher>();
+        
+        mockUserService.Setup(service => service.EncryptPassword("123456"))
+                       .Returns("$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK");
+
+        var action = () => 
+            User.Create
+            (                
+                name: "Willian Brito",
+                password: "",
+                confirmPassword: "123456",
+                email: "wbrito@aiko.digital",
+                roles: new List<Role> { Role.Administrator },
+                mockUserService.Object
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Informe a senha!");
+    }
+
+    [Fact(DisplayName = "Não deve criar usuário quando a senha for nula")]
+    public void CreateUser_WithPasswordIsNulll_DomainExceptionInvalidPassword()
+    {
+        var mockUserService = new Mock<IPasswordHasher>();
+        
+        mockUserService.Setup(service => service.EncryptPassword("123456"))
+                       .Returns("$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK");
+
+        var action = () => 
+            User.Create
+            (                
+                name: "Willian Brito",
+                password: null,
+                confirmPassword: "123456",
+                email: "wbrito@aiko.digital",
+                roles: new List<Role> { Role.Administrator },
+                mockUserService.Object
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Informe a senha!");
+    }
+    #endregion
+
+    #region ConfirmPassword
+    [Fact(DisplayName = "Não deve criar usuário quando a confirmação da senha for vazia")]
+    public void CreateUser_WithConfirmPasswordIsEmpty_DomainExceptionInvalidConfirmPassword()
+    {
+        var mockUserService = new Mock<IPasswordHasher>();
+        
+        mockUserService.Setup(service => service.EncryptPassword("123456"))
+                       .Returns("$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK");
+
+        var action = () => 
+            User.Create
+            (                
+                name: "Willian Brito",
+                password: "123456",
+                confirmPassword: "",
+                email: "wbrito@aiko.digital",
+                roles: new List<Role> { Role.Administrator },
+                mockUserService.Object
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Informe a confirmação de senha!");
+    }
+
+    [Fact(DisplayName = "Não deve criar usuário quando a confirmação da senha for nula")]
+    public void CreateUser_WithConfirmPasswordIsNulll_DomainExceptionInvalidConfirmPassword()
+    {
+        var mockUserService = new Mock<IPasswordHasher>();
+        
+        mockUserService.Setup(service => service.EncryptPassword("123456"))
+                       .Returns("$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK");
+
+        var action = () => 
+            User.Create
+            (                
+                name: "Willian Brito",
+                password: "123456",
+                confirmPassword: null,
+                email: "wbrito@aiko.digital",
+                roles: new List<Role> { Role.Administrator },
+                mockUserService.Object
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Informe a confirmação de senha!");
+    }
+    #endregion
+
+    #region Passwords Don't Match
+    [Fact(DisplayName = "Não deve criar usuário quando a senha e confirmação de senha sejam diferentes")]
+    public void CreateUser_WithPasswordsDontMatch_DomainExceptionInvalidPassword()
+    {
+        var mockUserService = new Mock<IPasswordHasher>();
+        
+        mockUserService.Setup(service => service.EncryptPassword("123456"))
+                       .Returns("$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK");
+
+        var action = () => 
+            User.Create
+            (                
+                name: "Willian Brito",
+                password: "123456",
+                confirmPassword: "12345",
+                email: "wbrito@aiko.digital",
+                roles: new List<Role> { Role.Administrator },
+                mockUserService.Object
+            );
+
+        action.Should()
+              .Throw<DomainValidationException>()
+              .WithMessage("Senhas não conferem!");
     }
     #endregion
 }

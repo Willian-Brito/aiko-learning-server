@@ -46,8 +46,8 @@ public sealed class UpdateArticleCommand : ArticleCommand
             article.Update
             (
                 request.Name, 
-                request.CategoryId, 
-                request.UserId, 
+                (int)request.CategoryId, 
+                (int)request.UserId, 
                 request.Description, 
                 request.Content,
                 request.ImageUrl

@@ -56,7 +56,7 @@ public class UserController : CustomController
     }
     #endregion
 
-    #region  Delete
+    #region Delete
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {

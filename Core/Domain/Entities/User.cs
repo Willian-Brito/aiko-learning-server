@@ -18,17 +18,6 @@ public sealed class User : BaseEntity
 
     #region Constructors
     public User(
-        string name, 
-        string password, 
-        string email,
-        List<Role> roles    
-    )
-    {
-        Validade(name, roles);
-        SetAtributes(name, password, email, roles);
-    }
-
-    public User(
         int id,
         string name, 
         string password, 
@@ -41,28 +30,49 @@ public sealed class User : BaseEntity
         Validade(name, roles);
         SetAtributes(name, password, email, roles);
     }
+
+    public User(        
+        string name, 
+        string password,        
+        string email, 
+        List<Role> roles
+    )
+    {
+        SetAtributes(name, password, email, roles);
+    }
     #endregion
 
     #region Method
 
-    public static User Create(string name, string password, string confirmPassword, string email, List<Role> roles, IPasswordHasher passwordHasher)
+    public static User Create(
+        string name, 
+        string password, 
+        string confirmPassword, 
+        string email, 
+        List<Role> roles, 
+        IPasswordHasher passwordHasher
+    )
     {
-        DomainValidationException.When(password != confirmPassword, "Senhas não conferem!");
-
+        Validade(name, roles);
+        ValidatePassword(password, confirmPassword);
         var hash = passwordHasher.EncryptPassword(password);
+
         return new User(name, hash, email, roles);
     }
 
     public void Update(
         string name, 
         string password, 
+        string confirmPassword,
         string email, 
         List<Role> roles,
         IPasswordHasher passwordHasher
     )
     {
-        var hash = passwordHasher.EncryptPassword(password);
         Validade(name, roles);
+        ValidatePassword(password, confirmPassword);
+
+        var hash = passwordHasher.EncryptPassword(password);
         SetAtributes(name, hash, email, roles);
     }
 
@@ -72,7 +82,7 @@ public sealed class User : BaseEntity
         return isAdmin;
     }
 
-    private void Validade(string name, List<Role> roles)
+    private static void Validade(string name, List<Role> roles)
     {
         DomainValidationException.When(string.IsNullOrEmpty(name), "Informe o nome!");
         DomainValidationException.When(name.Length < 3, "Nome inválido, é necessário ter no minimo 3 caracteres!");
@@ -82,6 +92,13 @@ public sealed class User : BaseEntity
         var isValid = roles.Any(role => !allRoles.Contains(role));
 
         DomainValidationException.When(isValid, "Regra de perfil inválida!");
+    }
+
+    private static void ValidatePassword(string password, string confirmPassword)
+    {
+        DomainValidationException.When(string.IsNullOrWhiteSpace(password), "Informe a senha!");
+        DomainValidationException.When(string.IsNullOrWhiteSpace(confirmPassword), "Informe a confirmação de senha!");
+        DomainValidationException.When(password != confirmPassword, "Senhas não conferem!");
     }
 
     private void SetAtributes(

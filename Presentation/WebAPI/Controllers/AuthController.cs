@@ -12,13 +12,13 @@ namespace AikoLearning.Presentation.WebAPI.Controllers;
 public class AuthController : CustomController
 {
     #region Properties
-    private readonly IMediator mediator;
+    private readonly IMediator mediator;    
     #endregion
 
     #region Constructor
     public AuthController(IMediator mediator)
     {
-        this.mediator = mediator;
+        this.mediator = mediator;        
     }
     #endregion
 
@@ -70,6 +70,17 @@ public class AuthController : CustomController
     #region RefreshToken
     [HttpPost("refresh")]
     public async Task<ActionResult> RefreshToken(RefreshUserTokenCommand command) 
+    {
+        var dto = await mediator.Send(command);
+        var response = BaseResponseAPI.Create(dto);
+
+        return CustomResponse(response);
+    }
+    #endregion
+
+    #region ValidateToken
+    [HttpPost("validateToken")]
+    public async Task<ActionResult> ValidateToken(ValidateTokenCommand command) 
     {
         var dto = await mediator.Send(command);
         var response = BaseResponseAPI.Create(dto);

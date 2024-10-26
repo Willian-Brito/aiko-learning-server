@@ -46,7 +46,7 @@ public sealed class CreateUserCommand : UserCommand
         #region Handle
         public async Task<UserDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            await Validate(request.Email);
+            await Validate(request);
             
             var roles = roleService.Convert(request.Roles);
             
@@ -68,14 +68,13 @@ public sealed class CreateUserCommand : UserCommand
             return dto;
         }
 
-        private async Task Validate(string email)
+        private async Task Validate(CreateUserCommand request)
         {
             var currentUser = await sessionService.GetCurrentUser();
-
             if(!currentUser.IsAdmin())
                 throw new ForbiddenException("Sem permissão para acessar este recurso!");
 
-            var hasEmail = await userRepository.GetByEmail(email) != null;
+            var hasEmail = await userRepository.GetByEmail(request.Email) != null;
             if (hasEmail)
                 throw new BadRequestException("O e-mail de usuário já existe");
         }

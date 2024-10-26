@@ -28,22 +28,19 @@ public class GetPagedArticlesByCategoryQuery : IRequest<PagedResult<ArticleByCat
         : IRequestHandler<GetPagedArticlesByCategoryQuery, PagedResult<ArticleByCategoryDTO>>
     {
         #region Properties
-        private readonly ICategoryDapperRepository categoryDapperRepository;
-        private readonly IArticleDapperRepository articleDapperRepository;
+        private readonly ICategoryRepository categoryRepository;
         private readonly IArticleRepository articleRepository;
         private readonly IMapper mapper;
         #endregion
 
         #region Constructor
         public GetPagedArticlesByCategoryQueryHandler(
-            ICategoryDapperRepository categoryDapperRepository,
-            IArticleDapperRepository articleDapperRepository,
+            ICategoryRepository categoryRepository,
             IArticleRepository articleRepository,
             IMapper mapper
         )
         {
-            this.categoryDapperRepository = categoryDapperRepository;
-            this.articleDapperRepository = articleDapperRepository;
+            this.categoryRepository = categoryRepository;
             this.articleRepository = articleRepository;
             this.mapper = mapper;
         }
@@ -58,8 +55,8 @@ public class GetPagedArticlesByCategoryQuery : IRequest<PagedResult<ArticleByCat
             var pageNumber = request.PageNumber == 0 ? 0 : request.PageNumber - 1;
             var categoryId = request.ID;
             var totalCount = await articleRepository.Count();
-            var categoryIDs = await categoryDapperRepository.GetCategoryIDsWithChildren(categoryId);            
-            var items = await articleDapperRepository.GetPagedByCategories(categoryIDs, pageNumber, request.PageLimit);            
+            var categoryIDs = await categoryRepository.GetCategoryIDsWithChildren(categoryId);            
+            var items = await articleRepository.GetPagedByCategories(categoryIDs, pageNumber, request.PageLimit);            
             var articles = mapper.Map<IEnumerable<ArticleByCategoryDTO>>(items);
 
             return new PagedResult<ArticleByCategoryDTO>
