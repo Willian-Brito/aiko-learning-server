@@ -31,7 +31,7 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
 
     #region Methods
 
-    #region Dapper
+    #region Queries (Dapper)
 
     #region GetPaged
     // public async Task<IEnumerable<TEntity>> GetPaged(int pageNumber, int pageLimit)
@@ -43,15 +43,16 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     //     return entities;
     // }
 
-    public async Task<IEnumerable<TEntity>> GetPaged(int pageNumber, int pageLimit)
+    public virtual async Task<IEnumerable<TEntity>> GetPaged(int pageNumber, int pageLimit)
     {
         pageNumber = pageNumber == 0 ? 0 : pageNumber - 1;
         var skip = pageNumber * pageLimit;
         var tableName = GetTableName();
-        var sql = $"SELECT * FROM {tableName}";
-        var query = await dbConnection.QueryAsync<TEntity>(sql);
+        var sql = $"SELECT * FROM {tableName} {DeletedAt()}";
+        var models = await dbConnection.QueryAsync<TModel>(sql);
+        var entities = mapper.Map<IEnumerable<TEntity>>(models);
 
-        return query.Skip(skip).Take(pageLimit).ToList();
+        return entities.Skip(skip).Take(pageLimit).ToList();
     }
     #endregion
 
@@ -65,8 +66,10 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     public virtual async Task<IEnumerable<TEntity>> GetAll()
     {
         var tableName = GetTableName();
-        var query = $"SELECT * FROM {tableName}";
-        return await dbConnection.QueryAsync<TEntity>(query);
+        var query = $"SELECT * FROM {tableName} {DeletedAt()}";
+        var models = await dbConnection.QueryAsync<TModel>(query);
+
+        return mapper.Map<IEnumerable<TEntity>>(models);
     }
     #endregion
 
@@ -81,22 +84,17 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     public virtual async Task<TEntity> Get(int id)
     {
         var tableName = GetTableName();
-        var query = $"SELECT * FROM {tableName} WHERE id = @id";
-        var entity = await dbConnection.QueryFirstOrDefaultAsync<TEntity>(query, new { id = id });
-        return entity;
+        var query = $"SELECT * FROM {tableName} WHERE id = @id {DeletedAt(false)}";
+        var model = await dbConnection.QueryFirstOrDefaultAsync<TModel>(query, new { id = id });
+        return mapper.Map<TEntity>(model);
     }
     #endregion
 
     #region Count
-    // public async Task<int> Count()
-    // {
-    //     return await dbSet.CountAsync();
-    // }
-
      public async Task<int> Count()
     {
         var tableName = GetTableName();
-        var count = $"SELECT COUNT(id) FROM {tableName}";
+        var count = $"SELECT COUNT(id) FROM {tableName} {DeletedAt()}";
         return await dbConnection.ExecuteScalarAsync<int>(count);
     }
     #endregion
@@ -113,9 +111,20 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     }
     #endregion
     
+    #region DeletedAt
+    private string DeletedAt(bool isWhere = true)
+    {
+        var clause = isWhere ? "WHERE" : "AND";
+        var hasDeletedAtProperty = typeof(TModel).GetProperty("DeletedAt") != null;
+        var whereClause = hasDeletedAtProperty ? $"{clause} deleted_at IS NULL" : string.Empty;
+
+        return whereClause;
+    }
     #endregion
 
-    #region Entity Framework
+    #endregion
+
+    #region Commands (Entity Framework)
 
     #region Insert
     public async Task<TModel> Insert(TEntity entity)

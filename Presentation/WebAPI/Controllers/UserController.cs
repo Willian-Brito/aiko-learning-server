@@ -2,8 +2,6 @@ using AikoLearning.Core.Application.Users.Commands;
 using AikoLearning.Core.Application.Users.Queries;
 using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.Exceptions;
-using AikoLearning.Core.Domain.Exceptions;
-using AikoLearning.Infrastructure.Security.Sessions;
 using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -71,6 +69,21 @@ public class UserController : CustomController
     #endregion
 
     #region Queries
+
+    #region GetPaged
+    [HttpGet("paged")]    
+    public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
+    {
+        var query = new GetPagedUsersQuery(pageNumber, pageLimit);
+        var paged = await mediator.Send(query);
+
+        if (paged == null)
+            throw new NotFoundException("Não foi possível encontrar os usuários");         
+
+        var response = BaseResponseAPI.Create(paged);
+        return CustomResponse(response);
+    }
+    #endregion
 
     #region GetAll
     [HttpGet]

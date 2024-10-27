@@ -4,7 +4,6 @@ using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
-using AutoMapper;
 using MediatR;
 
 namespace AikoLearning.Core.Application.Auth.Commands;

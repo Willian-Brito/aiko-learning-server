@@ -51,26 +51,6 @@ public class ArticleUnitTest
 
     #region Name
 
-    [Fact(DisplayName = "Não deve criar artigo quando o nome for menor que 3 caracteres")]
-    public void CreateArticle_ShortNameValue_DomainExceptionRequiredName()
-    {
-        var action = () =>
-            new Article
-            (
-                id: 1,
-                name: "Ar", 
-                categoryId: 1, 
-                userId: 1, 
-                description: "Article Description", 
-                content:  Encoding.UTF8.GetBytes("teste"),
-                imageUrl: "Article ImageUrl"
-            );
-
-        action.Should()
-              .Throw<DomainValidationException>()
-              .WithMessage("Nome inválido, é necessário ter no minimo 3 caracteres!");
-    }
-
     [Fact(DisplayName = "Não deve criar artigo quando o nome for vazio")]
     public void CreateArticle_MissingNameValue_DomainExceptionRequiredName()
     {

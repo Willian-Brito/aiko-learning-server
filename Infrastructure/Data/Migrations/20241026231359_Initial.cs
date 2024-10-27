@@ -21,7 +21,13 @@ namespace Data.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    parent_id = table.Column<int>(type: "integer", nullable: true)
+                    parent_id = table.Column<int>(type: "integer", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "NOW()"),
+                    created_by = table.Column<string>(type: "text", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "text", nullable: true),
+                    deleted_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    deleted_by = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,7 +49,13 @@ namespace Data.Migrations
                     name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     password = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
-                    roles = table.Column<int[]>(type: "integer[]", nullable: true)
+                    roles = table.Column<int[]>(type: "integer[]", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "NOW()"),
+                    created_by = table.Column<string>(type: "text", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "text", nullable: true),
+                    deleted_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    deleted_by = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,7 +73,13 @@ namespace Data.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     image_url = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    content = table.Column<byte[]>(type: "BYTEA", nullable: true)
+                    content = table.Column<byte[]>(type: "BYTEA", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    created_by = table.Column<string>(type: "text", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "text", nullable: true),
+                    deleted_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    deleted_by = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,7 +105,7 @@ namespace Data.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    acces_token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    access_token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     refresh_token = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     access_token_expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     refresh_token_expiration = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
@@ -105,18 +123,38 @@ namespace Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "categories",
-                columns: new[] { "id", "name", "parent_id" },
+                columns: new[] { "id", "created_by", "deleted_at", "deleted_by", "name", "parent_id", "updated_at", "updated_by" },
                 values: new object[,]
                 {
-                    { 1, "Material Escolar", null },
-                    { 2, "Eletrônicos", null },
-                    { 3, "Acessórios", null }
+                    { 1, "1", null, null, "Back-End", null, null, null },
+                    { 2, "1", null, null, "Front-End", null, null, null },
+                    { 3, "1", null, null, "Mobile", null, null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "id", "email", "name", "password", "roles" },
-                values: new object[] { 1, "wbrito@aiko.digital", "Willian Brito", "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", new[] { 0 } });
+                columns: new[] { "id", "created_by", "deleted_at", "deleted_by", "email", "name", "password", "roles", "updated_at", "updated_by" },
+                values: new object[] { 1, "1", null, null, "wbrito@aiko.digital", "Willian Brito", "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", new[] { 0 }, null, null });
+
+            migrationBuilder.InsertData(
+                table: "categories",
+                columns: new[] { "id", "created_by", "deleted_at", "deleted_by", "name", "parent_id", "updated_at", "updated_by" },
+                values: new object[,]
+                {
+                    { 4, "1", null, null, "Linguagem", 1, null, null },
+                    { 5, "1", null, null, "Banco de Dados", 1, null, null },
+                    { 6, "1", null, null, "Linguagem", 1, null, null },
+                    { 7, "1", null, null, "Lógica de Programação", 1, null, null },
+                    { 8, "1", null, null, "Design Patterns", 1, null, null },
+                    { 9, "1", null, null, "Testes Automátizados", 1, null, null },
+                    { 10, "1", null, null, "Arquitetura", 1, null, null },
+                    { 11, "1", null, null, "Html", 2, null, null },
+                    { 12, "1", null, null, "Css", 2, null, null },
+                    { 13, "1", null, null, "Javascript", 2, null, null },
+                    { 14, "1", null, null, "Frameworks", 2, null, null },
+                    { 15, "1", null, null, "Nativo", 3, null, null },
+                    { 16, "1", null, null, "Híbrido", 3, null, null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_articles_category_id",

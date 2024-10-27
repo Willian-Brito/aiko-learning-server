@@ -8,8 +8,6 @@ public class JobScheduler : Registry
 {
     public JobScheduler(IServiceProvider serviceProvider)
     {
-        // Schedule<StatsJobScheduler>().ToRunNow().AndEvery(1).Minutes();
-
         Schedule(() =>
         {
             var statsJobScheduler = serviceProvider.GetRequiredService<StatsJobScheduler>();

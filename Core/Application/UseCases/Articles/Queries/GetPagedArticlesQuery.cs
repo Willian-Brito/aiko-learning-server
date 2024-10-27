@@ -62,7 +62,7 @@ public class GetPagedArticlesQuery : IRequest<PagedResult<ArticleDTO>>
 
             return new PagedResult<ArticleDTO>
             (
-                items: articles,
+                items: articles.OrderBy(o => o.ID),
                 pageNumber: request.PageNumber,
                 pageLimit: request.PageLimit,
                 totalCount: totalCount

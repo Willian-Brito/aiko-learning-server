@@ -76,7 +76,6 @@ public class CategoryController : CustomController
 
     #region GetPaged
     [HttpGet("paged")]
-    // [Authorize(Roles = nameof(Role.Commom))]
     public async Task<IActionResult> GetPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
     {
         var query = new GetPagedCategoriesQuery(pageNumber, pageLimit);
@@ -140,9 +139,9 @@ public class CategoryController : CustomController
     #region GetCategoriesWithPath
 
     [HttpGet("path")]
-    public async Task<ActionResult> GetCategoriesWithPath()
+    public async Task<ActionResult> GetCategoriesWithPath([FromQuery] int pageNumber = 1, [FromQuery] int pageLimit = 10)
     {
-        var query = new GetCategoriesWithPathQuery();
+        var query = new GetCategoriesWithPathQuery(pageNumber, pageLimit);
         var dto  = await mediator.Send(query);
         var response = BaseResponseAPI.Create(dto);
         

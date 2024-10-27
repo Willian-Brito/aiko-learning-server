@@ -5,7 +5,7 @@ using AikoLearning.Core.Domain.Base;
 namespace AikoLearning.Core.Domain.Model;
 
 [Table("articles")]
-public class Articles : BaseModel
+public class Articles : AuditableEntity
 {
     [Column("name")]
     public string Name { get; set; }

@@ -2,7 +2,6 @@ using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Domain.Account;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
-using AikoLearning.Core.Domain.Enums;
 using AikoLearning.Core.Domain.Exceptions;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;

@@ -5,7 +5,7 @@ using AikoLearning.Core.Domain.Enums;
 namespace AikoLearning.Core.Domain.Model;
 
 [Table("users")]
-public class Users : BaseModel
+public class Users : AuditableEntity
 {
     [Column("name")]
     public string Name { get; set; }
@@ -24,12 +24,13 @@ public class Users : BaseModel
     
     public Users() { }
 
-    public Users(int id, string name, string password, string email, List<Role> roles) 
+    public Users(int id, string name, string password, string email, List<Role> roles, string createdBy) 
     { 
         ID = id;        
         Name = name;
         Password = password;
         Email = email;
         Roles = roles;
+        CreatedBy = createdBy;
     }
 }

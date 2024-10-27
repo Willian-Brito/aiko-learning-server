@@ -17,9 +17,9 @@ public class PersistenceArticleConfiguration : IEntityTypeConfiguration<Articles
         builder.Property(a => a.Description).HasMaxLength(1000).IsRequired(false);
         builder.Property(a => a.ImageUrl).HasMaxLength(200).IsRequired(false);
         builder.Property(a => a.Content).HasColumnType("BYTEA").IsRequired(false);
-        // builder.Property(a => a.CreatedAt).HasColumnType("timestamp without time zone");
-        // builder.Property(a => a.UpdatedAt).HasColumnType("timestamp without time zone");
-        // builder.Property(a => a.DeletedAt).HasColumnType("timestamp without time zone");
+        builder.Property(a => a.CreatedAt).HasColumnType("timestamp without time zone").IsRequired();
+        builder.Property(a => a.UpdatedAt).HasColumnType("timestamp without time zone");
+        builder.Property(a => a.DeletedAt).HasColumnType("timestamp without time zone");
 
         builder
             .HasOne(a => a.Category)

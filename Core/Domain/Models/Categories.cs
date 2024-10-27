@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using AikoLearning.Core.Domain.Base;
 
 namespace AikoLearning.Core.Domain.Model;
 
 [Table("categories")]
-public class Categories : BaseModel
+public class Categories : AuditableEntity
 {
     [Column("name")]
     public string Name { get; set; }
@@ -18,10 +17,11 @@ public class Categories : BaseModel
     public IEnumerable<Articles>? Articles { get; set; }
 
     public Categories() { }
-    public Categories(int id, string name, int? parentId) 
+    public Categories(int id, string name, int? parentId, string userId) 
     {
         ID = id;        
         Name = name;
-        ParentId = parentId;        
+        ParentId = parentId;
+        CreatedBy = userId;
     }
 }

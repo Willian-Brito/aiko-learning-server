@@ -1,7 +1,6 @@
 ﻿using AikoLearning.Core.Application.Base;
 using AikoLearning.Core.Application.DTOs;
 using AikoLearning.Core.Application.Interfaces;
-using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Interfaces;
 using Model = AikoLearning.Core.Domain.Model;

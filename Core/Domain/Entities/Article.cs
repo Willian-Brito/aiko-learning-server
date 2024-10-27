@@ -87,8 +87,7 @@ public sealed class Article : BaseEntity
         byte[] content
     )
     {
-        DomainValidationException.When(string.IsNullOrEmpty(name), "Informe o nome!");
-        DomainValidationException.When(name.Length < 3, "Nome inválido, é necessário ter no minimo 3 caracteres!");
+        DomainValidationException.When(string.IsNullOrWhiteSpace(name), "Informe o nome!");
         DomainValidationException.When(name.Length > 100, "Nome deve ser menor que 100 caracteres!");
         
         DomainValidationException.When(categoryId <= 0, "Inofrme a categoria!");

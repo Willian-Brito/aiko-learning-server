@@ -25,7 +25,7 @@ public class GetPagedCategoriesQuery : IRequest<PagedResult<CategoryDTO>>
     public class GetPagedCategoriesQueryHandler  
         : IRequestHandler<GetPagedCategoriesQuery, PagedResult<CategoryDTO>>
     {
-        #region Properties        
+        #region Properties        PagedResult<
         private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
         #endregion
@@ -53,7 +53,7 @@ public class GetPagedCategoriesQuery : IRequest<PagedResult<CategoryDTO>>
 
             return new PagedResult<CategoryDTO>
             (
-                items: categories,
+                items: categories.OrderBy(o => o.ID),
                 pageNumber: request.PageNumber,
                 pageLimit: request.PageLimit,
                 totalCount: totalCount

@@ -47,26 +47,6 @@ public class AuthController : CustomController
     }
     #endregion
 
-    #region Logout
-
-    // [HttpPost("logout")]
-    // [Authorize]
-    // public async Task<IActionResult> Logout(LogoutUserCommand command)
-    // {
-    //     try
-    //     {
-    //         var newAuth = await mediator.Send(command);
-    //         var response = BaseResponseAPI.Create(newAuth);
-
-    //         return CustomResponse(response);
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         return CustomResponseException(ex);
-    //     }
-    // }
-    #endregion
-
     #region RefreshToken
     [HttpPost("refresh")]
     public async Task<ActionResult> RefreshToken(RefreshUserTokenCommand command) 

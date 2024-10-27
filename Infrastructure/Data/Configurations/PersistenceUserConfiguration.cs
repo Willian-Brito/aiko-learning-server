@@ -17,9 +17,13 @@ public class PersistenceUserConfiguration : IEntityTypeConfiguration<Users>
         builder.Property(c => c.Password).IsRequired();
         builder.Property(c => c.Email).IsRequired();
         builder.Property(u => u.Roles).HasColumnType("integer[]").IsRequired(false);
-        // builder.Property(c => c.CreatedAt).HasColumnType("timestamp without time zone");
-        // builder.Property(c => c.UpdatedAt).HasColumnType("timestamp without time zone");
-        // builder.Property(c => c.DeletedAt).HasColumnType("timestamp without time zone");        
+        builder
+            .Property(c => c.CreatedAt)
+            .HasDefaultValueSql("NOW()")
+            .HasColumnType("timestamp without time zone")
+            .IsRequired();
+        builder.Property(c => c.UpdatedAt).HasColumnType("timestamp without time zone");
+        builder.Property(c => c.DeletedAt).HasColumnType("timestamp without time zone");        
         
         builder.HasData(
             new Users
@@ -28,7 +32,8 @@ public class PersistenceUserConfiguration : IEntityTypeConfiguration<Users>
                 name: "Willian Brito",
                 password: "$2a$11$R2rPEl2L7dEOo7fjUVA4CeySrz/a03JmNhJCglJRHnRlYzD8RRtFK", 
                 email: "wbrito@aiko.digital",
-                roles: new List<Role> {Role.Administrator}
+                roles: new List<Role> {Role.Administrator},
+                createdBy: "1"
             )
         );
     }

@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AikoLearning.Core.Domain.Base;
+using AikoLearning.Core.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AikoLearning.Infrastructure.Data.Context;
 
@@ -12,11 +16,16 @@ public class ApplicationDbContext : DbContext
     // {
     //     return Set<TEntity>();
     // }
+    
+    private readonly IServiceProvider serviceProvider;
     #endregion
 
     #region Constructor
     public ApplicationDbContext(){ }
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){ }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IServiceProvider serviceProvider) : base(options)
+    { 
+        this.serviceProvider = serviceProvider;
+    }
     #endregion
 
     #region Methods
@@ -37,48 +46,34 @@ public class ApplicationDbContext : DbContext
         }        
     }
 
-    // public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    // {
-    //     foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
-    //     {
-    //         PropertyValues databaseValues = null;
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var sessionService = serviceProvider.GetRequiredService<ISessionService>();
+
+        foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
+        {
+            var userID = sessionService.GetCurrentUserId().ToString();
             
-    //         switch (entry.State)
-    //         {
-    //             case EntityState.Added:
-    //                 entry.Entity.CreatedBy = _currentUserService.SessionId;
-    //                 entry.Entity.CreatedAt = _dateTimeService.UtcNow;
-    //                 entry.Entity.UpdatedAt = _dateTimeService.UtcNow;
-    //                 entry.Entity.Version = 1;
-    //                 break;
-    //             case EntityState.Modified:
-    //                 databaseValues = await entry.GetDatabaseValuesAsync(cancellationToken);
-    //                 if (databaseValues.TryGetValue<long>(nameof(BasePersistenceEntity.Version), out var currentVersion))
-    //                 {
-    //                     if (currentVersion != entry.Entity.Version)
-    //                     {
-    //                         throw new DbUpdateConcurrencyException(
-    //                             @$"Entity '{entry.GetType().Name}' was modified to version {currentVersion} while was in local cache.\nid={Json.SerializeObject(entry.Entity)}"
-    //                         );
-    //                     }
-    //                     entry.Entity.Version++;
-    //                 }
-    //                 entry.Entity.UpdatedBy = _currentUserService.SessionId;
-    //                 entry.Entity.UpdatedAt = _dateTimeService.UtcNow;
-    //                 break;
-    //         }
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedBy = userID;
+                    entry.Entity.CreatedAt = DateTime.Now;                                     
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.UpdatedBy = userID;
+                    entry.Entity.UpdatedAt = DateTime.Now;
+                    break;
 
-    //         if (entry.Entity.DeletedAt.HasValue && entry.State is EntityState.Added or EntityState.Modified)
-    //         {
-    //             var currentDeletedAt = databaseValues?.GetValue<DateTime?>(nameof(BasePersistenceEntity.DeletedAt));
-    //             if (!currentDeletedAt.HasValue || currentDeletedAt != entry.Entity.DeletedAt)
-    //             {
-    //                 entry.Entity.DeletedBy = _currentUserService.SessionId;
-    //             }
-    //         }
-    //     }
+                case EntityState.Deleted:
+                    entry.State = EntityState.Modified;
+                    entry.Entity.DeletedBy = userID;
+                    entry.Entity.DeletedAt = DateTime.Now;
+                    break;
+            }
+        }
 
-    //     return await base.SaveChangesAsync(cancellationToken);
-    // }
+        return await base.SaveChangesAsync(cancellationToken);
+    }
     #endregion
 }
