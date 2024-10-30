@@ -1,7 +1,9 @@
 using System.Text;
+using AikoLearning.Core.Application.Interfaces;
 using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Exceptions;
 using FluentAssertions;
+using Moq;
 
 namespace TestUnit.Domain;
 
@@ -257,6 +259,81 @@ public class ArticleUnitTest
         action.Should()
               .Throw<DomainValidationException>()
               .WithMessage("Conteúdo não informado!");
+    }
+
+    [Fact(DisplayName = "Conteúdo do artigo não deve ter caracteres maliciosos quando for string")]
+    public void ArticleContent_ShouldNotHave_MaliciousCharactersString()
+    {        
+        var mockHtmlSanitizer = new Mock<IHtmlSanitizer>();
+
+        var html = @"<script>alert('xss')</script><div onload=""alert('xss')"""
+            + @"style=""background-color: rgba(0, 0, 0, 1)"">Test<img src=""test.png"""
+            + @"style=""background-image: url(javascript:alert('xss')); margin: 10px""></div>";
+
+        var expected = @"<div style=""background-color: rgba(0, 0, 0, 1)"">"
+            + @"Test<img src=""test.png"" style=""margin: 10px""></div>";
+
+        mockHtmlSanitizer.Setup(s => s.Sanitize(html)).Returns(expected);
+
+        var sanitized = mockHtmlSanitizer.Object.Sanitize(html);
+        
+        Assert.Equal(expected, sanitized);        
+        mockHtmlSanitizer.Verify(s => s.Sanitize(html), Times.Once);
+    }
+
+    [Fact(DisplayName = "Encode deve codificar caracteres HTML quando for string")]
+    public void Encode_ShouldEncodeHtmlCharactersString()
+    {
+        var mockHtmlSanitizer = new Mock<IHtmlSanitizer>();
+
+        var html = "<div>Test & Encode</div>";
+        var expected = "&lt;div&gt;Test &amp; Encode&lt;/div&gt;";
+
+        mockHtmlSanitizer.Setup(s => s.Encode(html)).Returns(expected);
+        var encoder = mockHtmlSanitizer.Object.Encode(html);
+        
+        Assert.Equal(expected, encoder);
+        mockHtmlSanitizer.Verify(s => s.Encode(html), Times.Once);
+    }
+
+    [Fact(DisplayName = "Conteúdo do artigo não deve ter caracteres maliciosos quando for um array de bytes")]
+    public void ArticleContent_ShouldNotHave_MaliciousCharactersByteArray()
+    {        
+        var mockHtmlSanitizer = new Mock<IHtmlSanitizer>();
+
+        var html = @"<script>alert('xss')</script><div onload=""alert('xss')"""
+            + @"style=""background-color: rgba(0, 0, 0, 1)"">Test<img src=""test.png"""
+            + @"style=""background-image: url(javascript:alert('xss')); margin: 10px""></div>";
+
+        var expected = @"<div style=""background-color: rgba(0, 0, 0, 1)"">"
+            + @"Test<img src=""test.png"" style=""margin: 10px""></div>";
+
+        var htmlBytes = Encoding.UTF8.GetBytes(html);
+        var expectedBytes = Encoding.UTF8.GetBytes(expected);
+
+        mockHtmlSanitizer.Setup(s => s.Sanitize(htmlBytes)).Returns(expectedBytes);
+
+        var sanitized = mockHtmlSanitizer.Object.Sanitize(htmlBytes);
+        
+        Assert.Equal(expectedBytes, sanitized);        
+        mockHtmlSanitizer.Verify(s => s.Sanitize(htmlBytes), Times.Once);
+    }
+
+    [Fact(DisplayName = "Encode deve codificar caracteres HTML quando for um array de bytes")]
+    public void Encode_ShouldEncodeHtmlCharactersByteArray()
+    {
+        var mockHtmlSanitizer = new Mock<IHtmlSanitizer>();
+
+        var html = "<div>Test & Encode</div>";
+        var expected = "&lt;div&gt;Test &amp; Encode&lt;/div&gt;";
+        var htmlBytes = Encoding.UTF8.GetBytes(html);
+        var expectedBytes = Encoding.UTF8.GetBytes(expected);
+
+        mockHtmlSanitizer.Setup(s => s.Encode(htmlBytes)).Returns(expectedBytes);
+        var encoder = mockHtmlSanitizer.Object.Encode(htmlBytes);
+        
+        Assert.Equal(expectedBytes, encoder);
+        mockHtmlSanitizer.Verify(s => s.Encode(htmlBytes), Times.Once);
     }
     #endregion
 }
