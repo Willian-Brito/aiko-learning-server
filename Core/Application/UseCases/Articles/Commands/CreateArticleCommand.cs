@@ -1,4 +1,5 @@
 using AikoLearning.Core.Application.DTOs;
+using AikoLearning.Core.Application.Interfaces;
 using AikoLearning.Core.Domain.Base;
 using AikoLearning.Core.Domain.Entities;
 using AikoLearning.Core.Domain.Exceptions;
@@ -16,6 +17,7 @@ public sealed class CreateArticleCommand : ArticleCommand
         #region Properties
         private readonly IMapper mapper;
         private readonly IUnitOfWork unityOfWork;
+        private readonly IHtmlSanitizer htmlSanitizer;
         private readonly IArticleRepository articleRepository;
         #endregion
 
@@ -23,11 +25,13 @@ public sealed class CreateArticleCommand : ArticleCommand
         public CreateArticleCommandHandler(
             IMapper mapper,
             IUnitOfWork unityOfWork, 
+            IHtmlSanitizer htmlSanitizer,
             IArticleRepository articleRepository
         )
         {
             this.mapper = mapper;
-            this.unityOfWork = unityOfWork;        
+            this.unityOfWork = unityOfWork;
+            this.htmlSanitizer = htmlSanitizer;
             this.articleRepository = articleRepository;
         }
         #endregion
@@ -35,14 +39,16 @@ public sealed class CreateArticleCommand : ArticleCommand
         #region Handle
 
         public async Task<ArticleDTO> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
-        {
+        {         
+            var sanitizedBytes = htmlSanitizer.Sanitize(request.Content);
+
             var newArticle = new Article
             (
                 request.Name, 
                 request.CategoryId ?? 0, 
                 request.UserId ?? 0, 
                 request.Description, 
-                request.Content,                 
+                sanitizedBytes,                 
                 request.ImageUrl
             );
 

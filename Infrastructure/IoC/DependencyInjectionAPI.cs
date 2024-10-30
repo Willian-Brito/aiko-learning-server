@@ -13,6 +13,7 @@ using AikoLearning.Infrastructure.Data.MongoDB.Settings;
 using AikoLearning.Infrastructure.Data.Repositories;
 using AikoLearning.Infrastructure.Security.Auth;
 using AikoLearning.Infrastructure.Security.Hashs;
+using AikoLearning.Infrastructure.Security.Sanitizer;
 using AikoLearning.Infrastructure.Security.Sessions;
 using AikoLearning.Infrastructure.Security.Tokens;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +61,7 @@ public static class DependencyInjectionAPI
 
         #region Services
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IHtmlSanitizer, HtmlSanitizerService>();
         #endregion
 
         #region Repository
