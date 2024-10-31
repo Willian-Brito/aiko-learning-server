@@ -3,8 +3,6 @@
 ## 💻 Sobre o projeto
 O **Aiko Learning** é um gestor de artigos criado com o propósito de experimentar novas tecnologias e conceitos da a empresa **Aiko**. Este projeto serve para implementar provas de conceito (PoCs) que possam validar melhorias e novas funcionalidades para o projeto principal da empresa.
 
----
-
 ## 🛠️ Tecnologias Utilizadas
 - **Linguagens e Frameworks**
   - C#
@@ -23,8 +21,6 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
   - Prometheus
   - Grafana
 
----
-
 ## ⚙️ Funcionalidades
 - **Autenticação e Autorização**
   - [x] Registro de novos usuários
@@ -40,8 +36,6 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
 - **Suporte**
   - [ ] Chat em tempo real para suporte
 
----
-
 ## 📦 Padrões de Design Implementados
 - **SOLID**
 - **Clean Architecture**
@@ -56,12 +50,10 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
 - **Logs e Monitoramento**
 - **CI/CD Pipelines**
 
----
-
 ## 🔧 Instalação
 1. **Pré-requisitos**: 
    - Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-    [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/), [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), [PostgreSQL]() e [MongoDB](). 
+    [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/), [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), [PostgreSQL](https://www.postgresql.org/download/) e [MongoDB](https://www.mongodb.com/try/download/community). 
     Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/).
 
 2. **Configuração do Banco de Dados**:
@@ -72,7 +64,6 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
    ```bash
    dotnet restore
     ```
----
 
 ## 🚀 Como executar o projeto
 
@@ -122,11 +113,12 @@ $ npm run dev
 ```bash
    dotnet test
 ```
----
 
-## Layout (Swagger/ Telas):
+## 🎨 Layout 
+- Swagger
+- Telas
 
----
+
 
 ## 📝 Licença
 
