@@ -1,5 +1,4 @@
 using AikoLearning.Core.Application.DTOs;
-using AikoLearning.Core.Application.Interfaces;
 using AikoLearning.Core.Domain.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -17,8 +16,7 @@ public class GetArticleByIdQuery : IRequest<ArticleDTO>
     {
         #region Properties
         private readonly IArticleRepository articleRepository;
-        private readonly IUserRepository userRepository;
-        private readonly IHtmlSanitizer htmlSanitizer;
+        private readonly IUserRepository userRepository;        
         private readonly IMapper mapper;
         #endregion
 
@@ -26,13 +24,11 @@ public class GetArticleByIdQuery : IRequest<ArticleDTO>
         public GetArticleByIdQueryHandler(
             IArticleRepository articleRepository, 
             IMapper mapper, 
-            IUserRepository userRepository,
-            IHtmlSanitizer htmlSanitizer
+            IUserRepository userRepository            
         )
         {
             this.articleRepository = articleRepository;            
-            this.userRepository = userRepository;
-            this.htmlSanitizer = htmlSanitizer;
+            this.userRepository = userRepository;            
             this.mapper = mapper;
         }
         #endregion
