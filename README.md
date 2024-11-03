@@ -20,6 +20,11 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
   - Entity Framework
   - Dapper
 
+- **Testes  Automatizados**
+  - xUnit
+  - Moq
+  - Fluent Assertions
+
 - **Comunicação em Tempo Real**
   - SignalR
 
