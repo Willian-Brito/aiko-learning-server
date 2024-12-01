@@ -48,7 +48,8 @@ public sealed class CreateArticleCommand : ArticleCommand
                 request.CategoryId ?? 0, 
                 request.UserId ?? 0, 
                 request.Description, 
-                sanitizedBytes,                 
+                // sanitizedBytes,
+                request.Content,                 
                 request.ImageUrl
             );
 
