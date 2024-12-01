@@ -33,6 +33,7 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
   - Css
   - Javascript
   - Vue.js
+  - BootstrapVue
 
 - **Logs e Monitoramento**
   - Prometheus
