@@ -4,6 +4,6 @@ namespace AikoLearning.Core.Domain.Interfaces;
 
 public interface ISessionService
 {
-    int GetCurrentUserId();
+    int? GetCurrentUserId();
     Task<User> GetCurrentUser();
 }

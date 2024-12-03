@@ -28,11 +28,11 @@ public class SessionService : ISessionService
     public async Task<User> GetCurrentUser()
     {
         var userId = httpContextAccessor.HttpContext.GetCurrentUserId();
-        var users = await userRepository.Get(userId);
+        var users = await userRepository.Get(userId.Value);
         return mapper.Map<User>(users);
     }
 
-    public int GetCurrentUserId()
+    public int? GetCurrentUserId()
     {
         return httpContextAccessor.HttpContext.GetCurrentUserId();
     }
