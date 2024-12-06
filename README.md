@@ -53,7 +53,7 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
   - [x] Sincronização de estatísticas
 
 - **Suporte**
-  - [ ] Chat em tempo real para suporte
+  - [x] Chat em tempo real para suporte
 
 ## 📦 Padrões de Design Implementados
 - [x] SOLID
