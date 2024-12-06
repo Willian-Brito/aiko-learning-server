@@ -2,6 +2,7 @@ using AikoLearning.Infrastructure.IoC;
 using AikoLearning.Presentation.Middlewares;
 using AikoLearning.Presentation.WebAPI.Conventions;
 using AikoLearning.Presentation.WebAPI.Extencions.Converters;
+using AikoLearning.Presentation.WebAPI.Hubs;
 using Newtonsoft.Json;
 
 #region Services
@@ -13,6 +14,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddInfrastructureJWT();
 builder.Services.AddInfrastructureSwagger();
+builder.Services.AddSignalR();
 
 builder.Services
     .AddControllers(options =>
@@ -27,6 +29,7 @@ builder.Services
         options.SerializerSettings.Formatting = Formatting.Indented;
     });
 
+// Mobile
 builder.Services
     .AddCors(options =>
     {
@@ -54,6 +57,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Chat
+app.UseCors(cors => 
+{
+    cors.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .WithOrigins("http://localhost:8080");
+});
+
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
@@ -66,6 +78,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/api/chat");
 
 app.Run();
 
