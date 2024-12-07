@@ -138,47 +138,63 @@ $ npm run serve
 ```
 **VS Code**
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/vs-code-tests.png" alt="logo" />
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/vs-code-tests.png" alt="vs code" />
 </div>
 
 **Terminal**
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/terminal-tests.png" alt="logo" />
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/terminal-tests.png" alt="terminal" />
 </div>
 
 ## 🎨 Layout 
 
- #### Login
-
+#### Demo
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/login-dark.png" alt="logo" />
+  <img src="https://github.com/Willian-Brito/aiko-learning-client/blob/main/src/assets/gif/demo.gif?raw=true" alt="demo" />
 </div>
 
- #### Registrar
+#### Login
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/login-dark.png" alt="login" />
+</div>
+
+#### Registrar
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/register-dark.png" alt="registrar usuário" />
 </div>
 
- #### Home
+#### Home
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/home-dark.png" alt="home do sistema" />
 </div>
 
- #### Listagem de Artigos
+#### Perfil
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/profile-dark.png" alt="listagem de artigos" />
+</div>
+
+#### Listagem de Artigos
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/articles-dark.png" alt="listagem de artigos" />
 </div>
 
- #### Gestão de Artigos
+#### Gestão de Artigos
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/admin-articles-dark.png" alt="gestão de artigos" />
 </div>
 
- #### Swagger: Rotas do Backend
+#### Chat
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/chat-dark.png" alt="chat em tempo real" />
+</div>
+
+#### Swagger: Rotas do Backend
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/swagger.png" alt="rotas do backend" />
