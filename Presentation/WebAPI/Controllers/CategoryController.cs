@@ -6,11 +6,13 @@ using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AikoLearning.Presentation.WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[EnableRateLimiting("Api")]
 [Authorize]
 public class CategoryController : CustomController
 {
@@ -92,6 +94,7 @@ public class CategoryController : CustomController
     #region GetAll
     [HttpGet]
     [Authorize(Roles = nameof(Role.Administrator))]
+    // [AllowAnonymous]
     public async Task<ActionResult> GetAll()
     {
         var query = new GetAllCategoriesQuery();
@@ -153,7 +156,7 @@ public class CategoryController : CustomController
 
     [HttpGet("tree")]
     public async Task<ActionResult> GetCategoriesWithTree()
-    {
+    {        
         var query = new GetCategoriesWithTreeQuery();
         var dto  = await mediator.Send(query);
         var response = BaseResponseAPI.Create(dto);

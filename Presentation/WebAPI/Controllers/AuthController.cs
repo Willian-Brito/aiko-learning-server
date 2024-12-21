@@ -3,11 +3,13 @@ using AikoLearning.Presentation.WebAPI.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AikoLearning.Presentation.WebAPI.Controllers;
 
 [ApiController]
 [AllowAnonymous]
+[EnableRateLimiting("Auth")]
 [Route("api/[controller]")]
 public class AuthController : CustomController
 {
@@ -60,6 +62,7 @@ public class AuthController : CustomController
 
     #region ValidateToken
     [HttpPost("validateToken")]
+    [EnableRateLimiting("Api")]
     public async Task<ActionResult> ValidateToken(ValidateTokenCommand command) 
     {
         var dto = await mediator.Send(command);

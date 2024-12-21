@@ -32,7 +32,7 @@ public static class DependencyInjectionAPI
         #region Database
 
         #region Postgres
-        var postgresConnection = configuration.GetConnectionString("Postgres");
+        var postgresConnection = configuration.GetConnectionString("Postgres");        
 
         services.AddDbContext<ApplicationDbContext>(options =>
          options.UseNpgsql(postgresConnection, 
@@ -49,8 +49,8 @@ public static class DependencyInjectionAPI
         #endregion
 
         #region MongoDB
-        
-        services.Configure<MongoDBSettings>(configuration.GetSection("MongoDBSettings"));
+        var mongoConnection = configuration.GetSection("MongoDBSettings");
+        services.Configure<MongoDBSettings>(mongoConnection);
         #endregion
 
         #endregion

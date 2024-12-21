@@ -1,8 +1,10 @@
+using System.Threading.RateLimiting;
 using AikoLearning.Infrastructure.IoC;
 using AikoLearning.Presentation.Middlewares;
 using AikoLearning.Presentation.WebAPI.Conventions;
 using AikoLearning.Presentation.WebAPI.Extencions.Converters;
 using AikoLearning.Presentation.WebAPI.Hubs;
+using Microsoft.AspNetCore.RateLimiting;
 using Newtonsoft.Json;
 
 #region Services
@@ -29,18 +31,80 @@ builder.Services
         options.SerializerSettings.Formatting = Formatting.Indented;
     });
 
-// Mobile
-builder.Services
-    .AddCors(options =>
+// Rate Limiting
+builder.Services.AddRateLimiter(options => 
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    #region Global
+    // Global
+    // options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext => 
+    // {
+    //     var partitionKey = httpContext.User.Identity?.Name ?? httpContext.Request.Headers.Host.ToString();
+    //     Console.WriteLine($"Request from: {partitionKey}");
+
+    //     return RateLimitPartition.GetFixedWindowLimiter(
+    //         partitionKey: partitionKey,
+    //         factory: partition => new FixedWindowRateLimiterOptions
+    //         {
+    //             AutoReplenishment = true,
+    //             PermitLimit = 10,
+    //             QueueLimit = 0,
+    //             Window = TimeSpan.FromMinutes(1)
+    //         }
+    //     );
+    // });
+    #endregion
+
+    #region Grupos
+
+    #region API
+
+    options.AddFixedWindowLimiter(policyName: "Api", options => 
     {
-        options.AddPolicy("AllowAll",
-            builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
+        options.PermitLimit = 100;
+        options.Window = TimeSpan.FromMinutes(1);
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 0;
     });
+    #endregion
+
+    #region Auth
+    options.AddFixedWindowLimiter(policyName: "Auth", options => 
+    {        
+        options.PermitLimit = 10;
+        options.Window = TimeSpan.FromMinutes(1);        
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 0;
+    });
+    #endregion
+
+    #endregion
+
+    #region Custom Message
+    options.OnRejected = async (context, cancellationToken) => 
+    {        
+        Console.WriteLine($"{context.HttpContext.User.Identity?.Name} - Rate limit exceeded");
+
+        context.HttpContext.Response.StatusCode = 429;
+        await context.HttpContext.Response.WriteAsJsonAsync(
+            new { Message = "Você excedeu o limite de requisições. Tente novamente mais tarde" }
+        );
+    };
+    #endregion
+});
+
+// Mobile
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -63,7 +127,7 @@ app.UseCors(cors =>
     cors.AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
-        .WithOrigins("http://localhost:8080");
+        .WithOrigins("http://localhost:8080");        
 });
 
 app.UseCors("AllowAll");
@@ -76,10 +140,10 @@ app.ApplyMigrations();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 app.MapHub<ChatHub>("/api/chat");
 
 app.Run();
-
 #endregion
