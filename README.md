@@ -5,7 +5,9 @@
 </div>
 
 ## 💻 Sobre o projeto
-O **Aiko Learning** é um gestor de artigos criado com o propósito de experimentar novas tecnologias e conceitos da a empresa **Aiko**. Este projeto serve para implementar provas de conceito (PoCs) que possam validar melhorias e novas funcionalidades para o projeto principal da empresa.
+O **Aiko Learning** é um gestor de artigos que desenvolvi como uma iniciativa pessoal para experimentar novas tecnologias e conceitos que possam trazer melhorias para os projetos da **Aiko** e me ajudar a crescer como profissional dentro da empresa.
+
+Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minhas próprias ideias** e conceitos inovadores. Ele serve para implementar **provas de conceito (PoCs)**, validando essas ideias antes de propô-las para aplicação no projeto principal da empresa. 
 
 ## 🛠️ Tecnologias Utilizadas
 - **Backend: Linguagens e Frameworks**
