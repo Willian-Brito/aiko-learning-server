@@ -70,8 +70,10 @@ O **Aiko Learning** é um gestor de artigos criado com o propósito de experimen
 - [x] Testes Unitários
 - [ ] Testes de Integração
 - [ ] Testes e2e
+- [ ] Rate Limiting
 - [ ] Logs e Monitoramento
 - [ ] CI/CD Pipelines
+- [ ] Análise de Vulnerabilidades (SAST/DAST/SCA)
 
 ## 🔧 Instalação
 1. **Pré-requisitos**: 
