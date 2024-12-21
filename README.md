@@ -27,6 +27,9 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
   - Moq
   - Fluent Assertions
 
+- **Sincronização de Estatísticas**
+  - FluentScheduler
+
 - **Comunicação em Tempo Real**
   - SignalR
 
@@ -68,6 +71,7 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
 - [x] Unit of Work
 - [x] Auditoria de Dados
 - [x] Global Error Handler
+- [x] Jobs para Sincronização de Estatísticas
 - [x] Paginação de APIs
 - [x] Testes Unitários
 - [ ] Testes de Integração
