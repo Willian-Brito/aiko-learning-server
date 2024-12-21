@@ -76,7 +76,7 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
 - [x] Testes Unitários
 - [ ] Testes de Integração
 - [ ] Testes e2e
-- [ ] Rate Limiting
+- [x] Rate Limiting
 - [ ] Logs e Monitoramento
 - [ ] CI/CD Pipelines
 - [ ] Análise de Vulnerabilidades (SAST/DAST/SCA)
