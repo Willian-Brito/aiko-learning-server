@@ -91,7 +91,7 @@ public abstract class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity,
     #endregion
 
     #region Count
-     public async Task<int> Count()
+    public async Task<int> Count()
     {
         var tableName = GetTableName();
         var count = $"SELECT COUNT(id) FROM {tableName} {DeletedAt()}";
