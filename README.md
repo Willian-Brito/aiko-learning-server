@@ -77,11 +77,15 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
 - [ ] Testes de Integração
 - [ ] Testes e2e
 - [x] Rate Limiting
+- [x] Conteinerização
 - [ ] Logs e Monitoramento
 - [ ] CI/CD Pipelines
 - [ ] Análise de Vulnerabilidades (SAST/DAST/SCA)
 
 ## 🔧 Instalação
+>Se você deseja executar o projeto localmente sem o uso de containers, siga as instruções abaixo.
+Caso prefira utilizar Docker, vá diretamente para a seção "Como executar o projeto".
+
 1. **Pré-requisitos**: 
    - Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
     [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/), [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), [PostgreSQL](https://www.postgresql.org/download/) e [MongoDB](https://www.mongodb.com/try/download/community). 
@@ -98,6 +102,8 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
 
 ## 🚀 Como executar o projeto
 
+> **Requisito:** É necessário ter o docker instalado em seu sistema operacional (Linux, Windows ou Mac)
+
 Este projeto é divido em duas partes:
 1. Backend ([Server](https://github.com/Willian-Brito/aiko-learning-server)) 
 2. Frontend ([Client](https://github.com/Willian-Brito/aiko-learning-client))
@@ -110,15 +116,16 @@ Este projeto é divido em duas partes:
 $ git clone https://github.com/Willian-Brito/aiko-learning-server
 
 # Vá para a pasta server
-$ cd aiko-learning-server/Presentation/WebAPI 
+$ cd aiko-learning-server
 
 # Execute a aplicação
-$ dotnet run
+$ docker-compose up --build
 
 # O servidor inciará na porta:5066 - acesse http://localhost:5066/swagger/index.html
 
 ```
 
+> Certifique-se de que as portas **5432 (PostgreSQL)** e **27017 (MongoDB)** não estejam sendo utilizadas por outros serviços em sua máquina local.
 
 #### 🧭 Rodando a aplicação web (Frontend)
 

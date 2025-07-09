@@ -1,0 +1,37 @@
+﻿services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Presentation/WebAPI/Dockerfile
+    ports:
+      - "5066:5066"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Postgres=Host=postgres;Database=AikoLearningDB;Username=postgres;Password=postgres;CommandTimeout=500
+      - MongoDBSettings__ConnectionString=mongodb://mongo:27017
+      - MongoDBSettings__DatabaseName=AikoLearningStatsDB
+    depends_on:
+      - postgres
+      - mongo
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: AikoLearningDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  pgdata:
+  mongodata:
