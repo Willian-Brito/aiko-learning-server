@@ -13,6 +13,9 @@
     depends_on:
       - postgres
       - mongo
+    container_name: aiko-learning-api
+    networks:
+      - default
 
   postgres:
     image: postgres:15
@@ -24,6 +27,9 @@
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    container_name: aiko-learning-postgres
+    networks:
+      - default
 
   mongo:
     image: mongo:6
@@ -31,6 +37,14 @@
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+    container_name: aiko-learning-mongo
+    networks:
+      - default
+  
+networks:
+  default:    
+    external: true
+    name: aiko-network
 
 volumes:
   pgdata:

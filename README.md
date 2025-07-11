@@ -1,4 +1,4 @@
-# Aiko Learning - Backend
+# Aiko Learning - Frontend
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/logo.png" alt="logo" />
@@ -108,7 +108,7 @@ Este projeto é divido em duas partes:
 1. Backend ([Server](https://github.com/Willian-Brito/aiko-learning-server)) 
 2. Frontend ([Client](https://github.com/Willian-Brito/aiko-learning-client))
 
-#### 🎲 Rodando o Backend (servidor)
+#### 🎲 Rodando o Backend
 
 ```bash
 
@@ -118,7 +118,7 @@ $ git clone https://github.com/Willian-Brito/aiko-learning-server
 # Vá para a pasta server
 $ cd aiko-learning-server
 
-# Execute a aplicação
+# Execute o docker compose
 $ docker-compose up --build
 
 # O servidor inciará na porta:5066 - acesse http://localhost:5066/swagger/index.html
@@ -127,7 +127,7 @@ $ docker-compose up --build
 
 > Certifique-se de que as portas **5432 (PostgreSQL)** e **27017 (MongoDB)** não estejam sendo utilizadas por outros serviços em sua máquina local.
 
-#### 🧭 Rodando a aplicação web (Frontend)
+#### 🧭 Rodando o Frontend
 
 ```bash
 
@@ -137,11 +137,8 @@ $ git clone https://github.com/Willian-Brito/aiko-learning-client
 # Vá para a pasta da aplicação Front End
 $ cd aiko-learning-client
 
-# Instale as dependências
-$ npm install
-
-# Execute a aplicação em modo de desenvolvimento
-$ npm run serve
+# Execute o docker compose
+$ docker-compose up --build
 
 # A aplicação será aberta na porta:8080 - acesse http://localhost:8080
 
@@ -217,6 +214,6 @@ $ npm run serve
 
 ## 📝 Licença
 
-Este projeto esta sobe a licença [MIT](https://github.com/Willian-Brito/aiko-learning-client/blob/main/LICENSE).
+Este projeto esta sobe a licença [MIT](https://github.com/Willian-Brito/aiko-learning-server/blob/main/LICENSE).
 
 Feito com ❤️ por Willian Brito 👋🏽 [Entre em contato!](https://www.linkedin.com/in/willian-ferreira-brito/)
