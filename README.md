@@ -1,4 +1,4 @@
-# Aiko Learning - Frontend
+# Aiko Learning - Backend
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/logo.png" alt="logo" />
