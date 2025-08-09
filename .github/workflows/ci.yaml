@@ -23,3 +23,22 @@ jobs:
           - name: Build
             run: |          
                 dotnet build --no-restore --configuration Release ./AikoLearning.sln
+
+    test:
+        runs-on: ubuntu-latest
+        name: Test
+        needs: build
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Setup .NET Core
+            uses: actions/setup-dotnet@v4
+
+          - name: Restore
+            run: |
+                dotnet restore ./AikoLearning.sln
+      
+          - name: Test
+            run: |                          
+                dotnet test ./AikoLearning.sln --no-restore --no-build --configuration Release --logger trx --results-directory "TestResults"
