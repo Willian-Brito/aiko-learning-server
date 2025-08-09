@@ -5,10 +5,14 @@ on:
     branches:
       - main
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
-    build:
+    build-and-test:
         runs-on: ubuntu-latest
-        name: Build
+        name: Build and Test
         steps:
           - name: Checkout code
             uses: actions/checkout@v4
@@ -23,15 +27,12 @@ jobs:
           - name: Build
             run: |          
                 dotnet build --no-restore --configuration Release ./AikoLearning.sln
-
-    test:
-        runs-on: ubuntu-latest
-        name: Test
-        needs: build
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v4
-      
+          
           - name: Test
             run: |                          
                 dotnet test ./AikoLearning.sln --no-restore --no-build --configuration Release --logger trx --results-directory "TestResults"
+
+          - uses: actions/upload-artifact@v4
+            with:
+                name: dotnet-test-results
+                path: TestResults  
