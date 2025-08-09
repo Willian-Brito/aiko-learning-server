@@ -11,8 +11,10 @@
       - MongoDBSettings__ConnectionString=mongodb://mongo:27017
       - MongoDBSettings__DatabaseName=AikoLearningStatsDB
     depends_on:
-      - postgres
-      - mongo
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
     container_name: aiko-learning-api
     networks:
       - default
@@ -27,6 +29,11 @@
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     container_name: aiko-learning-postgres
     networks:
       - default
@@ -37,6 +44,11 @@
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     container_name: aiko-learning-mongo
     networks:
       - default
