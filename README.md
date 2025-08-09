@@ -108,29 +108,38 @@ Este projeto é divido em duas partes:
 1. Backend ([Server](https://github.com/Willian-Brito/aiko-learning-server)) 
 2. Frontend ([Client](https://github.com/Willian-Brito/aiko-learning-client))
 
-#### 🎲 Rodando o Backend
+#### 🛜 Criar Rede Docker
+```bash
+# Criar rede aiko-network para comunicação do front-end e back-end
+$ docker network create aiko-network
+
+# Verificando se a rede foi criada corretamente
+$ docker network ls
+```
+
+#### 🖥 Rodando o Backend
 
 ```bash
-
 # Clone este repositório
 $ git clone https://github.com/Willian-Brito/aiko-learning-server
 
 # Vá para a pasta server
 $ cd aiko-learning-server
 
+# Criar rede aiko-network para comunicação do front-end e back-end
+$ docker network create aiko-network
+
 # Execute o docker compose
 $ docker-compose up --build
 
 # O servidor inciará na porta:5066 - acesse http://localhost:5066/swagger/index.html
-
 ```
 
 > Certifique-se de que as portas **5432 (PostgreSQL)** e **27017 (MongoDB)** não estejam sendo utilizadas por outros serviços em sua máquina local.
 
-#### 🧭 Rodando o Frontend
+#### 🌐 Rodando o Frontend
 
 ```bash
-
 # Clone este repositório
 $ git clone https://github.com/Willian-Brito/aiko-learning-client
 
@@ -141,7 +150,6 @@ $ cd aiko-learning-client
 $ docker-compose up --build
 
 # A aplicação será aberta na porta:8080 - acesse http://localhost:8080
-
 ```
 
 #### ✅ Executando os Testes do Backend
