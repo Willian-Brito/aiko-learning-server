@@ -78,9 +78,9 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
 - [ ] Testes e2e
 - [x] Rate Limiting
 - [x] Conteinerização
-- [ ] Logs e Monitoramento
-- [ ] CI/CD Pipelines
+- [x] CI/CD Pipelines
 - [ ] Análise de Vulnerabilidades (SAST/DAST/SCA)
+- [ ] Logs e Monitoramento
 
 ## 🔧 Instalação
 >Se você deseja executar o projeto localmente sem o uso de containers, siga as instruções abaixo.
