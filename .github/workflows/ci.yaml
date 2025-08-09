@@ -1,0 +1,29 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        name: Build
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Setup .NET Core
+            uses: actions/setup-dotnet@v4
+            with:
+              dotnet-version: '8.x'
+              cache: true
+              cache-dependency-path: ./Presentation/**/packages.lock.json
+
+          - name: Restore
+            run: |
+                dotnet restore ./AikoLearning.sln
+      
+          - name: Build
+            run: |          
+                dotnet build --no-restore --configuration Release ./AikoLearning.sln
