@@ -10,6 +10,49 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+
+    versioning:
+        runs-on: ubuntu-latest
+        name: Versioning
+    
+        outputs:
+          version: ${{ steps.version.outputs.version }}
+    
+        steps:
+          - name: Checkout Code
+            uses: actions/checkout@v4
+            with:
+              ref: ${{ github.head_ref }}
+              fetch-depth: 0 
+          
+          - uses:  codacy/git-version@2.8.3
+            id: version
+            with:
+              release-branch: main
+              prefix: v
+    
+          - name: Repository Tag
+            env:
+              GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            run: |
+              echo "::notice:: ${{ steps.version.outputs.version }}"
+              git config --global user.email "${{ github.actor }}"@users.noreply.github.com
+              git config --global user.name "${{ github.actor }}"
+              git tag -a "${{ steps.version.outputs.version }}" -m "Release ${{ steps.version.outputs.version }}"
+              git push --tags
+            if: github.ref == 'refs/heads/main'
+          
+          - name: Create file version
+            run: |
+              echo ${{ steps.version.outputs.version }} > version.txt
+            if: github.ref == 'refs/heads/main'
+    
+          - uses: actions/upload-artifact@v4
+            with:
+              name: version
+              path: version.txt
+            if: github.ref == 'refs/heads/main'
+
     build-and-test:
         runs-on: ubuntu-latest
         name: Build and Test
