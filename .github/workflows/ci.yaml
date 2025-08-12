@@ -80,45 +80,29 @@ jobs:
             with:
                 name: dotnet-test-results
                 path: TestResults  
-
-    horusec:      
-      runs-on: ubuntu-20.04
-      needs: versioning
+    
+    horusec:
+      runs-on: ubuntu-latest
+  
       steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
   
-        # - name: Checkout repository
-        #   uses: actions/checkout@v3
-        #   with: 
-        #     fetch-depth: 0
-        - uses: actions/checkout@v4
-        - name: Horusec
-          env:
-            DOCKER_USER: ${{secrets.DOCKERHUB_USER}}
-            DOCKER_PASSWORD: ${{secrets.DOCKERHUB_TOKEN}}
-          # uses: fike/horusec-action@v0.2.2
-          # with:
-          #    arguments: -p=./ -e=false -o=sarif -O=./horusec_report.sarif
-          # shell: bash
+        - name: SAST - Horusec Run 🐞
           run: |
+            curl -sL https://raw.githubusercontent.com/0xtiago/opensource-devsecops/main/tools/horusec/horusec_docker_linux.sh| bash          
   
-            sudo apt install apt-transport-https ca-certificates curl software-properties-common
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
-            sudo apt update
-            sudo apt install docker-ce
-            sudo apt-cache madison docker-ce
-            sudo apt-get install -y docker-ce=5:20.10.13~3-0~ubuntu-jammy -y --allow-downgrades
-            sudo docker --version
-            # docker login -u $DOCKERHUB_USER -p $DOCKERHUB_TOKEN
-            
-            curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
-            mkdir reports
-            horusec start -p="./" -o='sarif' -O='reports/horusec_report.sarif'
+        - name: SAST - Horusec Report Generation 📊
+          run: |
+            cd reports
+            curl -sL https://raw.githubusercontent.com/0xtiago/opensource-devsecops/main/tools/horusec/horusec_json2md/horusec_json2md.py  -o horusec_json2md.py 
+            python3 horusec_json2md.py horusec_report.json horusec_report.md          
   
-            # docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/src/horusec horuszup/horusec-cli:latest horusec start -p /src/horusec -P $(pwd) -o='sarif' -O=/src/horusec/reports/horusec_report.sarif
-        
-        - name: Archive horusec report
-          uses: actions/upload-artifact@v4
+        - name: SAST - Horusec Upload Report Artifact 💾
+          uses: actions/upload-artifact@v3
           with:
-            name: horusec_report
-            path: reports/horusec_report.sarif
+            name: SAST - Horusec Scan
+            path: reports/horusec_report.md
+  
+        - name: SAST - Horusec Results In Summary 💁🏽
+          run: cat reports/horusec_report.md >> $GITHUB_STEP_SUMMARY
