@@ -81,8 +81,7 @@ jobs:
                 name: dotnet-test-results
                 path: TestResults  
 
-    horusec:
-      # runs-on: ubuntu-latest
+    horusec:      
       runs-on: ubuntu-20.04
       needs: versioning
       steps:
