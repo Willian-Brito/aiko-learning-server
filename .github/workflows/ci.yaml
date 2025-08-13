@@ -88,21 +88,21 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
   
-        - name: SAST - Horusec Run 🐞
+        - name: SAST - Horusec Run
           run: |
-            curl -sL https://raw.githubusercontent.com/0xtiago/opensource-devsecops/main/tools/horusec/horusec_docker_linux.sh| bash          
+            curl -sL https://raw.githubusercontent.com/Willian-Brito/dev-sec-ops-learning/refs/heads/main/tools/horusec/horusec_docker_linux.sh| bash
   
-        - name: SAST - Horusec Report Generation 📊
+        - name: SAST - Horusec Report Generation
           run: |
             cd reports
-            curl -sL https://raw.githubusercontent.com/0xtiago/opensource-devsecops/main/tools/horusec/horusec_json2md/horusec_json2md.py  -o horusec_json2md.py 
-            python3 horusec_json2md.py horusec_report.json horusec_report.md          
+            curl -sL https://raw.githubusercontent.com/Willian-Brito/dev-sec-ops-learning/refs/heads/main/tools/horusec/horusec_json2md/horusec_json2md.py  -o horusec_json2md.py 
+            python3 horusec_json2md.py horusec_report.json horusec_report.md       
   
-        - name: SAST - Horusec Upload Report Artifact 💾
+        - name: SAST - Horusec Upload Report Artifact
           uses: actions/upload-artifact@v4
           with:
             name: SAST - Horusec Scan
             path: reports/horusec_report.md
   
-        - name: SAST - Horusec Results In Summary 💁🏽
+        - name: SAST - Horusec Results In Summary
           run: cat reports/horusec_report.md >> $GITHUB_STEP_SUMMARY
