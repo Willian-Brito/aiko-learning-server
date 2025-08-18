@@ -111,7 +111,7 @@ jobs:
   sca:
     needs: versioning
     runs-on: ubuntu-latest
-    name: SCA - Software Composition Analysis
+    name: SCA - Dependency Check Scan
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -156,7 +156,7 @@ jobs:
         uses: checkmarx/kics-github-action@v2.1.13
         with:          
           path: '.'
-          ignore_on_exit: kics-report
+          ignore_on_exit: kics-report.json
           output_path: reports/
 
       - name: Display kics results
