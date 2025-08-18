@@ -130,8 +130,9 @@ jobs:
           path: '.'
           format: 'HTML'
           out: 'reports'
-          args: |              
-            --scan .
+          args: |            
+            --failOnCVSS 7
+            --enableRetired
         env:
           JAVA_HOME: /opt/jdk
 
