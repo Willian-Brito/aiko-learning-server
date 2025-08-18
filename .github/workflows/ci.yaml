@@ -81,7 +81,7 @@ jobs:
             name: dotnet-test-results
             path: TestResults  
     
-  sast-horusec:
+  sast:
     runs-on: ubuntu-latest
     needs: versioning
     name: SAST - Horusec Scan
@@ -102,7 +102,7 @@ jobs:
       - name: SAST - Horusec Upload Report Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SAST - Horusec Scan
+          name: horusec-report
           path: reports/horusec_report.md
 
       - name: SAST - Horusec Results In Summary
@@ -156,15 +156,15 @@ jobs:
         uses: checkmarx/kics-github-action@v2.1.13
         with:          
           path: '.'
-          ignore_on_exit: results
+          ignore_on_exit: kics-report
           output_path: reports/
 
       - name: Display kics results
         run: |
-          cat reports/results.json
+          cat reports/kics-report.json
 
       - name: Upload vulnerability report        
         uses: actions/upload-artifact@v4
         with:
-          name: results.json
+          name: kics-report.json
           path: reports/
