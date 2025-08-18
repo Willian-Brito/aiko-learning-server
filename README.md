@@ -81,7 +81,7 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
 - [x] Rate Limiting
 - [x] Conteinerização
 - [x] CI/CD Pipelines
-- [ ] Análise de Vulnerabilidades (SAST/DAST/SCA)
+- [x] Análise de Vulnerabilidades (SAST/DAST/SCA/IaC)
 - [ ] Logs e Monitoramento
 
 ## 🔧 Instalação
