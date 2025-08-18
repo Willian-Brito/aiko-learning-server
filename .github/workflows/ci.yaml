@@ -11,98 +11,133 @@ concurrency:
 
 jobs:
 
-    versioning:
-        runs-on: ubuntu-latest
-        name: Versioning
-    
-        outputs:
-          version: ${{ steps.version.outputs.version }}
-    
-        steps:
-          - name: Checkout Code
-            uses: actions/checkout@v4
-            with:
-              ref: ${{ github.head_ref }}
-              fetch-depth: 0 
-          
-          - uses:  codacy/git-version@2.8.3
-            id: version
-            with:
-              release-branch: main
-              prefix: v
-    
-          - name: Repository Tag
-            env:
-              GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            run: |
-              echo "::notice:: ${{ steps.version.outputs.version }}"
-              git config --global user.email "${{ github.actor }}"@users.noreply.github.com
-              git config --global user.name "${{ github.actor }}"
-              git tag -a "${{ steps.version.outputs.version }}" -m "Release ${{ steps.version.outputs.version }}"
-              git push --tags
-            if: github.ref == 'refs/heads/main'
-          
-          - name: Create file version
-            run: |
-              echo ${{ steps.version.outputs.version }} > version.txt
-            if: github.ref == 'refs/heads/main'
-    
-          - uses: actions/upload-artifact@v4
-            with:
-              name: version
-              path: version.txt
-            if: github.ref == 'refs/heads/main'
+  versioning:
+    runs-on: ubuntu-latest
+    name: Versioning
 
-    build-and-test:
-        runs-on: ubuntu-latest
-        name: Build and Test
-        needs: versioning
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v4
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
-          - name: Setup .NET Core
-            uses: actions/setup-dotnet@v4
-
-          - name: Restore
-            run: |
-                dotnet restore ./AikoLearning.sln
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0 
       
-          - name: Build
-            run: |          
-                dotnet build --no-restore --configuration Release ./AikoLearning.sln
-          
-          - name: Test
-            run: |                          
-                dotnet test ./AikoLearning.sln --no-restore --no-build --configuration Release --logger trx --results-directory "TestResults"
+      - uses:  codacy/git-version@2.8.3
+        id: version
+        with:
+          release-branch: main
+          prefix: v
 
-          - uses: actions/upload-artifact@v4
-            with:
-                name: dotnet-test-results
-                path: TestResults  
+      - name: Repository Tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "::notice:: ${{ steps.version.outputs.version }}"
+          git config --global user.email "${{ github.actor }}"@users.noreply.github.com
+          git config --global user.name "${{ github.actor }}"
+          git tag -a "${{ steps.version.outputs.version }}" -m "Release ${{ steps.version.outputs.version }}"
+          git push --tags
+        if: github.ref == 'refs/heads/main'
+      
+      - name: Create file version
+        run: |
+          echo ${{ steps.version.outputs.version }} > version.txt
+        if: github.ref == 'refs/heads/main'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: version
+          path: version.txt
+        if: github.ref == 'refs/heads/main'
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    name: Build and Test
+    needs: versioning
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+
+      - name: Restore
+        run: |
+            dotnet restore ./AikoLearning.sln
+  
+      - name: Build
+        run: |          
+            dotnet build --no-restore --configuration Release ./AikoLearning.sln
+      
+      - name: Test
+        run: |                          
+            dotnet test ./AikoLearning.sln --no-restore --no-build --configuration Release --logger trx --results-directory "TestResults"
+
+      - uses: actions/upload-artifact@v4
+        with:
+            name: dotnet-test-results
+            path: TestResults  
     
-    sast-horusec:
-      runs-on: ubuntu-latest
-      needs: versioning
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-  
-        - name: SAST - Horusec Run
-          run: |
-            curl -sL https://raw.githubusercontent.com/Willian-Brito/dev-sec-ops-learning/refs/heads/main/tools/horusec/horusec_docker_linux.sh| bash
-  
-        - name: SAST - Horusec Report Generation
-          run: |
-            cd reports
-            curl -sL https://raw.githubusercontent.com/Willian-Brito/dev-sec-ops-learning/refs/heads/main/tools/horusec/horusec_json2md/horusec_json2md.py -o horusec_json2md.py 
-            python3 horusec_json2md.py horusec_report.json horusec_report.md       
-  
-        - name: SAST - Horusec Upload Report Artifact
-          uses: actions/upload-artifact@v4
-          with:
-            name: SAST - Horusec Scan
-            path: reports/horusec_report.md
-  
-        - name: SAST - Horusec Results In Summary
-          run: cat reports/horusec_report.md >> $GITHUB_STEP_SUMMARY
+  sast-horusec:
+    runs-on: ubuntu-latest
+    needs: versioning
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: SAST - Horusec Run
+        run: |
+          curl -sL https://raw.githubusercontent.com/Willian-Brito/dev-sec-ops-learning/refs/heads/main/tools/horusec/horusec_docker_linux.sh| bash
+
+      - name: SAST - Horusec Report Generation
+        run: |
+          cd reports
+          curl -sL https://raw.githubusercontent.com/Willian-Brito/dev-sec-ops-learning/refs/heads/main/tools/horusec/horusec_json2md/horusec_json2md.py -o horusec_json2md.py 
+          python3 horusec_json2md.py horusec_report.json horusec_report.md       
+
+      - name: SAST - Horusec Upload Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SAST - Horusec Scan
+          path: reports/horusec_report.md
+
+      - name: SAST - Horusec Results In Summary
+        run: cat reports/horusec_report.md >> $GITHUB_STEP_SUMMARY
+
+  sca:
+    needs: versioning
+    runs-on: ubuntu-latest
+    name: SCA - Software Composition Analysis
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java (required for Dependency-Check)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run OWASP Dependency-Check
+        
+        uses: dependency-check/Dependency-Check_Action@main
+        id: depcheck
+        with:
+          project: '${{ github.repository }}'
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+          args: |              
+            --scan .
+        env:
+          JAVA_HOME: /opt/jdk
+
+      - name: Upload vulnerability report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: reports/
