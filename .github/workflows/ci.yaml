@@ -156,12 +156,12 @@ jobs:
         uses: checkmarx/kics-github-action@v2.1.13
         with:          
           path: '.'
-          ignore_on_exit: kics-report
+          ignore_on_exit: results
           output_path: reports/
 
       - name: Display kics results
         run: |
-          cat reports/kics-report.json
+          cat reports/results.json
 
       - name: Upload vulnerability report        
         uses: actions/upload-artifact@v4
