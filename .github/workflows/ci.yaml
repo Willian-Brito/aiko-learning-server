@@ -221,7 +221,7 @@ jobs:
     name: Container Scan - Trivy Scan Docker Image
 
     env:
-      version: ${{ needs.versioning.outputs.version }}
+      version: ${{ needs.versioning.outputs.version || github.sha }}
 
     steps:
 
