@@ -80,7 +80,7 @@ jobs:
         with:
             name: dotnet-test-results
             path: TestResults  
-    
+
   sast:
     runs-on: ubuntu-latest
     needs: versioning
@@ -168,3 +168,32 @@ jobs:
         with:
           name: kics-report
           path: reports/
+
+  build-docker-image:
+    needs: [versioning, build-and-test]
+    runs-on: ubuntu-latest
+    name: Build Docker Image
+  
+    env:
+      version: ${{ needs.versioning.outputs.version }}
+  
+    steps:      
+      - uses: actions/checkout@v4
+  
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }} -f ./Dockerfile .
+  
+      - name: Tag Docker Image as Latest
+        run: |
+          docker tag ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }} ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:latest
+        if: github.ref == 'refs/heads/main'
+  
+      - name: Push Docker Image
+        run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api
