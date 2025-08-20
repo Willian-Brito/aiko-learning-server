@@ -221,12 +221,9 @@ jobs:
     name: Container Scan - Trivy Scan Docker Image
 
     env:
-      version: ${{ needs.versioning.outputs.version || github.sha }}
+      version: ${{ needs.versioning.outputs.version }}
 
     steps:
-
-      - name: Debug version
-        run: echo "version=${{ env.version }}"
 
       - uses: actions/download-artifact@v4
         with:
@@ -242,15 +239,16 @@ jobs:
           scan-type: 'image'
           image-ref: '${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }}'
           severity: 'MEDIUM,HIGH,CRITICAL'          
+          format: 'template'
+          template: '@/contrib/html.tpl'
+          output: 'trivy-report.html'
           exit-code: '0'
-          format: 'json'
-          output: 'trivy-report.json'
       
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v4
         with:
           name: trivy-report
-          path: trivy-report.json
+          path: trivy-report.html
 
   # ======================================================
   # 8. Push da Imagem para o Docker Hub
