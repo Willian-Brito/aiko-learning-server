@@ -216,7 +216,7 @@ jobs:
   # 7. Analise de Segurança da Imagem Docker
   # ======================================================
   container-scan:
-    needs: docker-build
+    needs: [versioning, docker-build]
     runs-on: ubuntu-latest
     name: Container Scan - Trivy Scan Docker Image
 
@@ -256,7 +256,7 @@ jobs:
   # 8. Push da Imagem para o Docker Hub
   # ======================================================
   docker-push:
-    needs: container-scan
+    needs: [versioning, container-scan]
     runs-on: ubuntu-latest
     name: Push Docker Image
 
