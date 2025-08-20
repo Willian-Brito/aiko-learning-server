@@ -187,8 +187,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
   
       - name: Build Docker Image
-        run: |
-          docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }} -f ./Dockerfile .
+        run: |          
+          docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }} -f ./Presentation/WebAPI/Dockerfile .
   
       - name: Tag Docker Image as Latest
         run: |
