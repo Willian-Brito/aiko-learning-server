@@ -206,6 +206,7 @@ jobs:
       - name: Save Docker image as artifact
         run: |
           docker save ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }} -o image.tar
+
       - uses: actions/upload-artifact@v4
         with:
           name: docker-image
@@ -217,12 +218,16 @@ jobs:
   container-scan:
     needs: docker-build
     runs-on: ubuntu-latest
-    name: Scan Docker Image with Trivy
+    name: Container Scan - Trivy Scan Docker Image
 
     env:
       version: ${{ needs.versioning.outputs.version }}
 
     steps:
+
+      - name: Debug version
+        run: echo "version=${{ env.version }}"
+
       - uses: actions/download-artifact@v4
         with:
           name: docker-image
