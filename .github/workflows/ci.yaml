@@ -239,16 +239,15 @@ jobs:
           scan-type: 'image'
           image-ref: '${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api:${{ env.version }}'
           severity: 'MEDIUM,HIGH,CRITICAL'          
-          format: 'template'
-          template: '@/contrib/html.tpl'
-          output: 'trivy-report.html'
+          format: 'sarif'          
+          output: 'trivy-report.sarif'
           exit-code: '0'
       
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v4
         with:
           name: trivy-report
-          path: trivy-report.html
+          path: trivy-report.sarif
 
   # ======================================================
   # 8. Push da Imagem para o Docker Hub
