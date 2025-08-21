@@ -249,6 +249,10 @@ jobs:
           name: trivy-report
           path: trivy-report.sarif
 
+      - name: Upload Trivy SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-report.sarif
   # ======================================================
   # 8. Push da Imagem para o Docker Hub
   # ======================================================

@@ -84,13 +84,13 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
   - [x] Versionamento
   - [x] Build
   - [x] Testes Unitários
-  - [ ] Gerar Docker Image
-  - [ ] Subir Imagem no Docker Hub
+  - [x] Gerar Docker Image
+  - [x] Subir Imagem no Docker Hub
 - [x] Security Pipeline (DevSecOps) 
   - [x] SAST - Static Application Security Testing
   - [x] SCA - Software Composition Analysis
   - [x] IaC - Infra as Code
-  - [ ] Security Container Scan
+  - [x] Security Container Scan
   - [ ] DAST - Dynamic Application Security Testing
 - [ ] Logs e Monitoramento
 
