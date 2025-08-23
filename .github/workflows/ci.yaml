@@ -319,6 +319,7 @@ jobs:
         target: ${{ secrets.URL }}
         cmd_options: "-a"
         rules_file_name: '.zap/rules.tsv'
+        artifact_name: 'zap-baseline-report'
 
     - name: List generated files (debug)
       if: always()
