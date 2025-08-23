@@ -298,8 +298,11 @@ jobs:
     name: DAST - Zap Scan
     steps:
 
+    - name: Fix workspace permissions
+      run: sudo chmod -R 777 $GITHUB_WORKSPACE
+
     - name: Run Zap Scan
-      # continue-on-error: true
+      continue-on-error: true
       uses: zaproxy/action-baseline@v0.9.0
       with:
         target: ${{secrets.URL}}
