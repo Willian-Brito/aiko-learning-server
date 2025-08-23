@@ -289,138 +289,15 @@ jobs:
       - name: Push Docker Image
         run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api
 
-  # ======================================================
-  # 9. Análise de Segurança Dinâmica da Aplicação (DAST)
-  # ======================================================
-  # dast:
-  #   runs-on: ubuntu-latest
-  #   needs: docker-push
-  #   name: DAST - Zap Scan
-  #   steps:
-
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
-
-  #   - name: Fix workspace permissions
-  #     run: sudo chmod -R 777 $GITHUB_WORKSPACE
-
-  #   - name: Create ZAP rules file (if not exists)
-  #     run: |
-  #       mkdir -p .zap
-  #       if [ ! -f .zap/rules.tsv ]; then
-  #         echo "# ZAP Scanning Rules" > .zap/rules.tsv
-  #         echo "# Add your custom rules here" >> .zap/rules.tsv
-  #       fi
-
-  #   - name: Run ZAP Baseline Scan with Docker
-  #     continue-on-error: true
-  #     run: |
-  #       docker run --rm \
-  #         -v $(pwd):/zap/wrk/:rw \
-  #         -t ghcr.io/zaproxy/zaproxy:stable \
-  #         zap-baseline.py \
-  #         -t ${{ secrets.URL }} \
-  #         -g gen.conf \
-  #         -r report_html.html \
-  #         -J report_json.json \
-  #         -w report_md.md \
-  #         -x report_xml.xml \
-  #         -a \
-  #         -c .zap/rules.tsv || true
-
-  #   - name: List generated files (debug)
-  #     if: always()
-  #     run: |
-  #       echo "Listing current directory contents:"
-  #       ls -la
-  #       echo "Looking for ZAP report files:"
-  #       find . -name "*report*" -o -name "*zap*" | head -20
-
-  #   - name: Upload ZAP Reports
-  #     if: always()
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: zap-security-reports
-  #       path: |
-  #         report_html.html
-  #         report_json.json
-  #         report_md.md
-  #         report_xml.xml
-  #       if-no-files-found: warn
-  #       retention-days: 30
-
-  # ======================================================
-  # 9. Análise de Segurança Dinâmica da Aplicação (DAST)
-  # ======================================================
-  # dast:
-  #   runs-on: ubuntu-latest
-  #   needs: docker-push
-  #   name: DAST - Zap Scan
-  #   steps:
-
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
-
-  #   - name: Fix workspace permissions
-  #     run: sudo chmod -R 777 $GITHUB_WORKSPACE
-
-  #   - name: Create ZAP working directory
-  #     run: mkdir -p zap-reports
-
-  #   - name: Run OWASP ZAP Baseline Scan
-  #     continue-on-error: true
-  #     run: |
-  #       docker run --rm \
-  #         -v $(pwd)/zap-reports:/zap/wrk/:rw \
-  #         owasp/zap2docker-stable:latest \
-  #         zap-baseline.py \
-  #         -t ${{ secrets.URL }} \
-  #         -r baseline-report.html \
-  #         -J baseline-report.json \
-  #         -w baseline-report.md \
-  #         -x baseline-report.xml || echo "ZAP scan completed with findings"
-
-  #   - name: List generated files (debug)
-  #     if: always()
-  #     run: |
-  #       echo "Listing zap-reports directory:"
-  #       ls -la zap-reports/ || echo "No zap-reports directory found"
-  #       echo "Listing current directory:"
-  #       ls -la
-
-  #   - name: Move reports to root (if needed)
-  #     if: always()
-  #     run: |
-  #       if [ -d "zap-reports" ] && [ "$(ls -A zap-reports/)" ]; then
-  #         cp zap-reports/* . || echo "No files to copy"
-  #       fi
-
-  #   - name: Upload ZAP Security Reports
-  #     if: always()
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: zap-security-reports
-  #       path: |
-  #         baseline-report.html
-  #         baseline-report.json
-  #         baseline-report.md
-  #         baseline-report.xml
-  #         zap-reports/
-  #       if-no-files-found: warn
-  #       retention-days: 30
-
-  # ======================================================
-  # 9. Análise de Segurança Dinâmica da Aplicação (DAST)
-  # ======================================================
+  # =========================================================
+  # 9. Análise de Segurança Dinâmica da Aplicação WEB (DAST)
+  # =========================================================
   dast:
     runs-on: ubuntu-latest
     needs: docker-push
     name: DAST - Zap Scan
+
     steps:
-
-    # - name: Fix workspace permissions
-    #   run: sudo chmod -R 777 $GITHUB_WORKSPACE
-
     - name: Scan the Web Application
       continue-on-error: true
       uses: zaproxy/action-baseline@v0.14.0
@@ -428,14 +305,5 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
         target: ${{secrets.URL}}
-        cmd_options: '-a -z "-config view.locale=pt_BR"'
+        cmd_options: '-a'
         artifact_name: 'zap-reports'
-
-    # - name: Upload ZAP Reports
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: zap-reports        
-    #     path: |
-    #       report_html.html
-    #       report_json.json
-    #       report_md.md
