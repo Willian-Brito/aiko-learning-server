@@ -289,7 +289,7 @@ jobs:
       - name: Push Docker Image
         run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api
 
-  # ======================================================
+ # ======================================================
   # 9. Análise de Segurança Dinâmica da Aplicação (DAST)
   # ======================================================
   dast:
@@ -298,22 +298,45 @@ jobs:
     name: DAST - Zap Scan
     steps:
 
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Fix workspace permissions
       run: sudo chmod -R 777 $GITHUB_WORKSPACE
 
-    - name: Run Zap Scan
+    - name: Create ZAP rules file (if not exists)
+      run: |
+        mkdir -p .zap
+        if [ ! -f .zap/rules.tsv ]; then
+          echo "# ZAP Scanning Rules" > .zap/rules.tsv
+          echo "# Add your custom rules here" >> .zap/rules.tsv
+        fi
+
+    - name: Run ZAP Baseline Scan
       continue-on-error: true
-      uses: zaproxy/action-baseline@v0.9.0
+      uses: zaproxy/action-baseline@v0.12.0
       with:
-        target: ${{secrets.URL}}
+        target: ${{ secrets.URL }}
         cmd_options: "-a"
         rules_file_name: '.zap/rules.tsv'
 
+    - name: List generated files (debug)
+      if: always()
+      run: |
+        echo "Listing current directory contents:"
+        ls -la
+        echo "Looking for ZAP report files:"
+        find . -name "*report*" -o -name "*zap*" | head -20
+
     - name: Upload ZAP Reports
+      if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: zap-reports        
+        name: zap-reports
         path: |
           report_html.html
           report_json.json
           report_md.md
+          report_xml.xml
+        if-no-files-found: warn
+        retention-days: 30
