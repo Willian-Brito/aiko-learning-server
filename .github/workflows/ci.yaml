@@ -372,7 +372,7 @@ jobs:
       run: |
         docker run --rm \
           -v $(pwd)/zap-reports:/zap/wrk/:rw \
-          owasp/zap2docker-stable:latest \
+          -t ghcr.io/zaproxy/zaproxy:stable \
           zap-baseline.py \
           -t ${{ secrets.URL }} \
           -r baseline-report.html \
