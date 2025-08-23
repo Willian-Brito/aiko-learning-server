@@ -254,8 +254,8 @@ jobs:
         with:
           sarif_file: trivy-report.sarif
 
-      - name: Executar DefectDojo Integration
-        uses: Willian-Brito/defect-dojo-action@main
+      - name: Run DefectDojo Integration
+        uses: michelleamesquita/defect-dojo-action@main
         with:
           url_base: ${{ secrets.DEFECTDOJO_API }}
           username: admin
