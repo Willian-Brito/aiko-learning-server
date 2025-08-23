@@ -428,13 +428,14 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
         target: ${{secrets.URL}}
-        cmd_options: "-a"        
+        cmd_options: '-a -z "-config view.locale=pt_BR"'
+        artifact_name: 'zap-reports'
 
-    - name: Upload ZAP Reports
-      uses: actions/upload-artifact@v4
-      with:
-        name: zap-reports        
-        path: |
-          report_html.html
-          report_json.json
-          report_md.md
+    # - name: Upload ZAP Reports
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: zap-reports        
+    #     path: |
+    #       report_html.html
+    #       report_json.json
+    #       report_md.md
