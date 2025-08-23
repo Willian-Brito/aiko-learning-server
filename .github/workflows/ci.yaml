@@ -255,14 +255,15 @@ jobs:
           sarif_file: trivy-report.sarif
 
       - name: Run DefectDojo Integration
-        uses: michelleamesquita/defect-dojo-action@main
+        # uses: michelleamesquita/defect-dojo-action@main
+        uses: willian-brito/defect-dojo-action@main
         with:
           url_base: ${{ secrets.DEFECTDOJO_API }}
           username: admin
           source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
           tool: Trivy
           file: trivy-report.sarif
-          scan_type: "SARIF"
+          scan_type: SARIF
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
           origin: "Container Scan"
