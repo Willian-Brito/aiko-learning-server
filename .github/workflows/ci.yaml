@@ -253,6 +253,20 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: trivy-report.sarif
+
+      - name: Run DefectDojo Integration
+        uses: Willian-Brito/defect-dojo-action@main
+        with:
+          url_base: ${{ secrets.DEFECTDOJO_API }}
+          username: admin
+          source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
+          tool: Trivy
+          file: trivy-report.sarif
+          scan_type: "SARIF"
+          product_name: ${{ github.event.repository.name }}
+          description: "Projeto de teste no DefectDojo"
+          origin: "Container Scan"
+          token: ${{ secrets.DEFECTDOJO_TOKEN }}
           
   # ======================================================
   # 8. Push da Imagem para o Docker Hub

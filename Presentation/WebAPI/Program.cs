@@ -127,7 +127,7 @@ app.UseCors(cors =>
     cors.AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
-        .WithOrigins("http://localhost:8080");        
+        .WithOrigins("http://localhost:8081");        
 });
 
 app.UseCors("AllowAll");

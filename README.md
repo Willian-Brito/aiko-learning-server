@@ -91,7 +91,7 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
   - [x] SCA - Software Composition Analysis
   - [x] IaC - Infra as Code
   - [x] Security Container Scan
-  - [ ] DAST - Dynamic Application Security Testing
+  - [x] DAST - Dynamic Application Security Testing
 - [ ] Logs e Monitoramento
 
 ## 🔧 Instalação
@@ -161,7 +161,7 @@ $ cd aiko-learning-client
 # Execute o docker compose
 $ docker-compose up --build
 
-# A aplicação será aberta na porta:8080 - acesse http://localhost:8080
+# A aplicação será aberta na porta:8081 - acesse http://localhost:8081
 ```
 
 #### ✅ Executando os Testes do Backend
