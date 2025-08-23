@@ -289,7 +289,7 @@ jobs:
       - name: Push Docker Image
         run: docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}/aiko-learning-api
 
- # ======================================================
+  # ======================================================
   # 9. Análise de Segurança Dinâmica da Aplicação (DAST)
   # ======================================================
   dast:
@@ -317,7 +317,7 @@ jobs:
       run: |
         docker run --rm \
           -v $(pwd):/zap/wrk/:rw \
-          -t softwaresecurityproject/zap-stable:latest \
+          -t ghcr.io/zaproxy/zaproxy:stable \
           zap-baseline.py \
           -t ${{ secrets.URL }} \
           -g gen.conf \
