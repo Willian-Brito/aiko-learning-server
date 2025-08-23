@@ -302,10 +302,17 @@ jobs:
       continue-on-error: true
       uses: zaproxy/action-baseline@v0.9.0
       with:
-        target: ${{secrets.URL}}
-        rules_file_name: ""
-        cmd_options: "--user root"
-              
+        target: ${{secrets.URL}}        
+        cmd_options: "-a"
+
+    - name: Upload ZAP Reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: zap-reports
+        path: |
+          report_html.html
+          report_json.json
+          report_md.md
     
   nuclei-scan:
     runs-on: ubuntu-latest
@@ -325,8 +332,3 @@ jobs:
         with:
           name: nuclei.log
           path: nuclei.log
-
-      - name: GitHub Security Dashboard Alerts update
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: nuclei.sarif
