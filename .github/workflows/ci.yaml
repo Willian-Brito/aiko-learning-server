@@ -255,8 +255,7 @@ jobs:
           sarif_file: trivy-report.sarif
 
       - name: Run DefectDojo Integration
-        uses: michelleamesquita/defect-dojo-action@main
-        # uses: willian-brito/defect-dojo-action@main
+        uses: willian-brito/defect-dojo-action@main
         with:
           url_base: ${{ secrets.DEFECTDOJO_API }}
           username: admin
@@ -266,7 +265,7 @@ jobs:
           scan_type: SARIF
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
-          origin: "third-party"
+          origin: "third party library"
           token: ${{ secrets.DEFECTDOJO_TOKEN }}
           
   # ======================================================
