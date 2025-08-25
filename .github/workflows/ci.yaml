@@ -164,7 +164,7 @@ jobs:
           username: admin
           source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
           tool: Dependency-Check
-          file: dependency-check-report.sarif
+          file: reports/dependency-check-report.sarif
           scan_type: SARIF
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
@@ -198,6 +198,21 @@ jobs:
         with:
           name: kics-report
           path: reports/
+
+      - name: Run DefectDojo Integration
+        if: always()
+        uses: willian-brito/defect-dojo-action@main
+        with:
+          url_base: '${{ secrets.DEFECTDOJO_API }}/api/v2/'
+          username: admin
+          source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
+          tool: Kicks
+          file: reports/results.json
+          scan_type: JSON
+          product_name: ${{ github.event.repository.name }}
+          description: "Projeto de teste no DefectDojo"
+          origin: "CI/CD Pipeline"
+          token: ${{ secrets.DEFECTDOJO_TOKEN }}
 
   # ======================================================
   # 6. Build da Imagem Docker
