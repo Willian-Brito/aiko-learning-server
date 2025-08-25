@@ -141,7 +141,7 @@ jobs:
         with:
           project: '${{ github.repository }}'
           path: '.'
-          format: 'HTML'
+          format: 'SARIF'
           out: 'reports'
           args: |              
             --scan .
@@ -154,7 +154,22 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: reports/
+          path: reports/dependency-check-report.sarif
+
+      - name: Run DefectDojo Integration
+        if: always()
+        uses: willian-brito/defect-dojo-action@main
+        with:
+          url_base: '${{ secrets.DEFECTDOJO_API }}/api/v2/'
+          username: admin
+          source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
+          tool: Dependency-Check
+          file: dependency-check-report.sarif
+          scan_type: SARIF
+          product_name: ${{ github.event.repository.name }}
+          description: "Projeto de teste no DefectDojo"
+          origin: "CI/CD Pipeline"
+          token: ${{ secrets.DEFECTDOJO_TOKEN }}
 
   # ======================================================
   # 5. Análise de Segurança de Infra como Código (IaC)
@@ -254,7 +269,8 @@ jobs:
         with:
           sarif_file: trivy-report.sarif
 
-      - name: Run DefectDojo Integration        
+      - name: Run DefectDojo Integration     
+        if: always()   
         uses: willian-brito/defect-dojo-action@main
         with:
           url_base: '${{ secrets.DEFECTDOJO_API }}/api/v2/'
