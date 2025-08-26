@@ -353,13 +353,12 @@ jobs:
         target: ${{secrets.URL}}
         cmd_options: '-a -J zap-report.json'
         artifact_name: 'zap-report'
-
-    - name: Install SARIF Tools
-      run: pip install sarif-tools --user
-  
-    - name: Convert JSON to SARIF
-      run: |
-        python -m sarif_tools convert zap-report.json zap-report.sarif
+      
+    - name: Install sarif-tools
+      run: pip install sarif-tools
+        
+    - name: Convert ZAP report to SARIF
+      run: python -m sarif_tools convert zap-report.json zap-report.sarif
 
     - name: Run DefectDojo Integration
       if: always()
