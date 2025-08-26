@@ -354,11 +354,19 @@ jobs:
         cmd_options: '-a -J zap-report.json'
         artifact_name: 'zap-report'
       
-    - name: Install sarif-tools
-      run: pip install sarif-tools
+    # - name: Install sarif-tools
+    #   run: pip install sarif-tools
         
-    - name: Convert ZAP report to SARIF
-      run: python -m sarif_tools convert zap-report.json zap-report.sarif
+    # - name: Convert ZAP report to SARIF
+    #   run: python -m sarif_tools convert zap-report.json zap-report.sarif
+
+    - name: List generated files (debug)
+      if: always()
+      run: |
+        echo "Listing zap-reports directory:"
+        ls -la zap-report/ || echo "No zap-report directory found"
+        echo "Listing current directory:"
+        ls -la
 
     - name: Run DefectDojo Integration
       if: always()
@@ -368,8 +376,8 @@ jobs:
         username: admin
         source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
         tool: ZAP
-        file: zap-report.sarif
-        scan_type: SARIF
+        file: zap-report.json
+        scan_type: ZAP Scan
         product_name: ${{ github.event.repository.name }}
         description: "Projeto de teste no DefectDojo"
         origin: "third party library"
