@@ -355,11 +355,11 @@ jobs:
         artifact_name: 'zap-report'
 
     - name: Install SARIF Tools
-      run: pip install sarif-tools
+      run: pip install sarif-tools --user
   
     - name: Convert JSON to SARIF
       run: |
-        sarif-tools convert zap-report.json zap-report.sarif
+        python -m sarif_tools convert zap-report.json zap-report.sarif
 
     - name: Run DefectDojo Integration
       if: always()
