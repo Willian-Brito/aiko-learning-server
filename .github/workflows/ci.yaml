@@ -117,6 +117,21 @@ jobs:
       - name: SAST - Horusec Results In Summary
         run: cat reports/horusec_report.md >> $GITHUB_STEP_SUMMARY
 
+      - name: Run DefectDojo Integration
+        if: always()
+        uses: willian-brito/defect-dojo-action@main
+        with:
+          url_base: '${{ secrets.DEFECTDOJO_API }}/api/v2/'
+          username: admin
+          source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
+          tool: Horusec
+          file: reports/horusec_report.json
+          scan_type: Horusec Scan
+          product_name: ${{ github.event.repository.name }}
+          description: "Projeto de teste no DefectDojo"
+          origin: "third party library"
+          token: ${{ secrets.DEFECTDOJO_TOKEN }}
+
   # ======================================================
   # 4.  Análise de Segurança das Dependências (SCA)
   # ======================================================
