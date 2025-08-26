@@ -188,10 +188,11 @@ jobs:
           path: '.'
           ignore_on_exit: results
           output_path: reports/
+          output_formats: 'sarif'
 
       - name: Display kics results
         run: |
-          cat reports/results.json
+          cat reports/results.sarif
 
       - name: Upload vulnerability report        
         uses: actions/upload-artifact@v4
@@ -206,9 +207,9 @@ jobs:
           url_base: '${{ secrets.DEFECTDOJO_API }}/api/v2/'
           username: admin
           source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
-          tool: Kicks
-          file: reports/results.json
-          scan_type: JSON
+          tool: Kics
+          file: reports/results.sarif
+          scan_type: SARIF
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
           origin: "third party library"
