@@ -141,7 +141,7 @@ jobs:
         with:
           project: '${{ github.repository }}'
           path: '.'
-          format: 'SARIF, HTML'
+          format: 'SARIF,HTML'
           out: 'reports'
           args: |              
             --scan .
