@@ -168,7 +168,7 @@ jobs:
           scan_type: SARIF
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
-          origin: "CI/CD Pipeline"
+          origin: "third party library"
           token: ${{ secrets.DEFECTDOJO_TOKEN }}
 
   # ======================================================
@@ -211,7 +211,7 @@ jobs:
           scan_type: JSON
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
-          origin: "CI/CD Pipeline"
+          origin: "third party library"
           token: ${{ secrets.DEFECTDOJO_TOKEN }}
 
   # ======================================================
