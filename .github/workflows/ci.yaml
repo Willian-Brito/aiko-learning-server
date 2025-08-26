@@ -141,7 +141,8 @@ jobs:
         with:
           project: '${{ github.repository }}'
           path: '.'
-          format: 'SARIF,HTML'
+          # format: 'SARIF'
+          format: 'HTML'
           out: 'reports'
           args: |              
             --scan .
@@ -164,8 +165,10 @@ jobs:
           username: admin
           source_url: https://github.com/willian-brito/${{ github.event.repository.name }}
           tool: Dependency-Check
-          file: reports/dependency-check-report.sarif
-          scan_type: SARIF
+          # file: reports/dependency-check-report.sarif
+          file: reports/dependency-check-report.html
+          scan_type: Dependency Check Scan
+          # scan_type: SARIF
           product_name: ${{ github.event.repository.name }}
           description: "Projeto de teste no DefectDojo"
           origin: "third party library"
