@@ -92,7 +92,33 @@ Esse projeto foi criado como uma plataforma para **desenvolver** e **testar minh
   - [x] IaC - Infra as Code
   - [x] Security Container Scan
   - [x] DAST - Dynamic Application Security Testing
+  - [x] Integração com DefectDojo
 - [ ] Logs e Monitoramento
+
+## 🛡️ Práticas DevSecOps
+Este projeto foi desenvolvido com foco em DevSecOps, garantindo segurança em todas as etapas do ciclo de vida da aplicação (SDLC). Foram implementadas ferramentas de análise de código, dependências, infraestrutura e execução, além de integração com uma plataforma centralizada de gerenciamento de vulnerabilidades.
+
+### ⚙️ Pipeline de Segurança (CI/CD)
+
+Abaixo está um resumo das etapas executadas em cada build:
+
+1. **Execução do Horusec (SAST):** Identificar vulnerabilidades no código-fonte antes da aplicação ser compilada ou executada.
+2. **Execução do Dependency-Check (SCA):** Detectar bibliotecas e dependências vulneráveis.
+3. **Análise de IaC com KICS:** Analisar arquivos de configuração e infraestrutura (Terraform, Kubernetes, Docker) para encontrar falhas de segurança antes do provisionamento.
+4. **Varredura de containers com Trivy:** Analisar imagens Docker em busca de vulnerabilidades em pacotes do sistema operacional e bibliotecas de aplicação.
+5. **Testes dinâmicos com OWASP ZAP (DAST):** Testar a aplicação em execução para detectar falhas como SQL Injection, XSS e exposição de dados sensíveis.
+6. **Upload dos relatórios no DefectDojo:** Centralizar a gestão das vulnerabilidades no DefectDojo, garantindo uma visão unificada dos riscos identificados pelas ferramentas. Para isso, a pipeline utiliza uma [GitHub Action desenvolvida por mim](https://github.com/Willian-Brito/defect-dojo-action), que envia automaticamente os relatórios para o DefectDojo por meio da sua API.
+
+
+#### 🛠️ Secure Pipeline
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/secure-pipeline.jpeg" />
+</div>
+
+#### 📊 Dashboard no DefectDojo
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Willian-Brito/aiko-learning-client/refs/heads/main/src/assets/prints/defectdojo.png" />
+</div>
 
 ## 🔧 Instalação
 >Se você deseja executar o projeto localmente sem o uso de containers, siga as instruções abaixo.
